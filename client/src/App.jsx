@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import CinematicIntro from './components/CinematicIntro'
 import OceanWorld from './components/OceanWorld/OceanWorld'
+import InnerEcho from './components/InnerEcho/InnerEcho'
 import IslandPage from './pages/IslandPage'
 import './App.css'
 
@@ -28,12 +29,16 @@ function HomePage() {
         <CinematicIntro onComplete={handleIntroComplete} />
       )}
 
-      {/* ── Section II: Understanding The Waves ── */}
+      {/* ── Section II & III Main content wrapper ── */}
       <main
         className={`app-main${introVisible ? ' app-main--hidden' : ' app-main--visible'}`}
         aria-hidden={introVisible}
       >
+        {/* Section II: Understanding The Waves */}
         <OceanWorld />
+
+        {/* Section III: Test Your Inner Echo */}
+        <InnerEcho />
       </main>
     </>
   )
