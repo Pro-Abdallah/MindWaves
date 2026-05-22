@@ -4,6 +4,7 @@ import CinematicIntro from './components/CinematicIntro'
 import OceanWorld from './components/OceanWorld/OceanWorld'
 import InnerEcho from './components/InnerEcho/InnerEcho'
 import SafeHarbor from './components/SafeHarbor/SafeHarbor'
+import WhyWeSail from './components/WhyWeSail/WhyWeSail'
 import IslandPage from './pages/IslandPage'
 import './App.css'
 
@@ -30,7 +31,7 @@ function HomePage() {
         <CinematicIntro onComplete={handleIntroComplete} />
       )}
 
-      {/* ── Section II & III & IV Main content wrapper ── */}
+      {/* ── Section II & III & IV & V Main content wrapper ── */}
       <main
         className={`app-main${introVisible ? ' app-main--hidden' : ' app-main--visible'}`}
         aria-hidden={introVisible}
@@ -43,6 +44,9 @@ function HomePage() {
 
         {/* Section IV: Safe Harbor */}
         <SafeHarbor />
+
+        {/* Section V: Why We Sail */}
+        <WhyWeSail />
       </main>
     </>
   )
