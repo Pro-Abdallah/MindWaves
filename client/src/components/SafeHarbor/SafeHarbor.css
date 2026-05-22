@@ -1,0 +1,564 @@
+/* ================================================================
+   SafeHarbor.css
+   Section IV styling
+   ================================================================ */
+
+.sh-container {
+  position: relative;
+  min-height: 100vh;
+  width: 100vw;
+  background: #020E18;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  overflow: hidden;
+}
+
+/* ── Ambient Background Layer ── */
+
+.sh-ambient-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sh-glow-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(140px);
+  opacity: 0.12;
+  mix-blend-mode: screen;
+}
+
+.sh-glow-orb--teal {
+  top: 20%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, #5184C0 0%, transparent 70%);
+  animation: shDriftTeal 25s infinite alternate ease-in-out;
+}
+
+.sh-glow-orb--navy {
+  bottom: 10%;
+  left: -10%;
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(circle, #05395E 0%, transparent 70%);
+  animation: shDriftNavy 20s infinite alternate ease-in-out;
+}
+
+@keyframes shDriftTeal {
+  0% { transform: translate(0, 0) scale(1.1); }
+  100% { transform: translate(-10%, 5%) scale(0.9); }
+}
+
+@keyframes shDriftNavy {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(8%, -5%) scale(1.15); }
+}
+
+/* Particles styling */
+.sh-particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.sh-particle {
+  position: absolute;
+  background: rgba(145, 191, 246, 0.15);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: shFloatUp infinite linear;
+}
+
+@keyframes shFloatUp {
+  0% { transform: translateY(100vh) scale(0.4); opacity: 0; }
+  15% { opacity: 0.35; }
+  85% { opacity: 0.35; }
+  100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+}
+
+/* ── Content Layout ── */
+
+.sh-content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 60px;
+}
+
+.sh-header {
+  text-align: center;
+}
+
+.sh-header__tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: #5184C0;
+  text-transform: uppercase;
+}
+
+.sh-header__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  color: #DFE1E6;
+  margin: 12px 0 8px 0;
+  letter-spacing: 0.02em;
+}
+
+.sh-header__subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(14px, 1.8vw, 16px);
+  color: rgba(223, 225, 230, 0.7);
+  font-style: italic;
+}
+
+/* ── Interactive Cards Grid ── */
+
+.sh-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  width: 100%;
+}
+
+.sh-card {
+  position: relative;
+  height: 380px;
+  background: rgba(2, 14, 24, 0.75);
+  border: 1px solid rgba(81, 132, 192, 0.18);
+  border-radius: 8px;
+  backdrop-filter: blur(25px) saturate(1.2);
+  -webkit-backdrop-filter: blur(25px) saturate(1.2);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  outline: none;
+  transform-style: preserve-3d;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease-out;
+}
+
+.sh-card__glow {
+  position: absolute;
+  inset: -1px;
+  border-radius: 8px;
+  background: radial-gradient(circle at 50% 50%, rgba(145, 191, 246, 0.25), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sh-card__inner {
+  position: relative;
+  z-index: 5;
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  transform: translateZ(30px); /* 3D effect depth */
+}
+
+.sh-card__badge {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  color: #91BFF6;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.sh-card__badge--emergency {
+  color: #FF5A5A;
+}
+
+.sh-card__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(20px, 2.5vw, 24px);
+  font-weight: 700;
+  color: #DFE1E6;
+  line-height: 1.3;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+
+.sh-card__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: rgba(223, 225, 230, 0.65);
+  line-height: 1.6;
+  margin-bottom: auto;
+}
+
+.sh-card__cta {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #91BFF6;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(145, 191, 246, 0.3);
+  padding-bottom: 4px;
+  transition: color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Card Hover States */
+.sh-card:hover {
+  border-color: rgba(145, 191, 246, 0.45);
+  box-shadow: 0 25px 60px rgba(81, 132, 192, 0.15);
+}
+
+.sh-card:hover .sh-card__glow {
+  opacity: 1;
+}
+
+.sh-card:hover .sh-card__cta {
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+/* Emergency Card Specifics */
+.sh-card--emergency {
+  border-color: rgba(239, 68, 68, 0.15);
+}
+
+.sh-card--emergency:hover {
+  border-color: rgba(255, 90, 90, 0.45);
+  box-shadow: 0 25px 60px rgba(239, 68, 68, 0.15);
+}
+
+.sh-card--emergency .sh-card__glow {
+  background: radial-gradient(circle at 50% 50%, rgba(255, 90, 90, 0.25), transparent 70%);
+}
+
+.sh-card--emergency .sh-card__cta {
+  color: #FF5A5A;
+  border-color: rgba(255, 90, 90, 0.3);
+}
+
+.sh-card--emergency:hover .sh-card__cta {
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+/* ── Modal Popups ── */
+
+.sh-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 10, 18, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.sh-modal {
+  position: relative;
+  width: 100%;
+  max-width: 660px;
+  background: rgba(2, 14, 24, 0.88);
+  border: 1px solid rgba(81, 132, 192, 0.25);
+  border-radius: 12px;
+  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+}
+
+.sh-modal__close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(223, 225, 230, 0.7);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.sh-modal__close-btn svg {
+  width: 14px;
+  height: 14px;
+}
+
+.sh-modal__close-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.sh-modal-content {
+  padding: 48px;
+  text-align: left;
+}
+
+.sh-modal__tag {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: #91BFF6;
+  text-transform: uppercase;
+}
+
+.sh-modal__tag--emergency {
+  color: #FF5A5A;
+}
+
+.sh-modal__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(24px, 3.5vw, 32px);
+  font-weight: 700;
+  color: #DFE1E6;
+  margin: 12px 0 8px 0;
+  letter-spacing: 0.02em;
+}
+
+.sh-modal__subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(13px, 1.8vw, 15px);
+  color: rgba(223, 225, 230, 0.6);
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+
+.sh-modal__scrollable {
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 12px;
+}
+
+/* Custom scrollbar in modal */
+.sh-modal__scrollable::-webkit-scrollbar {
+  width: 4px;
+}
+.sh-modal__scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sh-modal__scrollable::-webkit-scrollbar-thumb {
+  background: rgba(81, 132, 192, 0.3);
+  border-radius: 2px;
+}
+
+/* ── Modal Details: Information List ── */
+
+.sh-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sh-info-item {
+  border-left: 2px solid #5184C0;
+  padding-left: 20px;
+}
+
+.sh-info-item__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #DFE1E6;
+  margin-bottom: 6px;
+}
+
+.sh-info-item__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 14.5px;
+  color: rgba(223, 225, 230, 0.7);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ── Modal Details: Therapy Grid ── */
+
+.sh-therapy-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.sh-therapy-card {
+  background: rgba(5, 57, 94, 0.15);
+  border: 1px solid rgba(81, 132, 192, 0.18);
+  border-radius: 6px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.sh-therapy-card__meta {
+  margin-bottom: 12px;
+}
+
+.sh-therapy-card__cat {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 9px;
+  font-weight: 500;
+  color: #5184C0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.sh-therapy-card__name {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #DFE1E6;
+  margin-top: 2px;
+}
+
+.sh-therapy-card__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: rgba(223, 225, 230, 0.65);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.sh-therapy-card__link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+  padding: 10px 18px;
+  background: rgba(81, 132, 192, 0.12);
+  border: 1px solid rgba(81, 132, 192, 0.35);
+  border-radius: 4px;
+  color: #DFE1E6;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.sh-therapy-card__link svg {
+  width: 12px;
+  height: 12px;
+}
+
+.sh-therapy-card__link:hover {
+  background: #DFE1E6;
+  color: #020E18;
+  border-color: #DFE1E6;
+}
+
+/* ── Modal Details: Emergency List ── */
+
+.sh-hotline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sh-hotline-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: 6px;
+  padding: 20px 24px;
+  gap: 20px;
+}
+
+.sh-hotline-card__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: #DFE1E6;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.sh-hotline-card__phone-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid #FF5A5A;
+  border-radius: 20px;
+  color: #FF5A5A;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  text-decoration: none;
+  animation: hotlineBorderPulse 2s infinite alternate;
+}
+
+.sh-hotline-card__phone-icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}
+
+.sh-hotline-card__phone-btn:hover {
+  background: #FF5A5A;
+  color: #020E18;
+  box-shadow: 0 0 20px rgba(255, 90, 90, 0.45);
+}
+
+@keyframes hotlineBorderPulse {
+  0% { box-shadow: 0 0 2px rgba(239, 68, 68, 0.2); }
+  100% { box-shadow: 0 0 12px rgba(239, 68, 68, 0.5); }
+}
+
+/* ── Responsiveness ── */
+
+@media (max-width: 1000px) {
+  .sh-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+  }
+  .sh-card {
+    height: 300px;
+  }
+}
+
+@media (max-width: 680px) {
+  .sh-therapy-grid {
+    grid-template-columns: 1fr;
+  }
+  .sh-hotline-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+  .sh-hotline-card__phone-btn {
+    width: 100%;
+    justify-content: center;
+  }
+  .sh-modal-content {
+    padding: 32px 20px;
+  }
+}
