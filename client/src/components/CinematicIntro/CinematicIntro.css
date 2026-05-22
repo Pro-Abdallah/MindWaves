@@ -1,0 +1,609 @@
+/* ================================================================
+   CinematicIntro.css
+   Ocean / Sky Blue palette — MindWaves
+   Palette:
+     Deep Navy  #05395E   rgb(5, 57, 94)
+     Steel Blue #5184C0   rgb(81, 132, 192)
+     Sky Blue   #91BFF6   rgb(145, 191, 246)
+     Mist       #DFE1E6   rgb(223, 225, 230)
+   ================================================================ */
+
+@keyframes ci-overlay-exit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(1.06);
+    filter: blur(12px);
+  }
+}
+
+@keyframes ci-video-crossfade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes ci-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes ci-loader-pulse-text {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    letter-spacing: 0.35em;
+  }
+
+  50% {
+    opacity: 0.9;
+    letter-spacing: 0.45em;
+  }
+}
+
+@keyframes ci-btn-appear {
+  0% {
+    opacity: 0;
+    transform: scale(0.8) translateY(28px);
+    filter: blur(10px);
+  }
+
+  60% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0px);
+    filter: blur(0px);
+  }
+}
+
+@keyframes ci-glow-pulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 18px rgba(81, 132, 192, 0.55),
+      0 0 50px rgba(81, 132, 192, 0.28),
+      0 0 90px rgba(5, 57, 94, 0.18),
+      inset 0 0 30px rgba(81, 132, 192, 0.06);
+  }
+
+  50% {
+    box-shadow:
+      0 0 28px rgba(81, 132, 192, 0.85),
+      0 0 70px rgba(81, 132, 192, 0.5),
+      0 0 130px rgba(5, 57, 94, 0.3),
+      inset 0 0 40px rgba(145, 191, 246, 0.1);
+  }
+}
+
+@keyframes ci-border-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes ci-text-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+
+  100% {
+    background-position: 200% center;
+  }
+}
+
+@keyframes ci-hint-fade {
+
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes ci-skip-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(24px) translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0) translateY(0);
+  }
+}
+
+@keyframes ci-vignette-breathe {
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 0.85;
+  }
+}
+
+@keyframes ci-scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes ci-sound-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Overlay ──────────────────────────────────────────────────── */
+
+.ci-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #020E18;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  will-change: opacity, transform;
+}
+
+.ci-overlay--exiting {
+  animation: ci-overlay-exit 1.1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  pointer-events: none;
+}
+
+/* ── Scanline ─────────────────────────────────────────────────── */
+
+.ci-scanline {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.ci-scanline::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(145, 191, 246, 0.04) 20%,
+      rgba(145, 191, 246, 0.08) 50%,
+      rgba(145, 191, 246, 0.04) 80%,
+      transparent 100%);
+  animation: ci-scanline 8s linear infinite;
+  opacity: 0.5;
+}
+
+/* ── Vignette ─────────────────────────────────────────────────── */
+
+.ci-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background: radial-gradient(ellipse at center,
+      transparent 30%,
+      rgba(2, 14, 24, 0.5) 70%,
+      rgba(2, 14, 24, 0.92) 100%);
+  animation: ci-vignette-breathe 4s ease-in-out infinite;
+}
+
+/* ── Videos ───────────────────────────────────────────────────── */
+
+.ci-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  z-index: 1;
+  will-change: opacity;
+}
+
+.ci-video--active {
+  opacity: 1;
+  animation: ci-video-crossfade-in 0.8s ease forwards;
+}
+
+/* ── Loading State ────────────────────────────────────────────── */
+
+.ci-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  z-index: 10;
+}
+
+.ci-loader__ring {
+  position: relative;
+  width: 56px;
+  height: 56px;
+}
+
+.ci-loader__ring::before,
+.ci-loader__ring::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid transparent;
+}
+
+.ci-loader__ring::before {
+  border-top-color: rgba(81, 132, 192, 0.95);
+  border-right-color: rgba(81, 132, 192, 0.3);
+  animation: ci-loader-spin 1s linear infinite;
+}
+
+.ci-loader__ring::after {
+  border-bottom-color: rgba(145, 191, 246, 0.65);
+  border-left-color: transparent;
+  animation: ci-loader-spin 1.5s linear infinite reverse;
+  inset: 6px;
+}
+
+.ci-loader__text {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(145, 191, 246, 0.5);
+  animation: ci-loader-pulse-text 2s ease-in-out infinite;
+  margin: 0;
+}
+
+/* ── Start Button Wrapper ─────────────────────────────────────── */
+
+.ci-start-wrapper {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  z-index: 10;
+  background: radial-gradient(ellipse 60% 40% at center,
+      rgba(5, 57, 94, 0.45) 0%,
+      transparent 100%);
+}
+
+/* ── Start Button ─────────────────────────────────────────────── */
+
+.ci-start-btn {
+  position: relative;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  animation:
+    ci-btn-appear 1s cubic-bezier(0.34, 1.36, 0.64, 1) forwards,
+    ci-glow-pulse 2.8s ease-in-out 1s infinite;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ci-start-btn:hover {
+  transform: scale(1.07);
+}
+
+.ci-start-btn:active {
+  transform: scale(0.96);
+  transition: transform 0.12s ease;
+}
+
+/* Gradient border */
+.ci-start-btn__border {
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 3px;
+  background: linear-gradient(90deg,
+      #05395E,
+      #5184C0,
+      #91BFF6,
+      #DFE1E6,
+      #91BFF6,
+      #5184C0,
+      #05395E);
+  background-size: 300% 100%;
+  animation: ci-border-shimmer 3.5s linear infinite;
+  z-index: 0;
+  filter: blur(0.5px);
+}
+
+/* Inner glass body */
+.ci-start-btn__inner {
+  position: relative;
+  z-index: 1;
+  padding: 18px 68px;
+  background: rgba(2, 14, 24, 0.85);
+  backdrop-filter: blur(24px) saturate(1.6);
+  -webkit-backdrop-filter: blur(24px) saturate(1.6);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* Text label */
+.ci-start-btn__text {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: clamp(13px, 1.8vw, 16px);
+  font-weight: 700;
+  letter-spacing: 0.55em;
+  background: linear-gradient(120deg,
+      rgba(255, 255, 255, 0.6) 0%,
+      #DFE1E6 20%,
+      #91BFF6 40%,
+      #ffffff 60%,
+      #DFE1E6 80%,
+      rgba(255, 255, 255, 0.6) 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: ci-text-shimmer 3s linear infinite;
+  user-select: none;
+}
+
+/* Arrow icon */
+.ci-start-btn__arrow {
+  width: 18px;
+  height: 18px;
+  stroke: rgba(145, 191, 246, 0.9);
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.ci-start-btn:hover .ci-start-btn__arrow {
+  transform: translateX(4px);
+}
+
+/* Autoplay hint */
+.ci-autoplay-hint {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(145, 191, 246, 0.45);
+  margin: 0;
+  animation: ci-hint-fade 2s ease-in-out infinite;
+}
+
+/* ── Sound Toggle Button ─────────────────────────────────────── */
+
+.ci-sound-btn {
+  position: absolute;
+  bottom: 28px;
+  left: 32px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(5, 57, 94, 0.35);
+  border: 1px solid rgba(81, 132, 192, 0.25);
+  border-radius: 40px;
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  cursor: pointer;
+  outline: none;
+  animation: ci-sound-fade-in 0.6s cubic-bezier(0.34, 1.36, 0.64, 1) forwards;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ci-sound-btn:hover {
+  background: rgba(81, 132, 192, 0.2);
+  border-color: rgba(145, 191, 246, 0.45);
+  transform: scale(1.06) translateY(-1px);
+  box-shadow: 0 8px 32px rgba(5, 57, 94, 0.5);
+}
+
+.ci-sound-btn:active {
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
+}
+
+.ci-sound-btn__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  color: rgba(145, 191, 246, 0.85);
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+}
+
+.ci-sound-btn__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.ci-sound-btn:hover .ci-sound-btn__icon {
+  color: #91BFF6;
+}
+
+.ci-sound-btn__label {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(145, 191, 246, 0.7);
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.ci-sound-btn:hover .ci-sound-btn__label {
+  color: #91BFF6;
+}
+
+/* ── Skip Button (glassmorphism) ──────────────────────────────── */
+
+.ci-skip-btn {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(5, 57, 94, 0.35);
+  border: 1px solid rgba(81, 132, 192, 0.25);
+  border-radius: 40px;
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  cursor: pointer;
+  outline: none;
+  animation: ci-skip-slide-in 0.6s cubic-bezier(0.34, 1.36, 0.64, 1) forwards;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ci-skip-btn:hover {
+  background: rgba(81, 132, 192, 0.2);
+  border-color: rgba(145, 191, 246, 0.45);
+  transform: scale(1.05) translateY(-1px);
+  box-shadow: 0 8px 32px rgba(5, 57, 94, 0.5);
+}
+
+.ci-skip-btn:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
+
+.ci-skip-btn__label {
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(145, 191, 246, 0.8);
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.ci-skip-btn:hover .ci-skip-btn__label {
+  color: #DFE1E6;
+}
+
+.ci-skip-btn__icon {
+  width: 14px;
+  height: 14px;
+  stroke: rgba(145, 191, 246, 0.7);
+  flex-shrink: 0;
+  transition: stroke 0.3s ease, transform 0.3s ease;
+}
+
+.ci-skip-btn:hover .ci-skip-btn__icon {
+  stroke: #DFE1E6;
+  transform: translateX(3px);
+}
+
+/* ── Mobile Responsive ────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .ci-start-btn__inner {
+    padding: 16px 48px;
+  }
+
+  .ci-skip-btn {
+    top: 18px;
+    right: 18px;
+    padding: 9px 16px;
+  }
+
+  .ci-skip-btn__label {
+    font-size: 11px;
+  }
+
+  .ci-sound-btn {
+    bottom: 18px;
+    left: 18px;
+    padding: 8px 14px;
+  }
+
+  .ci-sound-btn__label {
+    font-size: 10px;
+  }
+}
+
+/* ── Reduced Motion ───────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .ci-start-btn,
+  .ci-loader__ring::before,
+  .ci-loader__ring::after,
+  .ci-start-btn__border,
+  .ci-start-btn__text,
+  .ci-scanline::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .ci-overlay--exiting {
+    animation-duration: 0.3s !important;
+  }
+}
