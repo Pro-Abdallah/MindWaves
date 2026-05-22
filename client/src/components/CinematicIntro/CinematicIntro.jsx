@@ -85,7 +85,6 @@ function StartButton({ onClick, autoplayFailed }) {
   )
 }
 
-/** Glassmorphism Skip button shown during second video */
 function SkipButton({ onClick }) {
   return (
     <button
@@ -104,7 +103,6 @@ function SkipButton({ onClick }) {
         strokeLinejoin="round"
         aria-hidden="true"
       >
-        {/* Double forward chevron */}
         <polyline points="13 17 18 12 13 7" />
         <polyline points="6 17 11 12 6 7" />
       </svg>
@@ -112,22 +110,17 @@ function SkipButton({ onClick }) {
   )
 }
 
-/* ─────────────────────────────────────────────────────────────── */
-/*  Main Component                                                  */
-/* ─────────────────────────────────────────────────────────────── */
-
 export default function CinematicIntro({ onComplete }) {
-  /* ── State ── */
   const [phase, setPhase]                   = useState('loading')
   const [autoplayFailed, setAutoplayFailed] = useState(false)
-  // First video starts muted (required for autoplay). User can toggle it.
-  const [firstVideoMuted, setFirstVideoMuted] = useState(true)
+  
+  // Single sound state that controls audio for the active video
+  const [isMuted, setIsMuted]               = useState(true)
 
-  /* ── Refs ── */
   const firstVideoRef  = useRef(null)
   const secondVideoRef = useRef(null)
 
-  /* ── Lock body scroll for duration of intro ── */
+  // Lock body scroll for duration of intro
   useEffect(() => {
     const prevOverflow   = document.body.style.overflow
     const prevUserSelect = document.body.style.userSelect
@@ -141,13 +134,19 @@ export default function CinematicIntro({ onComplete }) {
     }
   }, [])
 
-  /* ── Sync muted state → first video DOM element ── */
+  // Sync muted state to first video DOM element
   useEffect(() => {
     const video = firstVideoRef.current
-    if (video) video.muted = firstVideoMuted
-  }, [firstVideoMuted])
+    if (video) video.muted = isMuted
+  }, [isMuted])
 
-  /* ── Attempt autoplay of first video when it's ready ── */
+  // Sync muted state to second video DOM element (when it is running)
+  useEffect(() => {
+    const video = secondVideoRef.current
+    if (video) video.muted = isMuted
+  }, [isMuted])
+
+  // Attempt autoplay of first video
   useEffect(() => {
     const video = firstVideoRef.current
     if (!video) return
@@ -155,15 +154,10 @@ export default function CinematicIntro({ onComplete }) {
     const tryPlay = async () => {
       setPhase('firstVideo')
       try {
-        // Must start muted for autoplay to succeed
         video.muted = true
+        setIsMuted(true) // Force start muted due to browser autoplay limits
         await video.play()
       } catch {
-        /*
-         * Autoplay was blocked (common on mobile without prior interaction).
-         * Show the Start button — clicking it provides the user gesture
-         * needed to play with sound.
-         */
         setAutoplayFailed(true)
         setPhase('awaitingStart')
       }
@@ -173,21 +167,18 @@ export default function CinematicIntro({ onComplete }) {
     return () => video.removeEventListener('canplay', tryPlay)
   }, [])
 
-  /* ── Handlers ── */
-
-  /** Toggle mute on the first video */
+  // Unified audio toggling handler
   const handleSoundToggle = useCallback(() => {
-    setFirstVideoMuted(prev => !prev)
+    setIsMuted(prev => !prev)
   }, [])
 
-  /** First video ended → reveal Start button */
+  // First video finished
   const handleFirstVideoEnd = useCallback(() => {
     setPhase('awaitingStart')
   }, [])
 
-  /** Exit the intro with a cinematic fade */
+  // Exit intro
   const handleExit = useCallback(() => {
-    // Pause second video immediately to stop sound during fade
     const v2 = secondVideoRef.current
     if (v2) v2.pause()
 
@@ -201,44 +192,41 @@ export default function CinematicIntro({ onComplete }) {
     }, 1100)
   }, [onComplete])
 
-  /**
-   * Start button pressed.
-   * This IS a user gesture, so we can play the second video WITH SOUND.
-   */
+  // Start clicked (User Gesture)
   const handleStart = useCallback(async () => {
     setPhase('secondVideo')
     const video = secondVideoRef.current
     if (!video) return
 
-    // ✅ Unmuted — allowed because this runs inside a click handler
-    video.muted  = false
+    // Since the user explicitly clicked Start, we can play with audio (unmuted)
+    setIsMuted(false)
+    video.muted = false
     video.volume = 1.0
 
     try {
       await video.play()
     } catch {
-      // If it still fails (e.g. very restrictive browser), fall back muted
+      // Fallback if browser blocks
       video.muted = true
+      setIsMuted(true)
       try { await video.play() } catch { handleExit() }
     }
   }, [handleExit])
 
-  /** Second video ended → exit naturally */
   const handleSecondVideoEnd = useCallback(() => {
     handleExit()
   }, [handleExit])
 
-  /* ── Early exit when fully done ── */
   if (phase === 'done') return null
 
-  /* ── Derived booleans ── */
   const showFirstVideo  = phase === 'firstVideo' || phase === 'awaitingStart'
   const showSecondVideo = phase === 'secondVideo'
   const isExiting       = phase === 'exiting'
 
-  /* ─────────────────────────────────────────────────────────── */
-  /*  Render                                                      */
-  /* ─────────────────────────────────────────────────────────── */
+  // Determine if we show sound control
+  // Spec: "mute and unmute toggle buttons before start and after start"
+  const showSoundControl = phase === 'firstVideo' || phase === 'awaitingStart' || phase === 'secondVideo'
+
   return (
     <div
       className={`ci-overlay${isExiting ? ' ci-overlay--exiting' : ''}`}
@@ -246,17 +234,11 @@ export default function CinematicIntro({ onComplete }) {
       role="dialog"
       aria-label="Cinematic intro"
     >
-      {/* ── Scanline ambient effect ── */}
       <div className="ci-scanline" aria-hidden="true" />
-
-      {/* ── Edge vignette ── */}
       <div className="ci-vignette" aria-hidden="true" />
 
-      {/* ── Loading spinner ── */}
       {phase === 'loading' && <Loader />}
 
-      {/* ── First video (FirstHalf.mp4) ──
-          Always rendered for preloading. Starts muted for autoplay. */}
       <video
         ref={firstVideoRef}
         className={`ci-video${showFirstVideo ? ' ci-video--active' : ''}`}
@@ -269,8 +251,6 @@ export default function CinematicIntro({ onComplete }) {
         aria-hidden="true"
       />
 
-      {/* ── Second video (SecondHalf.mp4) ──
-          NOT muted — plays with full audio after Start click. */}
       <video
         ref={secondVideoRef}
         className={`ci-video${showSecondVideo ? ' ci-video--active' : ''}`}
@@ -281,9 +261,9 @@ export default function CinematicIntro({ onComplete }) {
         aria-hidden="true"
       />
 
-      {/* ── Sound toggle during first video ── */}
-      {phase === 'firstVideo' && (
-        <SoundToggle muted={firstVideoMuted} onToggle={handleSoundToggle} />
+      {/* ── Sound toggle button (visible before AND after start) ── */}
+      {showSoundControl && (
+        <SoundToggle muted={isMuted} onToggle={handleSoundToggle} />
       )}
 
       {/* ── START button — appears after first video ── */}

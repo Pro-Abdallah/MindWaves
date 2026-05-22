@@ -39,7 +39,7 @@ export default function IslandPage() {
         >
           {/* Tag */}
           <span className="ip-card__tag" style={{ color: island.accentColor }}>
-            TOPIC 0{island.id} • BIPOLAR KNOWLEDGE
+            TOPIC 0{island.id} • {island.title.toUpperCase()}
           </span>
 
           {/* Title */}
@@ -53,20 +53,29 @@ export default function IslandPage() {
 
           {/* Description/Main Body */}
           <section className="ip-card__body">
-            <p className="ip-card__desc">{island.description}</p>
-            
-            <div className="ip-card__pdf-alert">
-              <svg className="ip-card__pdf-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                <polyline points="14 2 14 8 20 8" />
-                <line x1="16" y1="13" x2="8" y2="13" />
-                <line x1="16" y1="17" x2="8" y2="17" />
-                <polyline points="10 9 9 9 8 9" />
-              </svg>
-              <div>
-                <h4 className="ip-card__pdf-title">Research Documents Coming Soon</h4>
-                <p className="ip-card__pdf-sub">The full clinical education and PDF content will be integrated inside this panel in the next stage.</p>
-              </div>
+            {/* Intro Text */}
+            <div className="ip-card__intro" style={{ borderLeftColor: island.accentColor }}>
+              <p className="ip-card__intro-text">{island.introText}</p>
+            </div>
+
+            {/* Main Content Paragraphs */}
+            <div className="ip-card__paragraphs">
+              {island.mainContent.map((paragraph, index) => (
+                <p key={index} className="ip-card__paragraph">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+
+            {/* Divider line */}
+            <div className="ip-card__divider" style={{ background: `linear-gradient(90deg, transparent, ${island.color}, transparent)`, margin: '28px 0 20px 0' }} />
+
+            {/* Ending Quote Line */}
+            <div className="ip-card__quote-wrapper">
+              <span className="ip-card__quote-deco" style={{ color: island.accentColor }}>“</span>
+              <p className="ip-card__quote-text" style={{ color: island.accentColor }}>
+                {island.endingLine}
+              </p>
             </div>
           </section>
 

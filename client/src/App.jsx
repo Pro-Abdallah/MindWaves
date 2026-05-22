@@ -11,13 +11,21 @@ import './App.css'
  * entry intro overlay fade with the OceanWorld environment.
  */
 function HomePage() {
-  const [introVisible, setIntroVisible] = useState(true)
+  const [introVisible, setIntroVisible] = useState(() => {
+    // Check if the intro was already completed or skipped in this session
+    return sessionStorage.getItem('mw_intro_completed') !== 'true'
+  })
+
+  const handleIntroComplete = () => {
+    sessionStorage.setItem('mw_intro_completed', 'true')
+    setIntroVisible(false)
+  }
 
   return (
     <>
       {/* ── Cinematic Intro sequence ── */}
       {introVisible && (
-        <CinematicIntro onComplete={() => setIntroVisible(false)} />
+        <CinematicIntro onComplete={handleIntroComplete} />
       )}
 
       {/* ── Section II: Understanding The Waves ── */}
