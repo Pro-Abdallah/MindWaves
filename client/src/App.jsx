@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import CinematicIntro from './components/CinematicIntro'
 import OceanWorld from './components/OceanWorld/OceanWorld'
 import InnerEcho from './components/InnerEcho/InnerEcho'
+import SafeHarbor from './components/SafeHarbor/SafeHarbor'
 import IslandPage from './pages/IslandPage'
 import './App.css'
 
@@ -29,7 +30,7 @@ function HomePage() {
         <CinematicIntro onComplete={handleIntroComplete} />
       )}
 
-      {/* ── Section II & III Main content wrapper ── */}
+      {/* ── Section II & III & IV Main content wrapper ── */}
       <main
         className={`app-main${introVisible ? ' app-main--hidden' : ' app-main--visible'}`}
         aria-hidden={introVisible}
@@ -39,6 +40,9 @@ function HomePage() {
 
         {/* Section III: Test Your Inner Echo */}
         <InnerEcho />
+
+        {/* Section IV: Safe Harbor */}
+        <SafeHarbor />
       </main>
     </>
   )
