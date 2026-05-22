@@ -1,44 +1,54 @@
-/**
- * App.jsx — MindWaves root application
- *
- * Renders the CinematicIntro in front of all content.
- * Once the intro calls onComplete(), introVisible flips to false
- * and the main site fades in underneath.
- */
-
 import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import CinematicIntro from './components/CinematicIntro'
+import OceanWorld from './components/OceanWorld/OceanWorld'
+import IslandPage from './pages/IslandPage'
 import './App.css'
 
-export default function App() {
-  const [introVisible, setIntroVisible] = useState(true)
+/**
+ * Main application component.
+ * Sets up routing with react-router-dom and coordinates the
+ * entry intro overlay fade with the OceanWorld environment.
+ */
+function HomePage() {
+  const [introVisible, setIntroVisible] = useState(() => {
+    // Check if the intro was already completed or skipped in this session
+    return sessionStorage.getItem('mw_intro_completed') !== 'true'
+  })
+
+  const handleIntroComplete = () => {
+    sessionStorage.setItem('mw_intro_completed', 'true')
+    setIntroVisible(false)
+  }
 
   return (
     <>
-      {/* ── Cinematic intro overlay ─────────────────────────── */}
+      {/* ── Cinematic Intro sequence ── */}
       {introVisible && (
-        <CinematicIntro onComplete={() => setIntroVisible(false)} />
+        <CinematicIntro onComplete={handleIntroComplete} />
       )}
 
-      {/* ── Main website content ────────────────────────────── */}
-      {/* Replace everything inside .app-main with your actual site */}
+      {/* ── Section II: Understanding The Waves ── */}
       <main
         className={`app-main${introVisible ? ' app-main--hidden' : ' app-main--visible'}`}
         aria-hidden={introVisible}
       >
-        {/*
-         * ───────────────────────────────────────────────────
-         *   YOUR SITE CONTENT GOES HERE
-         *   Add components, routes, sections, etc. below.
-         * ───────────────────────────────────────────────────
-         */}
-        <section className="site-hero">
-          <h1 className="site-hero__title">MindWaves</h1>
-          <p className="site-hero__sub">
-            Your cinematic journey begins here.
-          </p>
-        </section>
+        <OceanWorld />
       </main>
     </>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/* Main interactive ocean homepage */}
+        <Route path="/" element={<HomePage />} />
+        
+        {/* Dedicated island page for each topic */}
+        <Route path="/island/:id" element={<IslandPage />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
