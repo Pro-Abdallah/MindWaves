@@ -1,0 +1,234 @@
+.audio-story {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 48px 32px;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+.audio-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.audio-particle {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.audio-header {
+  text-align: center;
+  max-width: 540px;
+}
+
+.audio-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.audio-title {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 700;
+  color: #DFE1E6;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+
+.audio-desc {
+  font-size: 15px;
+  color: rgba(145, 191, 246, 0.7);
+  font-style: italic;
+}
+
+/* Player card */
+.audio-player-card {
+  background: rgba(5, 57, 94, 0.3);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(145, 191, 246, 0.12);
+  border-radius: 24px;
+  padding: 36px 32px 28px;
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-shadow:
+    0 32px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 0 60px var(--accent, rgba(81,132,192,0.15));
+}
+
+/* EQ bars */
+.audio-eq-bars {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 5px;
+  height: 40px;
+}
+
+.eq-bar {
+  width: 5px;
+  height: 100%;
+  border-radius: 3px;
+  transform-origin: bottom;
+  opacity: 0.75;
+}
+
+/* Waveform */
+.waveform-container {
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+}
+
+.audio-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 80px;
+  color: rgba(145, 191, 246, 0.6);
+  font-size: 14px;
+}
+
+.loading-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* Controls */
+.audio-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.audio-time {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(145, 191, 246, 0.6);
+  min-width: 40px;
+  text-align: center;
+}
+
+.audio-play-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent, #5184C0);
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  box-shadow: 0 8px 32px var(--accent, rgba(81,132,192,0.5));
+  transition: box-shadow 0.3s ease;
+  flex-shrink: 0;
+}
+
+.audio-play-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.audio-play-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+.audio-volume {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.audio-volume svg {
+  width: 18px;
+  height: 18px;
+  color: rgba(145, 191, 246, 0.5);
+  flex-shrink: 0;
+}
+
+.volume-slider {
+  -webkit-appearance: none;
+  width: 80px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(145, 191, 246, 0.2);
+  outline: none;
+  cursor: pointer;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent, #5184C0);
+  cursor: pointer;
+  box-shadow: 0 0 6px var(--accent, rgba(81,132,192,0.6));
+}
+
+/* Progress bar */
+.audio-progress-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(145, 191, 246, 0.15);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.audio-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+/* Subtitles */
+.audio-subtitle {
+  max-width: 540px;
+  background: rgba(5, 57, 94, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid;
+  border-radius: 14px;
+  padding: 18px 22px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.subtitle-bar {
+  width: 3px;
+  height: 100%;
+  border-radius: 2px;
+  min-height: 40px;
+  flex-shrink: 0;
+}
+
+.audio-subtitle p {
+  font-size: 16px;
+  color: rgba(223, 225, 230, 0.92);
+  font-style: italic;
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+}

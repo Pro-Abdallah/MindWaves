@@ -1,0 +1,108 @@
+.page-navigation {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 40px 40px;
+  z-index: 90;
+  background: linear-gradient(to top, rgba(2, 14, 24, 0.95) 0%, rgba(2, 14, 24, 0.5) 60%, transparent 100%);
+  pointer-events: none; /* Let clicks pass through empty areas */
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-btn-wrapper {
+  flex: 1;
+  pointer-events: auto; /* Enable clicks on the buttons */
+}
+
+.nav-prev {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.nav-next {
+  display: flex;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: rgba(223, 225, 230, 0.6);
+  padding: 12px 24px;
+  border-radius: 12px;
+  background: rgba(5, 57, 94, 0.2);
+  border: 1px solid rgba(81, 132, 192, 0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.nav-btn:hover {
+  color: #DFE1E6;
+  background: rgba(5, 57, 94, 0.4);
+  border-color: rgba(81, 132, 192, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(81, 132, 192, 0.2);
+}
+
+.nav-arrow {
+  font-size: 24px;
+  color: var(--color-steel, #5184C0);
+  transition: transform 0.3s ease;
+}
+
+.nav-prev .nav-btn:hover .nav-arrow {
+  transform: translateX(-4px);
+}
+
+.nav-next .nav-btn:hover .nav-arrow {
+  transform: translateX(4px);
+}
+
+.nav-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  color: rgba(145, 191, 246, 0.6);
+}
+
+.nav-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: #DFE1E6;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .page-navigation {
+    padding: 16px 20px 24px;
+  }
+  
+  .nav-btn {
+    padding: 10px 16px;
+    gap: 12px;
+  }
+
+  .nav-title {
+    display: none; /* Hide full title on mobile to save space */
+  }
+}

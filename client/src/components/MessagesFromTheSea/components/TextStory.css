@@ -1,0 +1,150 @@
+.text-story {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Background */
+.text-bg-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.text-bg-img {
+  position: absolute;
+  inset: -5%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  will-change: transform;
+}
+
+.text-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 20%, rgba(2,14,24,0.7) 100%),
+    linear-gradient(to bottom, rgba(2,14,24,0.5) 0%, rgba(2,14,24,0.15) 30%, rgba(2,14,24,0.6) 80%, rgba(2,14,24,0.95) 100%);
+}
+
+.text-color-wash {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* Scrollable layer */
+.text-content-scroll {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  /* hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.text-content-scroll::-webkit-scrollbar { display: none; }
+
+.text-content-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 60px 32px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Title block */
+.text-title-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.text-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.text-main-title {
+  font-size: clamp(28px, 5vw, 46px);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.15;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.6);
+  letter-spacing: -0.01em;
+}
+
+.text-subtitle {
+  font-size: 16px;
+  color: rgba(223, 225, 230, 0.75);
+  font-style: italic;
+  font-weight: 300;
+  letter-spacing: 0.03em;
+}
+
+.text-divider {
+  width: 48px;
+  height: 2px;
+  border-radius: 2px;
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+/* Paragraphs */
+.text-paragraphs {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.text-para {
+  font-size: clamp(15px, 2vw, 17px);
+  line-height: 1.85;
+  color: rgba(223, 225, 230, 0.88);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.5);
+  letter-spacing: 0.01em;
+}
+
+/* Quote style for last paragraph */
+.text-para--quote {
+  border-left: 3px solid;
+  padding-left: 20px;
+  font-style: italic;
+  color: rgba(255,255,255,0.95);
+  font-size: clamp(16px, 2.2vw, 19px);
+  line-height: 1.7;
+}
+
+/* End mark */
+.text-end-mark {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 16px;
+  opacity: 0.6;
+}
+
+.text-end-line {
+  height: 1px;
+  width: 60px;
+  border-radius: 1px;
+}
+
+.text-end-mark span {
+  font-size: 24px;
+}

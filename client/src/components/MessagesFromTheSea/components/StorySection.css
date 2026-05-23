@@ -1,0 +1,383 @@
+.story-full-section {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 5;
+  padding: 80px 24px;
+}
+
+.story-section-inner {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 60px;
+}
+
+/* Reverse layout class applied to every odd index */
+.story-full-section.story-reversed .story-section-inner {
+  flex-direction: row-reverse;
+}
+
+/* ── TEXT CONTENT PANE ── */
+.story-section-content {
+  flex: 1;
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+}
+
+.story-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.story-number {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 0.1em;
+  font-family: monospace;
+}
+
+.story-category {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.story-heading {
+  font-size: 48px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.02em;
+}
+
+.story-tagline {
+  font-size: 20px;
+  font-weight: 400;
+  font-style: italic;
+  margin: 0 0 24px 0;
+}
+
+.story-desc {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.6;
+  margin: 0 0 40px 0;
+}
+
+.story-open-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  border-radius: 40px;
+  cursor: pointer;
+  width: fit-content;
+  transition: all 0.3s ease;
+}
+
+.story-open-btn .btn-arrow {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.story-open-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--hover-color);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.story-open-btn:hover .btn-arrow {
+  transform: translateX(6px);
+  color: var(--hover-color);
+}
+
+/* ── VISUAL PANE (BOTTLE) ── */
+.story-section-visual {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.story-bottle-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+}
+
+.story-bottle-animator {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.story-bottle-img {
+  width: 100%;
+  height: auto;
+  position: relative;
+  z-index: 2;
+  mix-blend-mode: screen;
+  filter: contrast(1.1) brightness(1.2);
+}
+
+.story-bottle-tint {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: overlay;
+  z-index: 3;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(10px);
+}
+
+.story-bottle-glow {
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  top: 20%;
+  left: 20%;
+  filter: blur(60px);
+  z-index: 1;
+  opacity: 0.5;
+  mix-blend-mode: screen;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .story-full-section {
+    min-height: auto;
+    padding: 100px 24px;
+  }
+  
+  .story-section-inner,
+  .story-full-section.story-reversed .story-section-inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 40px;
+  }
+
+  .story-section-content {
+    align-items: center;
+  }
+
+  .story-heading {
+    font-size: 36px;
+  }
+  
+  .story-bottle-wrapper {
+    max-width: 300px;
+  }
+}
+
+/* ── REALISTIC CSS BOTTLE STYLES ── */
+.css-bottle-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+}
+
+.css-bottle-float {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.css-bottle-glow {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  left: 10%;
+  filter: blur(50px);
+  z-index: 1;
+  opacity: 0.6;
+  mix-blend-mode: screen;
+}
+
+.css-bottle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  z-index: 2;
+  /* Add drop shadow to make it feel 3D in the water */
+  filter: drop-shadow(0 30px 40px rgba(0, 10, 20, 0.8));
+}
+
+/* ── BOTTLE BODY ── */
+.css-bottle-body {
+  width: 260px;
+  height: 110px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-right: none;
+  border-radius: 60px 10px 10px 60px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.css-bottle-ambient {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  mix-blend-mode: color;
+  pointer-events: none;
+}
+
+.css-bottle-highlight {
+  position: absolute;
+  top: 5%;
+  left: 10%;
+  right: 15%;
+  height: 25%;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.7), transparent);
+  border-radius: 30px;
+  pointer-events: none;
+}
+
+.css-bottle-waterline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: rgba(0, 15, 30, 0.4);
+  border-top: 1px solid rgba(255,255,255,0.1);
+  pointer-events: none;
+}
+
+/* ── BOTTLE NECK ── */
+.css-bottle-neck {
+  width: 80px;
+  height: 44px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0.02) 100%);
+  border: 2px solid rgba(255,255,255,0.3);
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  box-shadow: inset 0 5px 15px rgba(255,255,255,0.2), inset 0 -5px 15px rgba(0,0,0,0.6);
+  z-index: 1; /* Sits slightly behind or adjacent to body */
+}
+
+/* ── BOTTLE LIP ── */
+.css-bottle-lip {
+  position: absolute;
+  right: -8px;
+  top: -6px;
+  bottom: -6px;
+  width: 14px;
+  border: 2px solid rgba(255,255,255,0.4);
+  border-radius: 4px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.5);
+  z-index: 3;
+}
+
+/* ── CORK ── */
+.css-bottle-cork {
+  position: absolute;
+  right: -35px;
+  top: 4px;
+  bottom: 4px;
+  width: 35px;
+  background: #7a5127;
+  border-radius: 2px 4px 4px 2px;
+  box-shadow: inset -5px 0 10px rgba(0,0,0,0.6), inset 0 3px 5px rgba(255,255,255,0.2);
+  z-index: 2;
+  overflow: hidden;
+}
+
+.cork-texture {
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#3c2612 15%, transparent 16%), radial-gradient(#3c2612 15%, transparent 16%);
+  background-size: 8px 8px;
+  background-position: 0 0, 4px 4px;
+  opacity: 0.6;
+}
+
+/* ── MESSAGE SCROLL ── */
+.css-bottle-message {
+  position: absolute;
+  inset: 15px 40px 15px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 500px;
+}
+
+.message-scroll {
+  width: 90%;
+  height: 60%;
+  background: linear-gradient(to bottom, #fdf5e6, #e6d5b8);
+  border-radius: 4px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  padding: 6px;
+  transform-style: preserve-3d;
+}
+
+.scroll-edge {
+  position: absolute;
+  left: -6px;
+  top: -1px;
+  bottom: -1px;
+  width: 12px;
+  background: linear-gradient(to right, #d4b88a, #e6d5b8);
+  border-radius: 50%;
+  box-shadow: inset -2px 0 5px rgba(0,0,0,0.2);
+}
+
+.scroll-edge-bottom {
+  left: auto;
+  right: -6px;
+  background: linear-gradient(to left, #d4b88a, #e6d5b8);
+  box-shadow: inset 2px 0 5px rgba(0,0,0,0.2);
+}
+
+.scroll-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0.7;
+}
+
+.paper-line {
+  height: 2px;
+  background: rgba(80, 50, 20, 0.4);
+  border-radius: 2px;
+}
