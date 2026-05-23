@@ -1,0 +1,205 @@
+/* ═══════════════════════════════════════════════
+   MessagesFromTheSea.css
+   ═══════════════════════════════════════════════ */
+
+.mfts-section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #020E18;
+}
+
+/* ── Horizon fog ── */
+.mfts-horizon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 35%;
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 14, 24, 0.95) 0%,
+    rgba(3, 22, 40, 0.4) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Inner layout ── */
+.mfts-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 0 24px;
+}
+
+/* ── Section header ── */
+.mfts-header {
+  text-align: center;
+  position: relative;
+  z-index: 5;
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding-top: 15vh;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  gap: 30px;
+}
+
+/* We need a dark gradient overlay on the header so text is legible at the top */
+.mfts-header::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(1, 10, 20, 0.8) 0%, rgba(1, 10, 20, 0.4) 40%, transparent 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Hero Bottles Row */
+.hero-bottles-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: auto;
+  margin-bottom: 20px;
+  z-index: 10;
+}
+
+.hero-bottle-item {
+  width: 25%;
+  max-width: 200px;
+  filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.7));
+}
+
+.mfts-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(145, 191, 246, 0.6);
+}
+
+.mfts-wave-icon {
+  font-size: 14px;
+  color: rgba(81, 132, 192, 0.5);
+  animation: waveShimmer 2.5s ease-in-out infinite;
+}
+
+@keyframes waveShimmer {
+  0%, 100% { opacity: 0.4; transform: scaleX(1); }
+  50%       { opacity: 0.9; transform: scaleX(1.1); }
+}
+
+.mfts-title {
+  font-size: clamp(28px, 5vw, 52px);
+  font-weight: 700;
+  color: #DFE1E6;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.mfts-title em {
+  font-style: italic;
+  color: #91BFF6;
+  font-weight: 400;
+}
+
+.mfts-subtitle {
+  font-size: clamp(14px, 2vw, 17px);
+  color: rgba(145, 191, 246, 0.6);
+  line-height: 1.7;
+  max-width: 520px;
+}
+
+/* Scroll cue */
+.mfts-scroll-cue {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.mfts-scroll-line {
+  width: 1px;
+  height: 30px;
+  background: linear-gradient(to bottom, rgba(145,191,246,0.6), transparent);
+  transform-origin: top;
+}
+
+.mfts-scroll-cue span {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(145, 191, 246, 0.35);
+}
+
+/* ── Story Sections Container ── */
+.mfts-stories-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+  z-index: 5;
+}
+
+/* Deep ocean panel */
+.mfts-deep-ocean {
+  width: 100%;
+  height: 50vh;
+  background: linear-gradient(to bottom, transparent, #010A14);
+  position: relative;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* ── Ambient dots ── */
+.mfts-ambient-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.mfts-ambient-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(145, 191, 246, 0.6);
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .mfts-bottles-grid {
+    gap: 36px 32px;
+  }
+
+  .mfts-bottles-grid > *:nth-child(even) {
+    margin-top: 20px;
+  }
+
+  .mfts-bottles-grid > *:nth-child(odd) {
+    margin-top: 0;
+  }
+
+  .mfts-header {
+    padding: 70px 0 44px;
+  }
+}

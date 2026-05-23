@@ -1,0 +1,258 @@
+.video-story {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 48px 32px;
+  min-height: 100%;
+}
+
+.video-header {
+  text-align: center;
+  max-width: 540px;
+}
+
+.video-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.video-title {
+  font-size: clamp(22px, 4vw, 34px);
+  font-weight: 700;
+  color: #DFE1E6;
+  margin-bottom: 10px;
+}
+
+.video-desc {
+  font-size: 15px;
+  color: rgba(145, 191, 246, 0.7);
+  font-style: italic;
+}
+
+/* Player wrapper */
+.video-player-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  box-shadow:
+    0 40px 100px rgba(0,0,0,0.7),
+    0 0 0 1px rgba(255,255,255,0.06) inset;
+  cursor: pointer;
+}
+
+.letterbox {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6%;
+  background: #000;
+  z-index: 3;
+  pointer-events: none;
+}
+.letterbox-top { top: 0; }
+.letterbox-bottom { bottom: 0; }
+
+.video-el {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Start overlay */
+.video-start-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: rgba(2, 14, 24, 0.55);
+  backdrop-filter: blur(4px);
+}
+
+.video-start-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 60px currentColor;
+  cursor: pointer;
+}
+
+.video-start-btn svg {
+  width: 32px;
+  height: 32px;
+  margin-left: 4px;
+}
+
+.video-start-label {
+  font-size: 15px;
+  color: rgba(223, 225, 230, 0.8);
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+/* Controls overlay */
+.video-controls-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.controls-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.1) 0%,
+    transparent 30%,
+    transparent 60%,
+    rgba(0,0,0,0.75) 100%
+  );
+  pointer-events: none;
+}
+
+.video-center-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  z-index: 2;
+}
+
+.video-center-btn svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* Bottom bar */
+.video-bottom-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 3;
+}
+
+/* Seek */
+.seek-track {
+  height: 4px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 2px;
+  cursor: pointer;
+  position: relative;
+}
+
+.seek-fill {
+  height: 100%;
+  border-radius: 2px;
+  pointer-events: none;
+  transition: width 0.1s linear;
+}
+
+.seek-thumb {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  box-shadow: 0 0 6px rgba(0,0,0,0.5);
+  transition: left 0.1s linear;
+}
+
+/* Controls row */
+.video-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.vid-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.85);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, transform 0.15s;
+}
+
+.vid-btn:hover { color: white; transform: scale(1.1); }
+
+.vid-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.vid-volume-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.vid-volume-slider {
+  -webkit-appearance: none;
+  width: 70px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255,255,255,0.25);
+  outline: none;
+  cursor: pointer;
+}
+
+.vid-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent, #7B61FF);
+  cursor: pointer;
+}
+
+.vid-time {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: rgba(255,255,255,0.7);
+  margin-left: 4px;
+}
+
+.vid-fs-btn { margin-left: auto; }
+
+.video-corner-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}

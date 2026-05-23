@@ -1,0 +1,21 @@
+.page-layout {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: var(--color-bg, #020E18);
+}
+
+.page-content {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  /* Allow pages to take full height and scroll if needed */
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px; /* Offset for fixed navbar */
+}
+
+.page-content.no-padding {
+  padding-top: 0;
+}

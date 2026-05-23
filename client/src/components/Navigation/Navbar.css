@@ -1,0 +1,92 @@
+.main-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  z-index: 100;
+  background: rgba(2, 14, 24, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(81, 132, 192, 0.1);
+  pointer-events: auto;
+}
+
+.navbar-logo a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-image {
+  height: 32px;
+  width: auto;
+}
+
+.logo-text {
+  height: 20px;
+  width: auto;
+}
+
+.navbar-links {
+  display: flex;
+  list-style: none;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  position: relative;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(223, 225, 230, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  padding: 8px 0;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  color: rgba(223, 225, 230, 0.9);
+}
+
+.nav-link.active {
+  color: #DFE1E6;
+}
+
+.nav-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: var(--color-steel, #5184C0);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(81, 132, 192, 0.5);
+}
+
+@media (max-width: 1200px) {
+  .navbar-links {
+    gap: 16px;
+  }
+  .nav-link {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-navbar {
+    padding: 0 20px;
+  }
+  .navbar-links {
+    display: none; /* In a real app, you'd add a hamburger menu here */
+  }
+}
