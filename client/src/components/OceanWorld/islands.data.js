@@ -16,6 +16,7 @@ export const islandsData = [
     accentColor: "#91BFF6", // Sky Blue
     scale: 2.1,
     elevation: 1.5,
+    image: "/island_still.png",
     introText: "At first glance, everything here feels calm. The sea is quiet. The land is steady. But beneath the surface, something is always shifting.",
     mainContent: [
       "Bipolar disorder is a mental health condition that affects mood, energy, activity, and the way a person experiences the world around them.",
@@ -37,6 +38,7 @@ export const islandsData = [
     accentColor: "#5184C0",
     scale: 1.8,
     elevation: 1.1,
+    image: "/island_burning.png",
     introText: "From far away, this island looks powerful. Bright. Alive. Almost impossible to ignore. But the closer you get, the more unstable it becomes.",
     mainContent: [
       "A manic episode can feel intense and unstoppable.",
@@ -61,6 +63,7 @@ export const islandsData = [
     accentColor: "#DFE1E6", // Mist
     scale: 2.3,
     elevation: 2.0,
+    image: "/island_sunken.png",
     introText: "This island barely rises above the water. Quiet. Heavy. Almost disappearing into the sea.",
     mainContent: [
       "A depressive episode is more than sadness.",
@@ -86,6 +89,7 @@ export const islandsData = [
     accentColor: "#DFE1E6",
     scale: 1.9,
     elevation: 1.4,
+    image: "/island_twin.png",
     introText: "These islands belong to the same sea. But they are not the same place.",
     mainContent: [
       "Bipolar disorder exists in different forms.",
@@ -107,6 +111,7 @@ export const islandsData = [
     accentColor: "#91BFF6",
     scale: 2.0,
     elevation: 1.3,
+    image: "/island_root.png",
     introText: "Nothing on this island grew overnight. Every root reaches into something deeper.",
     mainContent: [
       "There is no single cause of bipolar disorder.",
@@ -130,6 +135,7 @@ export const islandsData = [
     accentColor: "#5184C0",
     scale: 1.6,
     elevation: 1.0,
+    image: "/island_lighthouse.png",
     introText: "The sea does not become calm here. But for the first time, there is a direction.",
     mainContent: [
       "Recovery does not mean becoming a different person.",
