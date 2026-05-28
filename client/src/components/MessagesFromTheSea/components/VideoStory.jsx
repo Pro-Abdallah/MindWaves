@@ -17,6 +17,7 @@ export default function VideoStory({ story }) {
   const [showControls, setShowControls] = useState(true)
   const [started, setStarted] = useState(false)
   const [fullscreen, setFullscreen] = useState(false)
+  const [playbackRate, setPlaybackRate] = useState(1)
   const hideTimer = useRef(null)
   const wrapRef = useRef(null)
 
@@ -64,10 +65,30 @@ export default function VideoStory({ story }) {
   const handleSeek = useCallback(e => {
     const v = videoRef.current
     if (!v || !duration) return
-    const rect = e.currentTarget.getBoundingClientRect()
-    const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width))
-    v.currentTime = ratio * duration
-    setCurrentTime(ratio * duration)
+
+    // Save the element reference since e.currentTarget is null asynchronously
+    const trackElement = e.currentTarget
+
+    const updateTime = (clientX) => {
+      const rect = trackElement.getBoundingClientRect()
+      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
+      v.currentTime = ratio * duration
+      setCurrentTime(ratio * duration)
+    }
+
+    updateTime(e.clientX)
+
+    const onMove = (moveEvent) => {
+      updateTime(moveEvent.clientX)
+    }
+
+    const onUp = () => {
+      document.removeEventListener('pointermove', onMove)
+      document.removeEventListener('pointerup', onUp)
+    }
+
+    document.addEventListener('pointermove', onMove)
+    document.addEventListener('pointerup', onUp)
     resetHideTimer()
   }, [duration, resetHideTimer])
 
@@ -98,6 +119,17 @@ export default function VideoStory({ story }) {
     }
     resetHideTimer()
   }, [resetHideTimer])
+
+  const togglePlaybackRate = useCallback(() => {
+    const v = videoRef.current
+    if (!v) return
+    const rates = [1, 1.25, 1.5, 2]
+    const nextIndex = (rates.indexOf(playbackRate) + 1) % rates.length
+    const nextRate = rates[nextIndex]
+    v.playbackRate = nextRate
+    setPlaybackRate(nextRate)
+    resetHideTimer()
+  }, [playbackRate, resetHideTimer])
 
   const fmt = s => {
     if (!s || isNaN(s)) return '0:00'
@@ -211,7 +243,7 @@ export default function VideoStory({ story }) {
               {/* Bottom bar */}
               <div className="video-bottom-bar">
                 {/* Seek */}
-                <div className="seek-track" onClick={handleSeek}>
+                <div className="seek-track" onPointerDown={handleSeek} style={{ cursor: 'pointer' }}>
                   <div className="seek-fill" style={{ width: `${progress}%`, background: story.color }} />
                   <div
                     className="seek-thumb"
@@ -260,6 +292,10 @@ export default function VideoStory({ story }) {
                   <span className="vid-time">
                     {fmt(currentTime)} / {fmt(duration)}
                   </span>
+
+                  <button className="vid-btn" onClick={togglePlaybackRate} aria-label="Playback Speed" style={{ fontSize: '12px', fontWeight: 'bold', padding: '0 4px', width: '38px', opacity: 0.9 }}>
+                    {playbackRate}x
+                  </button>
 
                   <button className="vid-btn vid-fs-btn" onClick={toggleFullscreen} aria-label="Fullscreen">
                     {fullscreen ? (

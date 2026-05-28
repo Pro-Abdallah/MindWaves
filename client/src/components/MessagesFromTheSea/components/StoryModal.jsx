@@ -43,6 +43,14 @@ export default function StoryModal({ story, onClose }) {
     }
   }, [story])
 
+  const handleClose = useCallback(() => {
+    // Forcefully stop any playing media immediately so it doesn't play during the exit animation
+    document.querySelectorAll('audio, video').forEach(el => {
+      el.pause();
+    });
+    onClose();
+  }, [onClose]);
+
   const StoryComponent = story ? STORY_COMPONENTS[story.type] : null
 
   return createPortal(
@@ -56,7 +64,7 @@ export default function StoryModal({ story, onClose }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            onClick={onClose}
+            onClick={handleClose}
           />
 
           {/* Modal panel */}
@@ -93,7 +101,7 @@ export default function StoryModal({ story, onClose }) {
 
               <motion.button
                 className="modal-close"
-                onClick={onClose}
+                onClick={handleClose}
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.9 }}
                 aria-label="Close story"
