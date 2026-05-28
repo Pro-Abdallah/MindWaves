@@ -19,7 +19,7 @@ export default function IslandPage() {
     return (
       <div className="ip-error-page">
         <h2>Island Not Found</h2>
-        <button onClick={() => navigate('/')}>Return to Ocean</button>
+        <button onClick={() => navigate('/understanding-the-waves')}>Return to Ocean</button>
       </div>
     )
   }
@@ -82,7 +82,7 @@ export default function IslandPage() {
           {/* Back button */}
           <button 
             className="ip-card__back-btn" 
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/understanding-the-waves')}
             style={{ borderColor: island.color }}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ip-card__back-icon">
