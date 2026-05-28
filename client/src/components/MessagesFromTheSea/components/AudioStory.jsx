@@ -1,16 +1,14 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import WaveSurfer from 'wavesurfer.js'
 import './AudioStory.css'
 
 /**
  * AudioStory
- * Immersive audio player with WaveSurfer waveform, live subtitles,
+ * Immersive audio player with native playback, live subtitles,
  * ambient particles, and cinematic atmosphere.
  */
 export default function AudioStory({ story }) {
-  const containerRef = useRef(null)
-  const wsRef = useRef(null)
+  const audioRef = useRef(null)
   const [ready, setReady] = useState(false)
   const [playing, setPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
@@ -19,45 +17,52 @@ export default function AudioStory({ story }) {
   const [currentSub, setCurrentSub] = useState(null)
   const [loadError, setLoadError] = useState(false)
 
-  // Init WaveSurfer
+  // Force stop audio when unmounted
   useEffect(() => {
-    if (!containerRef.current) return
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause()
+      }
+    }
+  }, [])
 
-    const ws = WaveSurfer.create({
-      container: containerRef.current,
-      waveColor: 'rgba(145,191,246,0.3)',
-      progressColor: story.color,
-      cursorColor: story.color,
-      barWidth: 3,
-      barGap: 2,
-      barRadius: 3,
-      height: 80,
-      normalize: true,
-      backend: 'WebAudio',
-    })
+  // Bulletproof ready state checking
+  useEffect(() => {
+    const audio = audioRef.current
+    if (!audio) return
 
-    ws.on('ready', () => {
-      setReady(true)
-      setDuration(ws.getDuration())
-    })
+    const checkReady = () => {
+      if (audio.readyState >= 3) {
+        setReady(true)
+        setDuration(audio.duration)
+      }
+    }
 
-    ws.on('audioprocess', t => {
-      setCurrentTime(t)
-    })
-
-    ws.on('finish', () => {
+    checkReady()
+    audio.addEventListener('canplay', checkReady)
+    audio.addEventListener('loadeddata', checkReady)
+    audio.addEventListener('loadedmetadata', checkReady)
+    
+    // Update time continuously
+    const onTimeUpdate = () => {
+      setCurrentTime(audio.currentTime)
+    }
+    audio.addEventListener('timeupdate', onTimeUpdate)
+    
+    const onEnded = () => {
       setPlaying(false)
       setCurrentTime(0)
-    })
+    }
+    audio.addEventListener('ended', onEnded)
 
-    ws.on('error', () => setLoadError(true))
-
-    ws.load(story.src)
-    ws.setVolume(volume)
-    wsRef.current = ws
-
-    return () => ws.destroy()
-  }, [story.src, story.color])
+    return () => {
+      audio.removeEventListener('canplay', checkReady)
+      audio.removeEventListener('loadeddata', checkReady)
+      audio.removeEventListener('loadedmetadata', checkReady)
+      audio.removeEventListener('timeupdate', onTimeUpdate)
+      audio.removeEventListener('ended', onEnded)
+    }
+  }, [story.src])
 
   // Sync subtitles
   useEffect(() => {
@@ -69,26 +74,55 @@ export default function AudioStory({ story }) {
   }, [currentTime, story.subtitles])
 
   const togglePlay = useCallback(() => {
-    if (!wsRef.current || !ready) return
-    wsRef.current.playPause()
-    setPlaying(p => !p)
+    if (!audioRef.current || !ready) return
+    if (audioRef.current.paused) {
+      audioRef.current.play()
+      setPlaying(true)
+    } else {
+      audioRef.current.pause()
+      setPlaying(false)
+    }
   }, [ready])
 
   const handleVolume = useCallback(e => {
     const v = parseFloat(e.target.value)
     setVolume(v)
-    wsRef.current?.setVolume(v)
+    if (audioRef.current) {
+      audioRef.current.volume = v
+    }
   }, [])
 
   const handleSeek = useCallback(e => {
-    if (!wsRef.current || !duration) return
-    const rect = e.currentTarget.getBoundingClientRect()
-    const ratio = (e.clientX - rect.left) / rect.width
-    wsRef.current.seekTo(ratio)
-    setCurrentTime(ratio * duration)
+    if (!audioRef.current || !duration) return
+
+    const trackElement = e.currentTarget
+
+    const updateTime = (clientX) => {
+      const rect = trackElement.getBoundingClientRect()
+      const ratio = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width))
+      const newTime = ratio * duration
+      
+      audioRef.current.currentTime = newTime
+      setCurrentTime(newTime)
+    }
+
+    updateTime(e.clientX)
+
+    const onMove = (moveEvent) => {
+      updateTime(moveEvent.clientX)
+    }
+
+    const onUp = () => {
+      document.removeEventListener('pointermove', onMove)
+      document.removeEventListener('pointerup', onUp)
+    }
+
+    document.addEventListener('pointermove', onMove)
+    document.addEventListener('pointerup', onUp)
   }, [duration])
 
   const fmt = s => {
+    if (!s || isNaN(s)) return '0:00'
     const m = Math.floor(s / 60)
     const sec = Math.floor(s % 60)
     return `${m}:${sec.toString().padStart(2, '0')}`
@@ -96,6 +130,14 @@ export default function AudioStory({ story }) {
 
   return (
     <div className="audio-story">
+      {/* Audio element for fast streaming */}
+      <audio
+        ref={audioRef}
+        src={story.src}
+        preload="auto"
+        onError={() => setLoadError(true)}
+      />
+
       {/* Ambient particle field */}
       <div className="audio-particles">
         {Array.from({ length: 20 }).map((_, i) => (
@@ -147,7 +189,7 @@ export default function AudioStory({ story }) {
         style={{ '--accent': story.color }}
       >
         {/* Equalizer visual when playing */}
-        <div className="audio-eq-bars">
+        <div className="audio-eq-bars" style={{ minHeight: '80px' }}>
           {Array.from({ length: 12 }).map((_, i) => (
             <motion.div
               key={i}
@@ -166,29 +208,21 @@ export default function AudioStory({ story }) {
           ))}
         </div>
 
-        {/* WaveSurfer container */}
-        <div
-          className="waveform-container"
-          ref={containerRef}
-          onClick={handleSeek}
-          style={{ cursor: ready ? 'pointer' : 'default' }}
-        />
-
         {/* Loading state */}
         {!ready && !loadError && (
-          <div className="audio-loading">
+          <div className="audio-loading" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             <motion.div
               className="loading-dot"
               animate={{ scale: [1, 1.5, 1], opacity: [0.4, 1, 0.4] }}
               transition={{ duration: 1.2, repeat: Infinity }}
               style={{ background: story.color }}
             />
-            <span>Loading audio…</span>
+            <span>Loading stream…</span>
           </div>
         )}
 
         {loadError && (
-          <div className="audio-loading">
+          <div className="audio-loading" style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>
             <span style={{ color: '#ff6b6b' }}>⚠ Could not load audio file</span>
           </div>
         )}
@@ -201,7 +235,7 @@ export default function AudioStory({ story }) {
             className="audio-play-btn"
             onClick={togglePlay}
             disabled={!ready}
-            style={{ '--accent': story.color }}
+            style={{ '--accent': story.color, opacity: ready ? 1 : 0.5 }}
             whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.93 }}
             aria-label={playing ? 'Pause' : 'Play'}
@@ -239,8 +273,8 @@ export default function AudioStory({ story }) {
           </div>
         </div>
 
-        {/* Progress bar */}
-        <div className="audio-progress-track" onClick={handleSeek}>
+        {/* Progress bar overlay */}
+        <div className="audio-progress-track" onPointerDown={handleSeek} style={{ cursor: ready ? 'pointer' : 'default' }}>
           <motion.div
             className="audio-progress-fill"
             style={{
