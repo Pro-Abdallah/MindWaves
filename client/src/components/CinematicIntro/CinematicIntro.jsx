@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import './CinematicIntro.css'
-import firstHalfSrc  from '../../../Assets/FirstHalf.mp4'
-import secondHalfSrc from '../../../Assets/SecondHalf.mp4'
+
+const firstHalfSrc  = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/Intro_2_pef8yr.mp4'
+const secondHalfSrc = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/Whole_Message_m0wrrn.mp4'
 
 function IconVolumeOn() {
   return (
