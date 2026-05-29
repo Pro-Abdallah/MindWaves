@@ -54,7 +54,7 @@
 }
 
 .story-heading {
-  font-size: 48px;
+  font-size: clamp(28px, 4vw, 48px);
   font-weight: 700;
   color: #fff;
   line-height: 1.1;
@@ -63,14 +63,14 @@
 }
 
 .story-tagline {
-  font-size: 20px;
+  font-size: clamp(16px, 2vw, 20px);
   font-weight: 400;
   font-style: italic;
   margin: 0 0 24px 0;
 }
 
 .story-desc {
-  font-size: 18px;
+  font-size: clamp(15px, 1.6vw, 18px);
   color: rgba(255, 255, 255, 0.6);
   line-height: 1.6;
   margin: 0 0 40px 0;
@@ -168,7 +168,7 @@
 @media (max-width: 900px) {
   .story-full-section {
     min-height: auto;
-    padding: 100px 24px;
+    padding: 80px 24px;
   }
   
   .story-section-inner,
@@ -182,12 +182,27 @@
     align-items: center;
   }
 
-  .story-heading {
-    font-size: 36px;
-  }
-  
   .story-bottle-wrapper {
-    max-width: 300px;
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 600px) {
+  .story-full-section {
+    padding: 60px 16px;
+  }
+
+  .story-open-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .story-section-inner {
+    gap: 28px;
+  }
+
+  .story-bottle-wrapper {
+    max-width: 220px;
   }
 }
 

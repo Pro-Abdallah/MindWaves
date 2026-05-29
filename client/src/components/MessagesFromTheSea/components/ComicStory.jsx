@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import HTMLFlipBook from 'react-pageflip'
 import './ComicStory.css'
@@ -6,13 +6,40 @@ import './ComicStory.css'
 /**
  * ComicStory
  * Book-flip experience using react-pageflip.
- * Features: page flip, progress indicator, keyboard nav, ambient glow.
+ * Responsive: portrait (single-page) on mobile, two-page spread on desktop.
  */
 export default function ComicStory({ story }) {
   const bookRef = useRef(null)
-  const [page, setPage] = useState(0)
+  const [page, setPage]       = useState(0)
   const [flipping, setFlipping] = useState(false)
+  const [bookSize, setBookSize] = useState({ width: 380, height: 520, portrait: false })
   const total = story.pages.length
+
+  // ── Compute responsive book dimensions ──────────────────────────────────
+  useEffect(() => {
+    const calc = () => {
+      const vw = window.innerWidth
+      const vh = window.innerHeight
+
+      if (vw < 640) {
+        // Mobile: single-page portrait mode, fill ~90% of available width
+        const maxW = Math.min(vw * 0.88, 360)
+        const maxH = Math.min(vh * 0.58, 500)
+        setBookSize({ width: maxW, height: maxH, portrait: true })
+      } else if (vw < 1024) {
+        // Tablet: slightly smaller two-page spread
+        const maxW = Math.min(vw * 0.42, 340)
+        const maxH = Math.min(vh * 0.55, 480)
+        setBookSize({ width: maxW, height: maxH, portrait: false })
+      } else {
+        // Desktop: full two-page spread
+        setBookSize({ width: 380, height: 520, portrait: false })
+      }
+    }
+    calc()
+    window.addEventListener('resize', calc)
+    return () => window.removeEventListener('resize', calc)
+  }, [])
 
   const onFlip = useCallback(e => {
     setPage(e.data)
@@ -35,13 +62,14 @@ export default function ComicStory({ story }) {
 
   const handleKeyDown = useCallback(e => {
     if (e.key === 'ArrowRight') goNext()
-    if (e.key === 'ArrowLeft') goPrev()
+    if (e.key === 'ArrowLeft')  goPrev()
   }, [goNext, goPrev])
 
   const progressPct = total > 1 ? (page / (total - 1)) * 100 : 0
 
   return (
     <div className="comic-story" onKeyDown={handleKeyDown} tabIndex={0}>
+
       {/* Header */}
       <motion.div
         className="comic-header"
@@ -68,13 +96,14 @@ export default function ComicStory({ story }) {
         <div className="comic-glow" />
 
         <HTMLFlipBook
+          key={`${bookSize.width}-${bookSize.portrait}`} // re-mount when size changes
           ref={bookRef}
-          width={380}
-          height={520}
+          width={bookSize.width}
+          height={bookSize.height}
           size="fixed"
-          minWidth={220}
+          minWidth={180}
           maxWidth={500}
-          minHeight={300}
+          minHeight={260}
           maxHeight={680}
           showCover={true}
           mobileScrollSupport={true}
@@ -82,7 +111,7 @@ export default function ComicStory({ story }) {
           onChangeState={s => { if (s.data === 'flipping') setFlipping(true) }}
           className="comic-flipbook"
           flippingTime={700}
-          usePortrait={false}
+          usePortrait={bookSize.portrait}
           startPage={0}
           drawShadow={true}
           maxShadowOpacity={0.6}
@@ -97,7 +126,6 @@ export default function ComicStory({ story }) {
                 className="comic-page-img"
                 draggable={false}
               />
-              {/* Page number */}
               <div className="comic-page-num">
                 {i === 0 ? 'Cover' : i === story.pages.length - 1 ? 'End' : i}
               </div>
@@ -171,14 +199,16 @@ export default function ComicStory({ story }) {
         </motion.button>
       </motion.div>
 
-      {/* Keyboard hint */}
+      {/* Keyboard hint — hidden on touch devices */}
       <motion.p
         className="comic-hint"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2 }}
       >
-        Use ← → arrow keys or click the page edges to turn
+        {bookSize.portrait
+          ? 'Swipe or use the buttons to turn pages'
+          : 'Use ← → arrow keys or click the page edges to turn'}
       </motion.p>
     </div>
   )
