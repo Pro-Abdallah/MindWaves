@@ -1,0 +1,482 @@
+/* =====================================================
+   TRAILER SECTION — Cinematic Ocean Experience
+   ===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
+.trailer-section {
+  margin-top: -80px;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background-color: #020813;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* ─── Ocean Background ─── */
+.trailer-ocean-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.trailer-ocean-img {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.45;
+  transition: opacity 1s ease;
+}
+
+.trailer-ocean-gradient {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom,
+      rgba(2, 8, 19, 0.55) 0%,
+      rgba(2, 8, 19, 0.3) 40%,
+      rgba(2, 8, 19, 0.85) 100%
+    );
+  z-index: 1;
+}
+
+/* Ambient teal glows */
+.trailer-glow {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.trailer-glow-1 {
+  width: 70vw;
+  height: 70vw;
+  top: -20%;
+  left: -15%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%);
+  filter: blur(80px);
+}
+
+.trailer-glow-2 {
+  width: 60vw;
+  height: 60vw;
+  bottom: -20%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(99, 210, 220, 0.1) 0%, transparent 70%);
+  filter: blur(100px);
+}
+
+.trailer-glow-3 {
+  width: 30vw;
+  height: 30vw;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.08) 0%, transparent 70%);
+  filter: blur(60px);
+}
+
+/* ─── Scanline cinematic overlay ─── */
+.trailer-scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 0.04) 2px,
+    rgba(0, 0, 0, 0.04) 4px
+  );
+}
+
+/* ─── Main UI Layer ─── */
+.trailer-ui {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1100px;
+  padding: 8rem 5% 6rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+/* ─── Top eyebrow label ─── */
+.trailer-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(163, 217, 232, 0.7);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.trailer-eyebrow::before,
+.trailer-eyebrow::after {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: rgba(163, 217, 232, 0.4);
+}
+
+/* ─── Headline ─── */
+.trailer-headline {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5.5vw, 72px);
+  font-weight: 400;
+  font-style: italic;
+  text-align: center;
+  line-height: 1.15;
+  margin: 0 0 16px 0;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.trailer-headline span {
+  color: rgba(163, 217, 232, 0.9);
+}
+
+.trailer-tagline {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.4);
+  text-transform: uppercase;
+  margin-bottom: 64px;
+}
+
+/* ─── Video Frame ─── */
+.trailer-frame-wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.trailer-frame-border {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 */
+  border-radius: 16px;
+  overflow: hidden;
+  /* Cinematic glowing frame */
+  box-shadow:
+    0 0 0 1px rgba(163, 217, 232, 0.15),
+    0 0 40px rgba(56, 189, 248, 0.1),
+    0 40px 80px rgba(0, 0, 0, 0.7);
+}
+
+/* Corners accent */
+.trailer-frame-border::before,
+.trailer-frame-border::after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-color: rgba(163, 217, 232, 0.5);
+  border-style: solid;
+  z-index: 20;
+}
+
+.trailer-frame-border::before {
+  top: 12px;
+  left: 12px;
+  border-width: 1.5px 0 0 1.5px;
+  border-radius: 4px 0 0 0;
+}
+
+.trailer-frame-border::after {
+  bottom: 12px;
+  right: 12px;
+  border-width: 0 1.5px 1.5px 0;
+  border-radius: 0 0 4px 0;
+}
+
+/* Additional corners via child elements */
+.trailer-corner-tr,
+.trailer-corner-bl {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-color: rgba(163, 217, 232, 0.5);
+  border-style: solid;
+  z-index: 20;
+}
+
+.trailer-corner-tr {
+  top: 12px;
+  right: 12px;
+  border-width: 1.5px 1.5px 0 0;
+  border-radius: 0 4px 0 0;
+}
+
+.trailer-corner-bl {
+  bottom: 12px;
+  left: 12px;
+  border-width: 0 0 1.5px 1.5px;
+  border-radius: 0 0 0 4px;
+}
+
+.trailer-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  border-radius: 16px;
+}
+
+/* ─── Poster / Pre-play overlay ─── */
+.trailer-poster {
+  position: absolute;
+  inset: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.trailer-poster-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #020b18 0%, #041525 50%, #061e30 100%);
+}
+
+/* wave bars decorative */
+.trailer-poster-waves {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 10%;
+  box-sizing: border-box;
+  opacity: 0.3;
+}
+
+.trailer-poster-waves span {
+  display: block;
+  width: 3px;
+  background: linear-gradient(to top, rgba(163, 217, 232, 0.8), transparent);
+  border-radius: 3px 3px 0 0;
+  animation: wave-bar 2s ease-in-out infinite;
+}
+
+@keyframes wave-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+.trailer-poster-content {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+  padding: 2rem;
+}
+
+.trailer-poster-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(22px, 3.5vw, 48px);
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  letter-spacing: 0.02em;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.8);
+}
+
+.trailer-poster-sub {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(163, 217, 232, 0.6);
+}
+
+/* ─── Play Button ─── */
+.play-btn-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* Outer pulse rings */
+.play-btn-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(163, 217, 232, 0.3);
+  animation: ring-pulse 2.5s ease-out infinite;
+}
+
+.play-btn-ring:nth-child(1) { width: 110px; height: 110px; animation-delay: 0s; }
+.play-btn-ring:nth-child(2) { width: 140px; height: 140px; animation-delay: 0.6s; }
+.play-btn-ring:nth-child(3) { width: 170px; height: 170px; animation-delay: 1.2s; }
+
+@keyframes ring-pulse {
+  0%   { opacity: 0.6; transform: scale(0.85); }
+  100% { opacity: 0;   transform: scale(1.15); }
+}
+
+/* Main circle */
+.play-btn-circle {
+  position: relative;
+  z-index: 5;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(163, 217, 232, 0.5);
+  backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 30px rgba(56, 189, 248, 0.25),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.play-btn-circle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(163, 217, 232, 0.9);
+  box-shadow:
+    0 0 50px rgba(56, 189, 248, 0.5),
+    inset 0 0 30px rgba(163, 217, 232, 0.1);
+  transform: scale(1.08);
+}
+
+.play-btn-triangle {
+  width: 0;
+  height: 0;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  border-left: 20px solid rgba(255, 255, 255, 0.95);
+  margin-left: 4px;
+  filter: drop-shadow(0 0 8px rgba(163, 217, 232, 0.8));
+}
+
+/* ─── Bottom credits line ─── */
+.trailer-credits {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 40px;
+  flex-wrap: wrap;
+}
+
+.trailer-credit-item {
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.trailer-credit-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(163, 217, 232, 0.25);
+}
+
+/* ─── Fullscreen Modal ─── */
+.trailer-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(2, 8, 19, 0.97);
+  backdrop-filter: blur(30px);
+}
+
+.trailer-modal-inner {
+  width: 90vw;
+  max-width: 1200px;
+  position: relative;
+}
+
+.trailer-modal-ratio {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(163, 217, 232, 0.15),
+    0 60px 120px rgba(0, 0, 0, 0.9);
+}
+
+.trailer-modal-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 12px;
+}
+
+.trailer-modal-close {
+  position: absolute;
+  top: -50px;
+  right: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.trailer-modal-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .trailer-ui {
+    padding: 7rem 4% 5rem;
+  }
+
+  .trailer-tagline {
+    margin-bottom: 40px;
+  }
+}
