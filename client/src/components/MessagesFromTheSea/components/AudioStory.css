@@ -232,3 +232,42 @@
   line-height: 1.65;
   letter-spacing: 0.01em;
 }
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .audio-story {
+    padding: 32px 20px;
+    gap: 24px;
+  }
+
+  .audio-player-card {
+    padding: 24px 20px 20px;
+    border-radius: 18px;
+  }
+
+  .audio-play-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .audio-play-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .audio-controls {
+    gap: 10px;
+  }
+
+  .volume-slider {
+    width: 60px;
+  }
+
+  .audio-subtitle {
+    padding: 14px 16px;
+  }
+
+  .audio-subtitle p {
+    font-size: 14px;
+  }
+}

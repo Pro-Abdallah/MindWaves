@@ -116,3 +116,19 @@
   pointer-events: none;
   z-index: 0;
 }
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .modal-header {
+    padding: 16px 18px;
+  }
+
+  .modal-label {
+    font-size: 11px;
+  }
+
+  .modal-close {
+    width: 36px;
+    height: 36px;
+  }
+}
