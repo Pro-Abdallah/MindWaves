@@ -308,8 +308,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 32px;
+  justify-content: flex-end;
+  padding-bottom: 75px;
+  box-sizing: border-box;
+  gap: 16px;
   z-index: 10;
   background: radial-gradient(ellipse 60% 40% at center,
       rgba(5, 57, 94, 0.45) 0%,
@@ -364,7 +366,7 @@
 .ci-start-btn__inner {
   position: relative;
   z-index: 1;
-  padding: 18px 68px;
+  padding: 12px 42px;
   background: rgba(2, 14, 24, 0.85);
   backdrop-filter: blur(24px) saturate(1.6);
   -webkit-backdrop-filter: blur(24px) saturate(1.6);
@@ -372,13 +374,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 /* Text label */
 .ci-start-btn__text {
   font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: clamp(13px, 1.8vw, 16px);
+  font-size: clamp(11px, 1.4vw, 13px);
   font-weight: 700;
   letter-spacing: 0.55em;
   background: linear-gradient(120deg,
@@ -398,8 +400,8 @@
 
 /* Arrow icon */
 .ci-start-btn__arrow {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   stroke: rgba(145, 191, 246, 0.9);
   flex-shrink: 0;
   transition: transform 0.3s ease;
@@ -564,8 +566,13 @@
 /* ── Mobile Responsive ────────────────────────────────────────── */
 
 @media (max-width: 480px) {
+  .ci-start-wrapper {
+    padding-bottom: 55px;
+    gap: 12px;
+  }
+
   .ci-start-btn__inner {
-    padding: 16px 48px;
+    padding: 10px 32px;
   }
 
   .ci-skip-btn {

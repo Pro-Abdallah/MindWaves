@@ -1,34 +1,7 @@
 import { useRef } from 'react'
 import { motion } from 'framer-motion'
-import { crewData } from './team.data'
+import { projectTeam } from './team.data'
 import './WhyWeSail.css'
-
-function IconLinkedin() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-      <rect x="2" y="9" width="4" height="12" />
-      <circle cx="4" cy="4" r="2" />
-    </svg>
-  )
-}
-
-function IconTwitter() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z" />
-    </svg>
-  )
-}
-
-function IconEmail() {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-      <polyline points="22,6 12,13 2,6" />
-    </svg>
-  )
-}
 
 export default function WhyWeSail() {
   // Stagger animations variants
@@ -73,21 +46,17 @@ export default function WhyWeSail() {
   )
 
   const missionPoints = [
-    "Raise awareness about bipolar disorder using simple, clear, and scientifically accurate information.",
-    "Correct misconceptions surrounding bipolar disorder.",
-    "Build empathy through interactive storytelling and emotional decision-making.",
-    "Combine medical accuracy with human-centered storytelling.",
-    "Highlight the importance of family understanding and social support.",
-    "Create engaging digital content for younger audiences.",
-    "Encourage respectful and informed mental health conversations."
+    "To raise awareness about bipolar disorder using simple, clear, and scientifically accurate information.",
+    "To correct common misconceptions surrounding the disorder, especially confusion with other mental health conditions.",
+    "To build empathy by allowing audiences to experience emotional and social challenges through interactive decision-making."
   ]
 
   const visionPoints = [
     "A society that understands bipolar disorder beyond stereotypes and fear.",
-    "Open and stigma-free mental health conversations.",
-    "Ethical and accurate media representation of psychological conditions.",
-    "Interactive storytelling as a tool for emotional connection and awareness.",
-    "A generation that responds with empathy, support, and knowledge instead of judgment."
+    "Open, informed, and stigma-free conversations about mental health.",
+    "Media that represents psychological conditions ethically, accurately, and with dignity.",
+    "Interactive storytelling as a powerful tool for awareness, education, and emotional connection.",
+    "A generation that responds to mental health challenges with empathy, support, and knowledge rather than judgment."
   ]
 
   return (
@@ -135,22 +104,25 @@ export default function WhyWeSail() {
           viewport={{ once: true, margin: "-100px" }}
           className="wws-panels-grid"
         >
-          {/* WHO WE ARE */}
+          {/* WHY WE SAIL */}
           <motion.div variants={cardVariants} className="wws-panel">
             <span className="wws-panel__tag">ORIGIN</span>
-            <h3 className="wws-panel__title">Who We Are</h3>
+            <h3 className="wws-panel__title">Why We Sail</h3>
             <div className="wws-panel__body">
               <p>
-                We are the creators of the Mind Waves Interactive Story, a team of media students and storytellers committed to reshaping how bipolar disorder is understood in Arab media.
+                Mind Waves is an integrated mental health awareness project built around three main 
+                elements: a documentary film, a social media campaign, and an interactive story experience. 
+                The project focuses on raising awareness about Bipolar Disorder, correcting common 
+                misconceptions surrounding the disorder, and encouraging more empathetic and informed 
+                conversations about mental health in Arab media.
               </p>
               <p>
-                Our interactive story is built on real interviews, medical research, and social analysis. We designed it as an immersive experience where the audience does not simply watch events unfold, but actively participates in them.
-              </p>
-              <p>
-                Through choice-based storytelling, emotional scenarios, and realistic consequences, we aim to bring audiences closer to the lived experience of bipolar disorder.
-              </p>
-              <p>
-                We believe that true understanding begins when people are invited to step inside the experience — not just observe it from a distance.
+                At the heart of Mind Waves is the Interactive Story, one of the project’s most important 
+                elements. Instead of making the audience passive viewers, the experience places users 
+                inside emotional and social situations inspired by real experiences related to Bipolar 
+                Disorder. Through interactive storytelling, users are encouraged to better understand the 
+                disorder, empathize with those experiencing it, and reflect on emotional and psychological 
+                challenges from a closer perspective.
               </p>
             </div>
           </motion.div>
@@ -206,11 +178,11 @@ export default function WhyWeSail() {
           </motion.div>
         </motion.div>
 
-        {/* ── THE CREW (Team section) ── */}
+        {/* ── PROJECT TEAM ── */}
         <div className="wws-crew-section">
           <div className="wws-crew-header">
             <span className="wws-crew-header__tag">THE CREATORS</span>
-            <h3 className="wws-crew-header__title">The Crew</h3>
+            <h3 className="wws-crew-header__title">Project Team</h3>
             <p className="wws-crew-header__sub">The minds guiding the journey.</p>
           </div>
 
@@ -221,55 +193,19 @@ export default function WhyWeSail() {
             viewport={{ once: true, margin: "-50px" }}
             className="wws-crew-grid"
           >
-            {crewData.map(member => (
+            {projectTeam.map(item => (
               <motion.div
-                key={member.id}
+                key={item.id}
                 variants={cardVariants}
                 className="wws-crew-card"
               >
-                {/* Photo container with soft glow */}
-                <div className="wws-crew-card__photo-container">
-                  <div className="wws-crew-card__photo-glow" />
-                  <img
-                    src={member.image}
-                    alt={`${member.name} - ${member.role}`}
-                    className="wws-crew-card__img"
-                    loading="lazy"
-                  />
-                </div>
-
-                {/* Info */}
-                <h4 className="wws-crew-card__name">{member.name}</h4>
-                <span className="wws-crew-card__role">{member.role}</span>
-                <p className="wws-crew-card__bio">{member.bio}</p>
-
-                {/* Social Links */}
-                <div className="wws-crew-card__socials">
-                  <a
-                    href={member.social.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="wws-crew-card__social-link"
-                    aria-label={`${member.name} LinkedIn Profile`}
-                  >
-                    <IconLinkedin />
-                  </a>
-                  <a
-                    href={member.social.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="wws-crew-card__social-link"
-                    aria-label={`${member.name} Twitter Profile`}
-                  >
-                    <IconTwitter />
-                  </a>
-                  <a
-                    href={member.social.email}
-                    className="wws-crew-card__social-link"
-                    aria-label={`Send email to ${member.name}`}
-                  >
-                    <IconEmail />
-                  </a>
+                <span className="wws-crew-card__role">{item.role}</span>
+                <div className="wws-crew-card__members">
+                  {item.members.map((name, idx) => (
+                    <div key={idx} className="wws-crew-card__member-name">
+                      {name}
+                    </div>
+                  ))}
                 </div>
               </motion.div>
             ))}
