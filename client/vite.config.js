@@ -6,6 +6,14 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   // Serve the Assets folder as the public directory
-  // so files are accessible at /assets/... URL paths
   publicDir: path.resolve(__dirname, 'Assets'),
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://mind-waves.runasp.net',
+        changeOrigin: true,
+        secure: false,
+      }
+    }
+  }
 })

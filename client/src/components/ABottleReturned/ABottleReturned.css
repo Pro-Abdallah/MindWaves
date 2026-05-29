@@ -1,0 +1,118 @@
+.bottle-returned-container {
+  margin-top: -80px; /* Offset the PageLayout navbar padding */
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background-color: #020813;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Ocean Background */
+.bottle-ocean-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.bottle-ocean-image {
+  position: absolute;
+  top: -5%;
+  left: -5%;
+  width: 110%;
+  height: 110%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.6;
+}
+
+.bottle-ocean-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(2, 8, 19, 0.2) 0%, rgba(2, 8, 19, 0.95) 100%);
+  z-index: 1;
+}
+
+.ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 2;
+}
+
+.glow-1 {
+  width: 60vw;
+  height: 60vw;
+  top: -10%;
+  left: -10%;
+  background: radial-gradient(circle, rgba(81, 132, 192, 0.2) 0%, transparent 70%);
+}
+
+.glow-2 {
+  width: 70vw;
+  height: 70vw;
+  bottom: -20%;
+  right: -10%;
+  background: radial-gradient(circle, rgba(163, 217, 232, 0.15) 0%, transparent 70%);
+}
+
+/* UI Overlay */
+.bottle-ui-layer {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10rem 5% 12rem 5%;
+  box-sizing: border-box;
+}
+
+/* Top Right Action Button */
+.write-message-btn {
+  position: absolute;
+  top: 6rem;
+  right: 2rem;
+  z-index: 40;
+  padding: 14px 28px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 40px;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(15px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.write-message-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.write-message-btn svg {
+  width: 18px;
+  height: 18px;
+}
