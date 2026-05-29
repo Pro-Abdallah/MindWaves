@@ -1,0 +1,262 @@
+/* ── Floating Launcher Button ── */
+
+.cb-wrapper {
+  position: relative;
+  z-index: 9999;
+}
+
+.cb-launcher {
+  position: fixed;
+  right: 24px;
+  bottom: 120px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(5, 57, 94, 0.45);
+  border: 1px solid rgba(145, 191, 246, 0.45);
+  color: #DFE1E6;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(81, 132, 192, 0.25);
+}
+
+.cb-launcher:hover {
+  transform: scale(1.08) translateY(-2px);
+  background: rgba(81, 132, 192, 0.3);
+  border-color: #91BFF6;
+  color: #ffffff;
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(145, 191, 246, 0.45);
+}
+
+.cb-launcher--open {
+  background: rgba(2, 14, 24, 0.85) !important;
+  border-color: rgba(223, 225, 230, 0.25) !important;
+  color: rgba(223, 225, 230, 0.85) !important;
+  transform: scale(0.95);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+.cb-launcher__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.cb-launcher:hover .cb-launcher__icon {
+  transform: rotate(5deg) scale(1.05);
+}
+
+/* Pulsing outer waves for launcher */
+.cb-launcher__pulse {
+  position: absolute;
+  inset: -1px;
+  border-radius: 50%;
+  border: 1px solid rgba(145, 191, 246, 0.35);
+  pointer-events: none;
+  animation: cbPulse 3s infinite ease-out;
+  opacity: 0;
+}
+
+.cb-launcher__glow {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(145, 191, 246, 0.25) 0%, transparent 75%);
+  filter: blur(4px);
+  opacity: 0.8;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.cb-launcher:hover .cb-launcher__glow {
+  opacity: 1;
+}
+
+@keyframes cbPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* ── Slide-out Chat Drawer ── */
+
+.cb-drawer {
+  position: fixed;
+  top: 0;
+  right: -480px; /* Hidden offscreen initially */
+  bottom: 0;
+  width: 450px;
+  height: 100vh;
+  background: rgba(2, 14, 24, 0.85);
+  border-left: 1px solid rgba(81, 132, 192, 0.2);
+  backdrop-filter: blur(32px) saturate(1.4);
+  -webkit-backdrop-filter: blur(32px) saturate(1.4);
+  box-shadow: -20px 0 60px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  z-index: 9999;
+  transition: right 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: right;
+}
+
+.cb-drawer--active {
+  right: 0; /* Slide in */
+}
+
+/* Drawer Header */
+.cb-drawer__header {
+  padding: 24px 28px;
+  border-bottom: 1px solid rgba(81, 132, 192, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cb-drawer__title-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.cb-drawer__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #DFE1E6;
+  margin: 0;
+  letter-spacing: 0.03em;
+}
+
+.cb-drawer__subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  color: #91BFF6;
+  margin: 2px 0 0 0;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cb-drawer__avatar-pulse {
+  width: 8px;
+  height: 8px;
+  background: #10B981; /* pulsing green active state indicator */
+  border-radius: 50%;
+  box-shadow: 0 0 8px #10B981;
+  position: relative;
+}
+
+.cb-drawer__avatar-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 1px solid #10B981;
+  animation: cbOnlinePulse 2s infinite ease-out;
+}
+
+@keyframes cbOnlinePulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(2.2); opacity: 0; }
+}
+
+.cb-drawer__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cb-drawer__btn {
+  background: rgba(5, 57, 94, 0.3);
+  border: 1px solid rgba(81, 132, 192, 0.2);
+  color: rgba(223, 225, 230, 0.65);
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  text-decoration: none;
+}
+
+.cb-drawer__btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cb-drawer__btn:hover {
+  color: #91BFF6;
+  background: rgba(81, 132, 192, 0.2);
+  border-color: rgba(145, 191, 246, 0.45);
+  transform: translateY(-1px);
+}
+
+.cb-drawer__close:hover {
+  color: #EF4444; /* red highlight on close hover */
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.1);
+}
+
+/* Drawer Body (Chat Container) */
+.cb-drawer__body {
+  flex-grow: 1;
+  position: relative;
+  background: #010810;
+  overflow: hidden;
+}
+
+.cb-drawer__iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+}
+
+/* ── Mobile Responsive Overrides ── */
+
+@media (max-width: 480px) {
+  .cb-launcher {
+    right: 16px;
+    bottom: 96px;
+    width: 48px;
+    height: 48px;
+  }
+  
+  .cb-launcher__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cb-drawer {
+    width: 100vw;
+    right: -100vw;
+  }
+  
+  .cb-drawer__header {
+    padding: 16px 20px;
+  }
+}
