@@ -1,0 +1,93 @@
+.social-sidebar {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.social-sidebar__link {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(5, 57, 94, 0.35);
+  border: 1px solid rgba(81, 132, 192, 0.25);
+  color: rgba(223, 225, 230, 0.75);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.social-sidebar__link svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.social-sidebar__link:hover {
+  color: #91BFF6;
+  background: rgba(81, 132, 192, 0.2);
+  border-color: rgba(145, 191, 246, 0.5);
+  transform: scale(1.1) translateX(-2px);
+  box-shadow: 0 8px 24px rgba(81, 132, 192, 0.25), 0 0 12px rgba(145, 191, 246, 0.15);
+}
+
+.social-sidebar__link:hover svg {
+  transform: rotate(8deg) scale(1.05);
+}
+
+.social-sidebar__tooltip {
+  position: absolute;
+  right: 56px;
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  background: rgba(2, 14, 24, 0.95);
+  border: 1px solid rgba(81, 132, 192, 0.3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: #DFE1E6;
+  pointer-events: none;
+  opacity: 0;
+  white-space: nowrap;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.social-sidebar__link:hover .social-sidebar__tooltip {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0);
+}
+
+@media (max-width: 768px) {
+  .social-sidebar {
+    right: 16px;
+    gap: 12px;
+  }
+  
+  .social-sidebar__link {
+    width: 38px;
+    height: 38px;
+  }
+  
+  .social-sidebar__link svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .social-sidebar__tooltip {
+    display: none;
+  }
+}

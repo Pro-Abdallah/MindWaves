@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../Navigation/Navbar';
 import PageNavigation from '../Navigation/PageNavigation';
+import SocialSidebar from './SocialSidebar';
 import './PageLayout.css';
 
 /**
@@ -32,6 +33,7 @@ export default function PageLayout({ children }) {
       </AnimatePresence>
 
       {!isLandingPage && <PageNavigation />}
+      {!isLandingPage && <SocialSidebar />}
     </div>
   );
 }
