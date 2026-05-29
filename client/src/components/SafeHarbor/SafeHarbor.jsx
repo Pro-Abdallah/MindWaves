@@ -1,8 +1,12 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { infoResources, therapyPlatforms, emergencyHotlines } from './support.data'
 import './SafeHarbor.css'
 
+const bulletinBoard = '/safe-harbor-bulletin-board.png'
+
+
+/* ── SVG Icons ── */
 function IconClose() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -11,7 +15,6 @@ function IconClose() {
     </svg>
   )
 }
-
 function IconPhone() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -19,7 +22,6 @@ function IconPhone() {
     </svg>
   )
 }
-
 function IconExternalLink() {
   return (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -30,288 +32,208 @@ function IconExternalLink() {
   )
 }
 
+/* ── Note hotspot config: positions measured precisely from the image ── */
+const NOTES = [
+  {
+    id: 'therapy',
+    label: 'Seek Therapy',
+    top:    '37%',
+    left:   '9%',
+    width:  '25%',
+    height: '36%',
+    rotate: '-2deg',
+    thumbtack: '#e04040',
+  },
+  {
+    id: 'info',
+    label: 'Get More Information',
+    top:    '32%',
+    left:   '35%',
+    width:  '28%',
+    height: '41%',
+    rotate: '0deg',
+    thumbtack: '#e07830',
+  },
+  {
+    id: 'help',
+    label: 'Call for Help',
+    top:    '35%',
+    left:   '62%',
+    width:  '26%',
+    height: '36%',
+    rotate: '2deg',
+    thumbtack: '#3a7bc8',
+  },
+]
+
 export default function SafeHarbor() {
-  const [activeModal, setActiveModal] = useState(null) // null | 'info' | 'therapy' | 'help'
+  const [activeNote, setActiveNote] = useState(null) // null | 'therapy' | 'info' | 'help'
+  const boardRef = useRef(null)
 
-  const cardRef1 = useRef(null)
-  const cardRef2 = useRef(null)
-  const cardRef3 = useRef(null)
-
-  // Escape key to close active modal
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        setActiveModal(null)
-      }
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
-
-  // Lock scroll when modal is open
-  useEffect(() => {
-    if (activeModal) {
-      document.body.style.overflowY = 'hidden'
-    } else {
-      document.body.style.overflowY = ''
-    }
-    return () => {
-      document.body.style.overflowY = ''
-    }
-  }, [activeModal])
-
-  // Mouse 3D tilt effect logic
-  const handleMouseMove = (e, ref) => {
-    const card = ref.current
-    if (!card) return
-    const rect = card.getBoundingClientRect()
-    const x = e.clientX - rect.left - rect.width / 2
-    const y = e.clientY - rect.top - rect.height / 2
-    
-    // Normalize coordinates to compute rotation angles
-    const tiltX = (y / (rect.height / 2)) * 10 // Max 10 deg rotation on X axis
-    const tiltY = -(x / (rect.width / 2)) * 10 // Max 10 deg rotation on Y axis
-    
-    card.style.transform = `perspective(1000px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale3d(1.04, 1.04, 1.04)`
-  }
-
-  const handleMouseLeave = (ref) => {
-    const card = ref.current
-    if (!card) return
-    card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`
-  }
-
-  // Floating particles background for Safe Harbor
-  const particles = useRef(
-    Array.from({ length: 15 }, (_, i) => ({
-      id: i,
-      left: Math.random() * 100,
-      top: Math.random() * 100,
-      size: 6 + Math.random() * 10,
-      duration: 10 + Math.random() * 15,
-      delay: Math.random() * 6
-    }))
-  )
+  const open  = (id) => setActiveNote(id)
+  const close = ()   => setActiveNote(null)
 
   return (
-    <section className="sh-container" id="safe-harbor" aria-label="Safe Harbor Section">
-      {/* ── Ambient Background Layer ── */}
-      <div className="sh-ambient-bg">
-        <div className="sh-glow-orb sh-glow-orb--teal" />
-        <div className="sh-glow-orb sh-glow-orb--navy" />
-        
-        {/* Soft floating bubbles */}
-        <div className="sh-particles">
-          {particles.current.map(p => (
-            <span
-              key={p.id}
-              className="sh-particle"
-              style={{
-                left: `${p.left}%`,
-                top: `${p.top}%`,
-                width: `${p.size}px`,
-                height: `${p.size}px`,
-                animationDuration: `${p.duration}s`,
-                animationDelay: `${p.delay}s`
-              }}
-            />
-          ))}
+    <section className="sh-root" id="safe-harbor" aria-label="Safe Harbor Section">
+
+      {/* ── Full-page bulletin board ── */}
+      <div className="sh-board-wrap" ref={boardRef}>
+        <img
+          src={bulletinBoard}
+          alt="Wooden bulletin board with three paper notes on a coastal dock"
+          className="sh-board-img"
+          draggable={false}
+        />
+
+        {/* ── Clickable note hotspots overlaid on board ── */}
+        {NOTES.map((note) => (
+          <button
+            key={note.id}
+            className="sh-note-hotspot"
+            style={{
+              top: note.top,
+              left: note.left,
+              width: note.width,
+              height: note.height,
+              transform: `rotate(${note.rotate})`,
+            }}
+            onClick={() => open(note.id)}
+            aria-label={`Open ${note.label} panel`}
+            title={note.label}
+          >
+            {/* Invisible but keyboard-focusable — hover shows a ripple */}
+            <span className="sh-note-ripple" />
+          </button>
+        ))}
+
+        {/* ── Section label at the top ── */}
+        <div className="sh-board-label">
+          <span className="sh-board-label__tag">SECTION IV</span>
+          <h2 className="sh-board-label__title">Safe Harbor</h2>
         </div>
+
+        {/* ── Hint text at the bottom ── */}
+        <p className="sh-board-hint">Tap a note to open it</p>
       </div>
 
-      {/* ── Main Layout Content ── */}
-      <div className="sh-content">
-        <div className="sh-header">
-          <span className="sh-header__tag">SECTION IV</span>
-          <h2 className="sh-header__title">Safe Harbor</h2>
-          <p className="sh-header__subtitle">
-            "A place for guidance, support, and safe emotional resources."
-          </p>
-        </div>
-
-        {/* ── Three Floating Cards Grid ── */}
-        <div className="sh-grid">
-          {/* Card 1: Information */}
-          <div
-            ref={cardRef1}
-            className="sh-card"
-            onMouseMove={(e) => handleMouseMove(e, cardRef1)}
-            onMouseLeave={() => handleMouseLeave(cardRef1)}
-            onClick={() => setActiveModal('info')}
-            role="button"
-            tabIndex={0}
-            aria-label="Get More Information resources"
-            onKeyDown={(e) => e.key === 'Enter' && setActiveModal('info')}
-          >
-            <div className="sh-card__glow" />
-            <div className="sh-card__inner">
-              <span className="sh-card__badge">RESOURCES</span>
-              <h3 className="sh-card__title">Get More Information</h3>
-              <p className="sh-card__desc">Articles, facts & trusted resources on bipolar waves.</p>
-              <span className="sh-card__cta">Explore Articles</span>
-            </div>
-          </div>
-
-          {/* Card 2: Therapy */}
-          <div
-            ref={cardRef2}
-            className="sh-card"
-            onMouseMove={(e) => handleMouseMove(e, cardRef2)}
-            onMouseLeave={() => handleMouseLeave(cardRef2)}
-            onClick={() => setActiveModal('therapy')}
-            role="button"
-            tabIndex={0}
-            aria-label="Seek Therapy resources"
-            onKeyDown={(e) => e.key === 'Enter' && setActiveModal('therapy')}
-          >
-            <div className="sh-card__glow" />
-            <div className="sh-card__inner">
-              <span className="sh-card__badge">THERAPY</span>
-              <h3 className="sh-card__title">Seek Therapy</h3>
-              <p className="sh-card__desc">Professional support to help manage emotional waves over time.</p>
-              <span className="sh-card__cta">Find Therapists</span>
-            </div>
-          </div>
-
-          {/* Card 3: Call for Help */}
-          <div
-            ref={cardRef3}
-            className="sh-card sh-card--emergency"
-            onMouseMove={(e) => handleMouseMove(e, cardRef3)}
-            onMouseLeave={() => handleMouseLeave(cardRef3)}
-            onClick={() => setActiveModal('help')}
-            role="button"
-            tabIndex={0}
-            aria-label="Call for Help emergency lines"
-            onKeyDown={(e) => e.key === 'Enter' && setActiveModal('help')}
-          >
-            <div className="sh-card__glow" />
-            <div className="sh-card__inner">
-              <span className="sh-card__badge sh-card__badge--emergency">EMERGENCY</span>
-              <h3 className="sh-card__title">Call for Help</h3>
-              <p className="sh-card__desc">If you need immediate support, these services are available.</p>
-              <span className="sh-card__cta">View Hotlines</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── MODALS: Cinematic popups with backdrop-filter blurs ── */}
+      {/* ── Paper scroll overlay (modal) ── */}
       <AnimatePresence>
-        {activeModal && (
+        {activeNote && (
           <motion.div
+            className="sh-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="sh-modal-overlay"
-            onClick={() => setActiveModal(null)}
+            onClick={close}
           >
-            {/* Modal Container */}
             <motion.div
-              initial={{ scale: 0.95, y: 15, opacity: 0 }}
-              animate={{ scale: 1, y: 0, opacity: 1 }}
-              exit={{ scale: 0.95, y: 15, opacity: 0 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="sh-modal"
+              className="sh-paper"
+              initial={{ scaleY: 0, opacity: 0 }}
+              animate={{ scaleY: 1, opacity: 1 }}
+              exit={{ scaleY: 0, opacity: 0 }}
+              transition={{ type: 'spring', damping: 28, stiffness: 260 }}
+              style={{ originY: 0 }}
               onClick={(e) => e.stopPropagation()}
               role="dialog"
               aria-modal="true"
+              aria-label={`${activeNote} details`}
             >
-              {/* Close Button */}
-              <button
-                className="sh-modal__close-btn"
-                onClick={() => setActiveModal(null)}
-                aria-label="Close modal"
-              >
+              {/* Paper top torn edge */}
+              <div className="sh-paper__torn-top" />
+
+              {/* Thumbtack pin at top */}
+              <div
+                className="sh-paper__pin"
+                style={{ background: NOTES.find(n => n.id === activeNote)?.thumbtack }}
+              />
+
+              {/* Close button */}
+              <button className="sh-paper__close" onClick={close} aria-label="Close paper">
                 <IconClose />
               </button>
 
-              {/* ── Modal Contents ── */}
-              
-              {/* Modal 1: GET MORE INFORMATION */}
-              {activeModal === 'info' && (
-                <div className="sh-modal-content">
-                  <span className="sh-modal__tag">RESOURCES</span>
-                  <h3 className="sh-modal__title">Get More Information</h3>
-                  <p className="sh-modal__subtitle">Articles, facts & trusted resources</p>
+              {/* Paper body */}
+              <div className="sh-paper__body">
 
-                  <div className="sh-modal__scrollable">
-                    <div className="sh-info-list">
-                      {infoResources.map(info => (
-                        <div key={info.id} className="sh-info-item">
-                          <h4 className="sh-info-item__title">{info.title}</h4>
-                          <p className="sh-info-item__desc">"{info.desc}"</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* Modal 2: SEEK THERAPY */}
-              {activeModal === 'therapy' && (
-                <div className="sh-modal-content">
-                  <span className="sh-modal__tag">THERAPY</span>
-                  <h3 className="sh-modal__title">Seek Therapy</h3>
-                  <p className="sh-modal__subtitle">Professional support can help you manage emotional challenges over time</p>
-
-                  <div className="sh-modal__scrollable">
-                    <div className="sh-therapy-grid">
-                      {therapyPlatforms.map(platform => (
-                        <div key={platform.id} className="sh-therapy-card">
-                          <div className="sh-therapy-card__meta">
+                {/* ── THERAPY CONTENT ── */}
+                {activeNote === 'therapy' && (
+                  <>
+                    <span className="sh-paper__stamp sh-paper__stamp--therapy">THERAPY</span>
+                    <h3 className="sh-paper__title">Seek Therapy</h3>
+                    <p className="sh-paper__intro">Professional support to help manage emotional waves over time.</p>
+                    <div className="sh-paper__scroll">
+                      <div className="sh-therapy-grid">
+                        {therapyPlatforms.map(platform => (
+                          <div key={platform.id} className="sh-therapy-card">
                             <span className="sh-therapy-card__cat">{platform.category}</span>
                             <h4 className="sh-therapy-card__name">{platform.name}</h4>
+                            <p className="sh-therapy-card__desc">{platform.desc}</p>
+                            <a
+                              href={platform.url}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="sh-therapy-card__link"
+                              aria-label={`Visit ${platform.name}`}
+                            >
+                              <span>{platform.cta}</span>
+                              <IconExternalLink />
+                            </a>
                           </div>
-                          <p className="sh-therapy-card__desc">{platform.desc}</p>
-                          <a
-                            href={platform.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="sh-therapy-card__link"
-                            aria-label={`Visit ${platform.name} web page`}
-                          >
-                            <span>{platform.cta}</span>
-                            <IconExternalLink />
-                          </a>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              )}
+                  </>
+                )}
 
-              {/* Modal 3: CALL FOR HELP */}
-              {activeModal === 'help' && (
-                <div className="sh-modal-content">
-                  <span className="sh-modal__tag sh-modal__tag--emergency">EMERGENCY</span>
-                  <h3 className="sh-modal__title">Call for Help</h3>
-                  <p className="sh-modal__subtitle">If you need immediate support, these services are available.</p>
-
-                  <div className="sh-modal__scrollable">
-                    <div className="sh-hotline-list">
-                      {emergencyHotlines.map(hotline => (
-                        <div key={hotline.id} className="sh-hotline-card">
-                          <div className="sh-hotline-card__info">
-                            <h4 className="sh-hotline-card__title">{hotline.title}</h4>
+                {/* ── INFORMATION CONTENT ── */}
+                {activeNote === 'info' && (
+                  <>
+                    <span className="sh-paper__stamp sh-paper__stamp--info">RESOURCES</span>
+                    <h3 className="sh-paper__title">Get More Information</h3>
+                    <p className="sh-paper__intro">Articles, facts &amp; trusted resources on bipolar waves.</p>
+                    <div className="sh-paper__scroll">
+                      <div className="sh-info-list">
+                        {infoResources.map(info => (
+                          <div key={info.id} className="sh-info-item">
+                            <h4 className="sh-info-item__title">{info.title}</h4>
+                            <p className="sh-info-item__desc">"{info.desc}"</p>
                           </div>
-                          <a
-                            href={`tel:${hotline.phone}`}
-                            className="sh-hotline-card__phone-btn"
-                            aria-label={`Call hotline number ${hotline.phone}`}
-                          >
-                            <span className="sh-hotline-card__phone-icon">
-                              <IconPhone />
-                            </span>
-                            <span className="sh-hotline-card__phone-num">{hotline.phone}</span>
-                          </a>
-                        </div>
-                      ))}
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </div>
-              )}
+                  </>
+                )}
 
+                {/* ── EMERGENCY CONTENT ── */}
+                {activeNote === 'help' && (
+                  <>
+                    <span className="sh-paper__stamp sh-paper__stamp--emergency">EMERGENCY</span>
+                    <h3 className="sh-paper__title">Call for Help</h3>
+                    <p className="sh-paper__intro">If you need immediate support, these services are available.</p>
+                    <div className="sh-paper__scroll">
+                      <div className="sh-hotline-list">
+                        {emergencyHotlines.map(hotline => (
+                          <div key={hotline.id} className="sh-hotline-card">
+                            <p className="sh-hotline-card__title">{hotline.title}</p>
+                            <a
+                              href={`tel:${hotline.phone}`}
+                              className="sh-hotline-card__phone-btn"
+                              aria-label={`Call ${hotline.phone}`}
+                            >
+                              <span className="sh-hotline-card__phone-icon"><IconPhone /></span>
+                              <span className="sh-hotline-card__phone-num">{hotline.phone}</span>
+                            </a>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+
+              </div>
+
+              {/* Paper bottom torn edge */}
+              <div className="sh-paper__torn-bottom" />
             </motion.div>
           </motion.div>
         )}

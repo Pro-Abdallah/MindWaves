@@ -1,564 +1,583 @@
 /* ================================================================
-   SafeHarbor.css
-   Section IV styling
+   SafeHarbor.css  — v3: Ocean background + centered board
    ================================================================ */
 
-.sh-container {
+/* ── Root Section ── */
+.sh-root {
   position: relative;
-  min-height: 100vh;
   width: 100vw;
-  background: #020E18;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 80px 24px;
   overflow: hidden;
+  /* Ocean background */
+  background-image: url('/safe-harbor-ocean-bg.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  /* Dark overlay to deepen the mood */
+  isolation: isolate;
 }
 
-/* ── Ambient Background Layer ── */
-
-.sh-ambient-bg {
+/* Subtle dark overlay on the ocean to help the board stand out */
+.sh-root::before {
+  content: '';
   position: absolute;
   inset: 0;
-  z-index: 1;
+  background: rgba(5, 15, 28, 0.38);
+  z-index: 0;
   pointer-events: none;
 }
 
-.sh-glow-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(140px);
-  opacity: 0.12;
-  mix-blend-mode: screen;
-}
-
-.sh-glow-orb--teal {
-  top: 20%;
-  right: -10%;
-  width: 50vw;
-  height: 50vw;
-  background: radial-gradient(circle, #5184C0 0%, transparent 70%);
-  animation: shDriftTeal 25s infinite alternate ease-in-out;
-}
-
-.sh-glow-orb--navy {
-  bottom: 10%;
-  left: -10%;
-  width: 55vw;
-  height: 55vw;
-  background: radial-gradient(circle, #05395E 0%, transparent 70%);
-  animation: shDriftNavy 20s infinite alternate ease-in-out;
-}
-
-@keyframes shDriftTeal {
-  0% { transform: translate(0, 0) scale(1.1); }
-  100% { transform: translate(-10%, 5%) scale(0.9); }
-}
-
-@keyframes shDriftNavy {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(8%, -5%) scale(1.15); }
-}
-
-/* Particles styling */
-.sh-particles {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.sh-particle {
-  position: absolute;
-  background: rgba(145, 191, 246, 0.15);
-  border-radius: 50%;
-  pointer-events: none;
-  animation: shFloatUp infinite linear;
-}
-
-@keyframes shFloatUp {
-  0% { transform: translateY(100vh) scale(0.4); opacity: 0; }
-  15% { opacity: 0.35; }
-  85% { opacity: 0.35; }
-  100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
-}
-
-/* ── Content Layout ── */
-
-.sh-content {
+/* ── Board Wrapper — centered, natural aspect ratio ── */
+.sh-board-wrap {
   position: relative;
-  z-index: 5;
-  width: 100%;
-  max-width: 1100px;
+  z-index: 2;
+  width: min(960px, 92vw);
+  /* force the board to keep its natural square-ish ratio */
+  aspect-ratio: 1 / 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 60px;
+  justify-content: center;
+  /* Elevation: multiple layered shadows for depth */
+  filter:
+    drop-shadow(0 8px 24px rgba(0,0,0,0.55))
+    drop-shadow(0 30px 80px rgba(0,0,0,0.45));
+  margin: 60px 0;
 }
 
-.sh-header {
+/* ── Bulletin Board Image — fills the wrapper naturally ── */
+.sh-board-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center center;
+  user-select: none;
+  border-radius: 6px;
+  filter: brightness(0.96) saturate(0.98) contrast(1.03);
+}
+
+/* ── Section label — floats above the board ── */
+.sh-board-label {
+  position: absolute;
+  top: -56px;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
+  z-index: 10;
+  pointer-events: none;
+  white-space: nowrap;
 }
 
-.sh-header__tag {
+.sh-board-label__tag {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.3em;
-  color: #5184C0;
+  letter-spacing: 0.35em;
+  color: rgba(255, 248, 220, 0.8);
   text-transform: uppercase;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+  display: block;
 }
 
-.sh-header__title {
+.sh-board-label__title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(28px, 4vw, 40px);
-  font-weight: 700;
-  color: #DFE1E6;
-  margin: 12px 0 8px 0;
-  letter-spacing: 0.02em;
+  font-size: clamp(24px, 3.5vw, 40px);
+  font-weight: 800;
+  color: #fff8dc;
+  letter-spacing: 0.04em;
+  text-shadow:
+    0 2px 14px rgba(0,0,0,0.8),
+    0 0 40px rgba(255, 220, 120, 0.2);
+  margin-top: 6px;
 }
 
-.sh-header__subtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(14px, 1.8vw, 16px);
-  color: rgba(223, 225, 230, 0.7);
-  font-style: italic;
-}
-
-/* ── Interactive Cards Grid ── */
-
-.sh-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-  width: 100%;
-}
-
-.sh-card {
-  position: relative;
-  height: 380px;
-  background: rgba(2, 14, 24, 0.75);
-  border: 1px solid rgba(81, 132, 192, 0.18);
-  border-radius: 8px;
-  backdrop-filter: blur(25px) saturate(1.2);
-  -webkit-backdrop-filter: blur(25px) saturate(1.2);
-  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  outline: none;
-  transform-style: preserve-3d;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease-out;
-}
-
-.sh-card__glow {
+/* ── Hint text — sits below the board ── */
+.sh-board-hint {
   position: absolute;
-  inset: -1px;
-  border-radius: 8px;
-  background: radial-gradient(circle at 50% 50%, rgba(145, 191, 246, 0.25), transparent 70%);
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.sh-card__inner {
-  position: relative;
-  z-index: 5;
-  height: 100%;
-  padding: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  transform: translateZ(30px); /* 3D effect depth */
-}
-
-.sh-card__badge {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.25em;
-  color: #91BFF6;
-  text-transform: uppercase;
-  margin-bottom: 24px;
-}
-
-.sh-card__badge--emergency {
-  color: #FF5A5A;
-}
-
-.sh-card__title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(20px, 2.5vw, 24px);
-  font-weight: 700;
-  color: #DFE1E6;
-  line-height: 1.3;
-  margin-bottom: 16px;
-  letter-spacing: 0.02em;
-}
-
-.sh-card__desc {
+  bottom: -44px;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  color: rgba(223, 225, 230, 0.65);
-  line-height: 1.6;
-  margin-bottom: auto;
-}
-
-.sh-card__cta {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  color: #91BFF6;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: rgba(255, 248, 220, 0.65);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.9);
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(145, 191, 246, 0.3);
-  padding-bottom: 4px;
-  transition: color 0.3s ease, border-color 0.3s ease;
+  z-index: 10;
+  pointer-events: none;
+  white-space: nowrap;
+  animation: shHintPulse 2.8s ease-in-out infinite;
 }
 
-/* Card Hover States */
-.sh-card:hover {
-  border-color: rgba(145, 191, 246, 0.45);
-  box-shadow: 0 25px 60px rgba(81, 132, 192, 0.15);
+@keyframes shHintPulse {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 1; }
 }
 
-.sh-card:hover .sh-card__glow {
-  opacity: 1;
+/* ── Clickable Note Hotspots ── */
+.sh-note-hotspot {
+  position: absolute;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  z-index: 20;
+  padding: 0;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.sh-card:hover .sh-card__cta {
-  color: #FFFFFF;
-  border-color: #FFFFFF;
+/* Slight scale-down on press to give tactile feedback */
+.sh-note-hotspot:active {
+  transform: scale(0.97);
 }
 
-/* Emergency Card Specifics */
-.sh-card--emergency {
-  border-color: rgba(239, 68, 68, 0.15);
+.sh-note-ripple {
+  display: none;
 }
 
-.sh-card--emergency:hover {
-  border-color: rgba(255, 90, 90, 0.45);
-  box-shadow: 0 25px 60px rgba(239, 68, 68, 0.15);
-}
+/* ================================================================
+   Paper Scroll Modal
+   ================================================================ */
 
-.sh-card--emergency .sh-card__glow {
-  background: radial-gradient(circle at 50% 50%, rgba(255, 90, 90, 0.25), transparent 70%);
-}
-
-.sh-card--emergency .sh-card__cta {
-  color: #FF5A5A;
-  border-color: rgba(255, 90, 90, 0.3);
-}
-
-.sh-card--emergency:hover .sh-card__cta {
-  color: #FFFFFF;
-  border-color: #FFFFFF;
-}
-
-/* ── Modal Popups ── */
-
-.sh-modal-overlay {
+.sh-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 10, 18, 0.7);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  z-index: 100;
+  z-index: 200;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
+  background: rgba(6, 18, 30, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-.sh-modal {
+/* The paper itself */
+.sh-paper {
   position: relative;
   width: 100%;
-  max-width: 660px;
-  background: rgba(2, 14, 24, 0.88);
-  border: 1px solid rgba(81, 132, 192, 0.25);
-  border-radius: 12px;
-  box-shadow: 0 35px 80px rgba(0, 0, 0, 0.7);
+  max-width: 680px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: #f7f2d8;
+  border-radius: 2px;
+  box-shadow:
+    0 0 0 1px rgba(160, 130, 60, 0.25),
+    0 40px 90px rgba(0, 0, 0, 0.7),
+    0 10px 30px rgba(0, 0, 0, 0.5);
   overflow: hidden;
+  transform-origin: top center;
 }
 
-.sh-modal__close-btn {
+/* Aged paper texture overlay */
+.sh-paper::before {
+  content: '';
   position: absolute;
-  top: 24px;
-  right: 24px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(223, 225, 230, 0.7);
-  width: 32px;
-  height: 32px;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+/* Slight yellowing gradient for aged look */
+.sh-paper::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 20%, rgba(255, 235, 150, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ── Torn Top Edge ── */
+.sh-paper__torn-top {
+  width: 100%;
+  height: 22px;
+  flex-shrink: 0;
+  background: #f7f2d8;
+  position: relative;
+  z-index: 5;
+  clip-path: polygon(
+    0% 100%, 2% 40%, 4% 80%, 6% 20%, 8% 60%, 10% 10%, 12% 55%,
+    14% 25%, 16% 70%, 18% 30%, 20% 65%, 22% 15%, 24% 50%,
+    26% 80%, 28% 35%, 30% 70%, 32% 20%, 34% 55%, 36% 85%,
+    38% 40%, 40% 75%, 42% 10%, 44% 60%, 46% 30%, 48% 65%,
+    50% 20%, 52% 55%, 54% 80%, 56% 35%, 58% 70%, 60% 15%,
+    62% 50%, 64% 85%, 66% 40%, 68% 70%, 70% 25%, 72% 60%,
+    74% 10%, 76% 55%, 78% 80%, 80% 30%, 82% 65%, 84% 20%,
+    86% 50%, 88% 75%, 90% 35%, 92% 65%, 94% 20%, 96% 55%,
+    98% 30%, 100% 60%, 100% 100%
+  );
+  filter: drop-shadow(0 -2px 4px rgba(120, 90, 30, 0.15));
+}
+
+/* ── Thumbtack Pin ── */
+.sh-paper__pin {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
+  z-index: 20;
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.5),
+    inset 0 1px 2px rgba(255,255,255,0.4),
+    inset 0 -1px 2px rgba(0,0,0,0.3);
+}
+
+/* Pin needle */
+.sh-paper__pin::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  height: 10px;
+  background: linear-gradient(to bottom, rgba(100,80,40,0.7), rgba(100,80,40,0.2));
+  border-radius: 0 0 2px 2px;
+}
+
+/* ── Close Button ── */
+.sh-paper__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(120, 90, 30, 0.1);
+  border: 1px solid rgba(120, 90, 30, 0.25);
+  color: rgba(80, 55, 20, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
-  transition: all 0.3s ease;
+  z-index: 30;
+  transition: all 0.25s ease;
 }
 
-.sh-modal__close-btn svg {
+.sh-paper__close svg {
   width: 14px;
   height: 14px;
 }
 
-.sh-modal__close-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.3);
+.sh-paper__close:hover {
+  background: rgba(120, 90, 30, 0.2);
+  color: rgba(60, 35, 5, 1);
+  border-color: rgba(120, 90, 30, 0.5);
+  transform: scale(1.1) rotate(90deg);
 }
 
-.sh-modal-content {
-  padding: 48px;
-  text-align: left;
+/* ── Paper Body ── */
+.sh-paper__body {
+  position: relative;
+  z-index: 5;
+  padding: 40px 48px 32px;
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
-.sh-modal__tag {
+/* ── Stamp Tag ── */
+.sh-paper__stamp {
+  display: inline-block;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.3em;
-  color: #91BFF6;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 2px;
+  margin-bottom: 14px;
 }
 
-.sh-modal__tag--emergency {
-  color: #FF5A5A;
+.sh-paper__stamp--therapy {
+  color: #7a3030;
+  border: 1.5px solid #c04040;
+  background: rgba(192, 64, 64, 0.08);
 }
 
-.sh-modal__title {
+.sh-paper__stamp--info {
+  color: #1a4a7a;
+  border: 1.5px solid #2060b0;
+  background: rgba(32, 96, 176, 0.08);
+}
+
+.sh-paper__stamp--emergency {
+  color: #7a3030;
+  border: 1.5px solid #c04040;
+  background: rgba(192, 64, 64, 0.08);
+}
+
+/* ── Paper Title ── */
+.sh-paper__title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(24px, 3.5vw, 32px);
-  font-weight: 700;
-  color: #DFE1E6;
-  margin: 12px 0 8px 0;
-  letter-spacing: 0.02em;
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 800;
+  color: #3a2a0a;
+  line-height: 1.2;
+  margin-bottom: 8px;
+  letter-spacing: 0.01em;
 }
 
-.sh-modal__subtitle {
+/* ── Paper Intro ── */
+.sh-paper__intro {
   font-family: 'Inter', sans-serif;
-  font-size: clamp(13px, 1.8vw, 15px);
-  color: rgba(223, 225, 230, 0.6);
-  margin-bottom: 32px;
-  line-height: 1.5;
+  font-size: 14px;
+  color: rgba(60, 40, 10, 0.65);
+  font-style: italic;
+  margin-bottom: 24px;
+  padding-bottom: 18px;
+  border-bottom: 1px dashed rgba(120, 90, 30, 0.3);
 }
 
-.sh-modal__scrollable {
-  max-height: 380px;
+/* ── Scrollable paper area ── */
+.sh-paper__scroll {
+  flex: 1;
   overflow-y: auto;
-  padding-right: 12px;
+  padding-right: 10px;
+  margin-right: -10px;
 }
 
-/* Custom scrollbar in modal */
-.sh-modal__scrollable::-webkit-scrollbar {
+.sh-paper__scroll::-webkit-scrollbar {
   width: 4px;
 }
-.sh-modal__scrollable::-webkit-scrollbar-track {
-  background: transparent;
+.sh-paper__scroll::-webkit-scrollbar-track {
+  background: rgba(120, 90, 30, 0.08);
+  border-radius: 2px;
 }
-.sh-modal__scrollable::-webkit-scrollbar-thumb {
-  background: rgba(81, 132, 192, 0.3);
+.sh-paper__scroll::-webkit-scrollbar-thumb {
+  background: rgba(120, 90, 30, 0.3);
   border-radius: 2px;
 }
 
-/* ── Modal Details: Information List ── */
-
-.sh-info-list {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
+/* ── Torn Bottom Edge ── */
+.sh-paper__torn-bottom {
+  width: 100%;
+  height: 22px;
+  flex-shrink: 0;
+  background: #f7f2d8;
+  position: relative;
+  z-index: 5;
+  clip-path: polygon(
+    0% 0%, 2% 60%, 4% 20%, 6% 80%, 8% 40%, 10% 90%, 12% 45%,
+    14% 75%, 16% 30%, 18% 70%, 20% 35%, 22% 85%, 24% 50%,
+    26% 20%, 28% 65%, 30% 30%, 32% 80%, 34% 45%, 36% 15%,
+    38% 60%, 40% 25%, 42% 90%, 44% 40%, 46% 70%, 48% 35%,
+    50% 80%, 52% 45%, 54% 20%, 56% 65%, 58% 30%, 60% 85%,
+    62% 50%, 64% 15%, 66% 60%, 68% 30%, 70% 75%, 72% 40%,
+    74% 90%, 76% 45%, 78% 20%, 80% 70%, 82% 35%, 84% 80%,
+    86% 50%, 88% 25%, 90% 65%, 92% 35%, 94% 80%, 96% 45%,
+    98% 70%, 100% 40%, 100% 0%
+  );
+  filter: drop-shadow(0 2px 4px rgba(120, 90, 30, 0.15));
+  margin-top: 16px;
 }
 
-.sh-info-item {
-  border-left: 2px solid #5184C0;
-  padding-left: 20px;
-}
-
-.sh-info-item__title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: #DFE1E6;
-  margin-bottom: 6px;
-}
-
-.sh-info-item__desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 14.5px;
-  color: rgba(223, 225, 230, 0.7);
-  line-height: 1.6;
-  font-style: italic;
-}
-
-/* ── Modal Details: Therapy Grid ── */
+/* ================================================================
+   Therapy Grid (inside paper)
+   ================================================================ */
 
 .sh-therapy-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 14px;
 }
 
 .sh-therapy-card {
-  background: rgba(5, 57, 94, 0.15);
-  border: 1px solid rgba(81, 132, 192, 0.18);
+  background: rgba(120, 90, 30, 0.06);
+  border: 1px solid rgba(120, 90, 30, 0.18);
   border-radius: 6px;
-  padding: 24px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
-  text-align: left;
-}
-
-.sh-therapy-card__meta {
-  margin-bottom: 12px;
 }
 
 .sh-therapy-card__cat {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 9px;
-  font-weight: 500;
-  color: #5184C0;
-  letter-spacing: 0.1em;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: rgba(60, 40, 10, 0.5);
   text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
 }
 
 .sh-therapy-card__name {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 700;
-  color: #DFE1E6;
-  margin-top: 2px;
+  color: #3a2a0a;
+  margin-bottom: 8px;
 }
 
 .sh-therapy-card__desc {
   font-family: 'Inter', sans-serif;
-  font-size: 13.5px;
-  color: rgba(223, 225, 230, 0.65);
+  font-size: 13px;
+  color: rgba(60, 40, 10, 0.65);
   line-height: 1.5;
-  margin-bottom: 24px;
+  margin-bottom: 16px;
+  flex: 1;
 }
 
 .sh-therapy-card__link {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-top: auto;
-  padding: 10px 18px;
-  background: rgba(81, 132, 192, 0.12);
-  border: 1px solid rgba(81, 132, 192, 0.35);
+  gap: 7px;
+  padding: 8px 14px;
+  background: rgba(60, 40, 10, 0.08);
+  border: 1px solid rgba(60, 40, 10, 0.22);
   border-radius: 4px;
-  color: #DFE1E6;
+  color: #3a2a0a;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
-  transition: all 0.3s ease;
+  text-decoration: none;
+  transition: all 0.25s ease;
+  align-self: flex-start;
 }
 
 .sh-therapy-card__link svg {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
 }
 
 .sh-therapy-card__link:hover {
-  background: #DFE1E6;
-  color: #020E18;
-  border-color: #DFE1E6;
+  background: #3a2a0a;
+  color: #f7f2d8;
+  border-color: #3a2a0a;
 }
 
-/* ── Modal Details: Emergency List ── */
+/* ================================================================
+   Info List (inside paper)
+   ================================================================ */
+
+.sh-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sh-info-item {
+  padding-left: 18px;
+  border-left: 2.5px solid rgba(32, 96, 176, 0.4);
+}
+
+.sh-info-item__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: #1a3a6a;
+  margin-bottom: 5px;
+}
+
+.sh-info-item__desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: rgba(20, 40, 80, 0.7);
+  line-height: 1.65;
+  font-style: italic;
+}
+
+/* ================================================================
+   Hotline List (inside paper)
+   ================================================================ */
 
 .sh-hotline-list {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 13px;
 }
 
 .sh-hotline-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(239, 68, 68, 0.05);
-  border: 1px solid rgba(239, 68, 68, 0.15);
+  gap: 16px;
+  background: rgba(192, 64, 64, 0.06);
+  border: 1px solid rgba(192, 64, 64, 0.18);
   border-radius: 6px;
-  padding: 20px 24px;
-  gap: 20px;
+  padding: 16px 20px;
 }
 
 .sh-hotline-card__title {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 14.5px;
+  font-size: 14px;
   font-weight: 500;
-  color: #DFE1E6;
-  line-height: 1.5;
-  text-align: left;
+  color: #4a1a1a;
+  line-height: 1.4;
+  flex: 1;
 }
 
 .sh-hotline-card__phone-btn {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 20px;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid #FF5A5A;
+  gap: 10px;
+  padding: 9px 18px;
+  background: rgba(192, 64, 64, 0.1);
+  border: 1.5px solid #c04040;
   border-radius: 20px;
-  color: #FF5A5A;
+  color: #c04040;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
   text-decoration: none;
-  animation: hotlineBorderPulse 2s infinite alternate;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+  animation: hotlinePulse 2.2s ease-in-out infinite;
 }
 
 .sh-hotline-card__phone-icon svg {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   display: block;
 }
 
 .sh-hotline-card__phone-btn:hover {
-  background: #FF5A5A;
-  color: #020E18;
-  box-shadow: 0 0 20px rgba(255, 90, 90, 0.45);
+  background: #c04040;
+  color: #f7f2d8;
+  box-shadow: 0 0 18px rgba(192, 64, 64, 0.4);
 }
 
-@keyframes hotlineBorderPulse {
-  0% { box-shadow: 0 0 2px rgba(239, 68, 68, 0.2); }
-  100% { box-shadow: 0 0 12px rgba(239, 68, 68, 0.5); }
+@keyframes hotlinePulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(192, 64, 64, 0.2); }
+  50%       { box-shadow: 0 0 10px rgba(192, 64, 64, 0.45); }
 }
 
-/* ── Responsiveness ── */
+/* ================================================================
+   Responsiveness
+   ================================================================ */
 
-@media (max-width: 1000px) {
-  .sh-grid {
-    grid-template-columns: 1fr;
-    max-width: 480px;
-  }
-  .sh-card {
-    height: 300px;
-  }
-}
-
-@media (max-width: 680px) {
+@media (max-width: 760px) {
   .sh-therapy-grid {
     grid-template-columns: 1fr;
   }
+
+  .sh-paper__body {
+    padding: 32px 24px 24px;
+  }
+
   .sh-hotline-card {
     flex-direction: column;
     align-items: flex-start;
-    padding: 20px;
   }
+
   .sh-hotline-card__phone-btn {
     width: 100%;
     justify-content: center;
-  }
-  .sh-modal-content {
-    padding: 32px 20px;
   }
 }
