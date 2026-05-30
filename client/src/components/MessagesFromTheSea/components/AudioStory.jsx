@@ -166,19 +166,7 @@ export default function AudioStory({ story }) {
         ))}
       </div>
 
-      {/* Story header */}
-      <motion.div
-        className="audio-header"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="audio-badge" style={{ color: story.color }}>
-          ♪ Audio Story
-        </div>
-        <h2 className="audio-title">A Voice From the Depths</h2>
-        <p className="audio-desc">{story.description}</p>
-      </motion.div>
+
 
       {/* Player card */}
       <motion.div

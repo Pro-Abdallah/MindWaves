@@ -15,8 +15,14 @@ export default function ComicStory({ story }) {
   const [bookSize, setBookSize] = useState({ width: 380, height: 520, portrait: false })
   const total = story.pages.length
 
+  const containerRef = useRef(null)
+
   // ── Compute responsive book dimensions ──────────────────────────────────
   useEffect(() => {
+    // Focus the container so arrow keys work immediately
+    if (containerRef.current) {
+      containerRef.current.focus()
+    }
     const calc = () => {
       const vw = window.innerWidth
       const vh = window.innerHeight
@@ -68,21 +74,9 @@ export default function ComicStory({ story }) {
   const progressPct = total > 1 ? (page / (total - 1)) * 100 : 0
 
   return (
-    <div className="comic-story" onKeyDown={handleKeyDown} tabIndex={0}>
+    <div className="comic-story" onKeyDown={handleKeyDown} tabIndex={0} ref={containerRef}>
 
-      {/* Header */}
-      <motion.div
-        className="comic-header"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="comic-badge" style={{ color: story.color }}>
-          ◈ Illustrated Story
-        </div>
-        <h2 className="comic-title">Turn the Page</h2>
-        <p className="comic-desc">{story.description}</p>
-      </motion.div>
+
 
       {/* Book container */}
       <motion.div

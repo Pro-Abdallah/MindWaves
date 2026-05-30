@@ -18,46 +18,13 @@ export default function TextStory({ story }) {
 
   return (
     <div className="text-story">
-      {/* Fullscreen background image */}
-      <div className="text-bg-wrap">
-        <motion.div
-          className="text-bg-img"
-          style={{ backgroundImage: `url("${story.image}")` }}
-          animate={{
-            scale: [1, 1.06],
-            x: [0, -12],
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            repeatType: 'mirror',
-            ease: 'linear',
-          }}
-        />
-        {/* Dark vignette */}
-        <div className="text-vignette" />
-        {/* Color wash */}
-        <div className="text-color-wash" style={{ background: story.color + '15' }} />
-      </div>
+
 
       {/* Scrollable content */}
       <div className="text-content-scroll" ref={scrollRef}>
         <div className="text-content-inner">
 
-          {/* Title block */}
-          <motion.div
-            className="text-title-block"
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="text-badge" style={{ color: story.color }}>
-              ✦ Written Story
-            </div>
-            <h2 className="text-main-title">{story.title}</h2>
-            <p className="text-subtitle">{story.subtitle}</p>
-            <div className="text-divider" style={{ background: story.color }} />
-          </motion.div>
+
 
           {/* Hero Image */}
           {story.image && (

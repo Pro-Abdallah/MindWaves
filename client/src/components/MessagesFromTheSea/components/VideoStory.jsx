@@ -142,16 +142,7 @@ export default function VideoStory({ story }) {
 
   return (
     <div className="video-story">
-      <motion.div
-        className="video-header"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="video-badge" style={{ color: story.color }}>▶ Video Story</div>
-        <h2 className="video-title">A Window Into the Storm</h2>
-        <p className="video-desc">{story.description}</p>
-      </motion.div>
+
 
       <motion.div
         className="video-player-wrap"
