@@ -44,11 +44,11 @@ export default function MessageComposer({ onSubmit, onCancel }) {
   };
 
   const paperVariants = {
-    hidden:    { y: 50,   scale: 0.1, opacity: 0, zIndex: 5 },
-    opening:   { y: -150, scale: 0.5, opacity: 1, zIndex: 15, transition: { duration: 1, delay: 0.5 } },
-    composing: { y: isMobile ? -30 : -50, scale: 1, opacity: 1, zIndex: 20, transition: { duration: 0.8, type: 'spring' } },
-    packing:   { y: 50,   scale: 0.1, opacity: 0, zIndex: 5, transition: { duration: 1 } },
-    throwing:  { y: 50,   scale: 0,   opacity: 0 }
+    hidden:    { x: '-50%', y: '10%', scale: 0.1, opacity: 0, zIndex: 5 },
+    opening:   { x: '-50%', y: '-60%', scale: 0.5, opacity: 1, zIndex: 15, transition: { duration: 1, delay: 0.5 } },
+    composing: { x: '-50%', y: '-50%', scale: 1, opacity: 1, zIndex: 20, transition: { duration: 0.8, type: 'spring' } },
+    packing:   { x: '-50%', y: '10%', scale: 0.1, opacity: 0, zIndex: 5, transition: { duration: 1 } },
+    throwing:  { x: '-50%', y: '10%', scale: 0, opacity: 0 }
   };
 
   return (
@@ -116,8 +116,6 @@ export default function MessageComposer({ onSubmit, onCancel }) {
             position: 'absolute',
             top: '50%',
             left: '50%',
-            marginLeft: `-${paperOffset}px`,
-            marginTop: isMobile ? '-160px' : '-200px',
             width: `${paperWidth}px`,
             background: 'rgba(250, 248, 245, 0.97)',
             backdropFilter: 'blur(10px)',

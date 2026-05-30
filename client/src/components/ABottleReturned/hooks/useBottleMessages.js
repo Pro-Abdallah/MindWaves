@@ -21,8 +21,8 @@ export const useBottleMessages = () => {
       }
       const data = await response.json();
       
-      const parsedMessages = data.map(msg => ({
-        id: msg.id,
+      const parsedMessages = data.map((msg, index) => ({
+        id: msg.id || msg._id || `msg-${msg.createdAt || index}-${Math.random()}`,
         text: msg.content,
         createdAt: msg.createdAt,
       }));
