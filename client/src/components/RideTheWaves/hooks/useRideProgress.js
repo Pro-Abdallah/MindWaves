@@ -6,16 +6,19 @@ export function useRideProgress() {
   const [currentSceneIndex, setCurrentSceneIndex] = useState(0);
   const [score, setScore] = useState(0); // +1 supportive, -1 harmful
   const [selectedChoice, setSelectedChoice] = useState(null);
+  const [answeredCount, setAnsweredCount] = useState(0);
 
   const startExperience = useCallback(() => {
     setGameState('scene');
     setCurrentSceneIndex(0);
     setScore(0);
     setSelectedChoice(null);
+    setAnsweredCount(0);
   }, []);
 
   const handleChoice = useCallback((choice) => {
     setSelectedChoice(choice);
+    setAnsweredCount(prev => prev + 1);
     if (choice.isSupportive) {
       setScore(prev => prev + 1);
     } else {
@@ -39,6 +42,7 @@ export function useRideProgress() {
     setCurrentSceneIndex(0);
     setScore(0);
     setSelectedChoice(null);
+    setAnsweredCount(0);
   }, []);
 
   return {
@@ -47,6 +51,7 @@ export function useRideProgress() {
     sceneIndex: currentSceneIndex,
     totalScenes: scenes.length,
     score,
+    answeredCount,
     selectedChoice,
     startExperience,
     handleChoice,

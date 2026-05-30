@@ -24,17 +24,16 @@ export default function IntroScreen({ onStart }) {
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.6, duration: 1 }}
       >
-        "In some moments, the choice matters more than the words."<br/><br/>
-        Experience the situation and choose how to act.
+        Start this interactive game to experience real-life situations with people living with Bipolar Disorder.
       </motion.p>
       
       <motion.p 
         className="ride-intro-note"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2, duration: 1 }}
+        transition={{ delay: 1, duration: 1 }}
       >
-        Your choices affect the color bar score. Supportive choices turn it green, harmful choices turn it red.
+        In each scene, you will take the role of a mother, father, coworker, or classmate. Choose what you would do in each situation and discover how supportive and understanding your responses are.
       </motion.p>
       
       <motion.button 
