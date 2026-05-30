@@ -64,8 +64,58 @@ export default function ABottleReturned() {
                 </div>
               ) : (
                 <>
-                  <div style={{ position: 'absolute', top: '120px', left: '50%', transform: 'translateX(-50%)', opacity: 0.3, fontSize: '12px', letterSpacing: '0.2em' }}>
-                    {messages.length} BOTTLES DRIFTING
+                  <div style={{
+                    position: 'absolute',
+                    top: '12vh',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '12px',
+                    zIndex: 10
+                  }}>
+                    <div style={{
+                      opacity: 0.5,
+                      fontSize: '12px',
+                      letterSpacing: '0.25em',
+                      whiteSpace: 'nowrap',
+                      textTransform: 'uppercase',
+                      color: '#e0e0e0'
+                    }}>
+                      {messages.length} Bottles Drifting
+                    </div>
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 1, duration: 1 }}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '10px',
+                        background: 'rgba(163, 217, 232, 0.08)',
+                        border: '1px solid rgba(163, 217, 232, 0.25)',
+                        borderRadius: '100px',
+                        padding: '10px 24px',
+                        backdropFilter: 'blur(12px)',
+                        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)',
+                        color: '#a3d9e8'
+                      }}
+                    >
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                      </svg>
+                      <span style={{
+                        fontSize: 'clamp(14px, 1.8vw, 16px)',
+                        fontWeight: 400,
+                        letterSpacing: '0.05em',
+                        whiteSpace: 'nowrap'
+                      }}>
+                        Tap any drifting bottle to read its message
+                      </span>
+                    </motion.div>
                   </div>
                   <FloatingMessages 
                     messages={messages} 
