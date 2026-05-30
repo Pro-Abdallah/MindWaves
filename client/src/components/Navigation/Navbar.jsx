@@ -23,8 +23,8 @@ export default function Navbar() {
         {/* Logo */}
         <div className="navbar-logo">
           <Link to="/" onClick={closeMenu}>
-            <img src="/logo 1.png"        alt="MindWaves Logo" className="logo-image" />
-            <img src="/Mind waves-2.png"  alt="MindWaves"      className="logo-text"  />
+            <img src="/logo 1.png"           alt="MindWaves Logo" className="logo-image" />
+            <img src="/mind waves png.png"   alt="MindWaves"      className="logo-text"  />
           </Link>
         </div>
 

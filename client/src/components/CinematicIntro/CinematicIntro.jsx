@@ -91,9 +91,9 @@ function SkipButton({ onClick }) {
     <button
       className="ci-skip-btn"
       onClick={onClick}
-      aria-label="Skip intro"
+      aria-label="Continue to app"
     >
-      <span className="ci-skip-btn__label">Skip</span>
+      <span className="ci-skip-btn__label">Next</span>
       <svg
         className="ci-skip-btn__icon"
         viewBox="0 0 24 24"
@@ -104,10 +104,18 @@ function SkipButton({ onClick }) {
         strokeLinejoin="round"
         aria-hidden="true"
       >
-        <polyline points="13 17 18 12 13 7" />
-        <polyline points="6 17 11 12 6 7" />
+        <polyline points="9 18 15 12 9 6" />
       </svg>
     </button>
+  )
+}
+
+function IntroNavbar() {
+  return (
+    <div className="ci-navbar-strip" aria-label="MindWaves navigation">
+      <img src="/logo 1.png"         alt="MindWaves Logo" className="ci-navbar-logo-img" />
+      <img src="/mind waves png.png" alt="MindWaves"      className="ci-navbar-logo-text" />
+    </div>
   )
 }
 
@@ -272,9 +280,14 @@ export default function CinematicIntro({ onComplete }) {
         <StartButton onClick={handleStart} autoplayFailed={autoplayFailed} />
       )}
 
-      {/* ── SKIP button — visible only during second video ── */}
+      {/* ── SKIP/NEXT button — visible only during second video ── */}
       {phase === 'secondVideo' && (
         <SkipButton onClick={handleExit} />
+      )}
+
+      {/* ── Navbar strip — visible during second video ── */}
+      {phase === 'secondVideo' && (
+        <IntroNavbar />
       )}
     </div>
   )
