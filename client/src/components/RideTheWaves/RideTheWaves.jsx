@@ -4,7 +4,12 @@ import IntroScreen from './components/IntroScreen';
 import SceneCard from './components/SceneCard';
 import ProgressWave from './components/ProgressWave';
 import FinalPopup from './components/FinalPopup';
+import SupportMeter from './components/SupportMeter';
+// Reuse the same ocean background component as ABottleReturned for visual consistency
+import OceanBackground from '../ABottleReturned/components/OceanBackground';
 import './RideTheWaves.css';
+// We need the ABottleReturned CSS for the ocean background classes
+import '../ABottleReturned/ABottleReturned.css';
 
 export default function RideTheWaves() {
   const {
@@ -13,6 +18,7 @@ export default function RideTheWaves() {
     sceneIndex,
     totalScenes,
     score,
+    answeredCount,
     selectedChoice,
     startExperience,
     handleChoice,
@@ -20,21 +26,22 @@ export default function RideTheWaves() {
     resetExperience
   } = useRideProgress();
 
+  const isInGame = gameState === 'scene' || gameState === 'feedback';
+
   return (
     <div className="ride-the-waves">
-      {(gameState === 'intro' || gameState === 'finished') && (
-        <div className="ride-bg-image" />
-      )}
-      
+      {/* Ocean background — same as ABottleReturned */}
+      <OceanBackground isBlurred={false} />
+
       <AnimatePresence mode="wait">
         {gameState === 'intro' && (
           <IntroScreen key="intro" onStart={startExperience} />
         )}
 
-        {(gameState === 'scene' || gameState === 'feedback') && (
-          <SceneCard 
+        {isInGame && (
+          <SceneCard
             key={`scene-${currentScene.id}`}
-            scene={currentScene} 
+            scene={currentScene}
             onChoice={handleChoice}
             selectedChoice={selectedChoice}
             showFeedback={gameState === 'feedback'}
@@ -43,21 +50,30 @@ export default function RideTheWaves() {
         )}
 
         {gameState === 'finished' && (
-          <FinalPopup 
+          <FinalPopup
             key="final"
             score={score}
             totalScenes={totalScenes}
             onRetry={resetExperience}
-            onExit={() => window.history.back()} // Basic exit back to previous route
+            onExit={() => window.history.back()}
           />
         )}
       </AnimatePresence>
 
-      {/* Progress wave only shows during active scenes */}
-      {(gameState === 'scene' || gameState === 'feedback') && (
-        <ProgressWave 
-          current={gameState === 'feedback' ? sceneIndex + 1 : sceneIndex} 
-          total={totalScenes} 
+      {/* Live Supportiveness Meter — visible during all active scenes */}
+      {isInGame && (
+        <SupportMeter
+          score={score}
+          totalScenes={totalScenes}
+          answeredCount={answeredCount}
+        />
+      )}
+
+      {/* Scene progress bar at bottom */}
+      {isInGame && (
+        <ProgressWave
+          current={gameState === 'feedback' ? sceneIndex + 1 : sceneIndex}
+          total={totalScenes}
         />
       )}
     </div>
