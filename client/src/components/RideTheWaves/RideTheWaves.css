@@ -476,7 +476,8 @@
 /* ── Mobile ── */
 @media (max-width: 600px) {
   .scene-container {
-    padding: 4.5rem 4% 5rem;
+    /* Extra top padding to clear navbar (70px) + slim support meter bar (~36px) + some breathing room */
+    padding: 7.5rem 4% 5rem;
     gap: 1rem;
   }
 
@@ -489,12 +490,43 @@
     height: 58px;
   }
 
+  /* ── Slim horizontal support meter on mobile ── */
   .support-meter {
-    top: auto;
-    bottom: 4rem;
-    right: 50%;
-    transform: translateX(50%);
-    min-width: 200px;
+    top: 70px;
+    left: 0;
+    right: 0;
+    bottom: auto;
+    transform: none;
+    min-width: unset;
+    width: 100%;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid rgba(163, 217, 232, 0.12);
+    padding: 6px 4% 6px;
+    background: rgba(2, 8, 19, 0.92);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    backdrop-filter: blur(16px);
+  }
+
+  .support-meter-header {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+    gap: 8px;
+  }
+
+  .support-meter-track {
+    flex: 1 1 auto;
+    margin-bottom: 0;
+  }
+
+  .support-meter-scenes {
+    flex: 0 0 auto;
+    text-align: right;
   }
 
   .result-overlay,
