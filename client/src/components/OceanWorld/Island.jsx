@@ -94,12 +94,10 @@ function StillIsland({ scale, color, accentColor, hovered }) {
       let vx = pos.getX(i)
       let vy = pos.getY(i)
       let vz = pos.getZ(i)
-      
-      // Smooth noise for a calm landscape
       if (vy > 0) {
-        vy += noise3D(vx, vy, vz) * scale * 0.15 // gentle bumps
+        vy += noise3D(vx, vy, vz) * scale * 0.15
       } else {
-        vy -= Math.abs(noise3D(vx, vy, vz)) * scale * 0.3 // smooth rounded bottom
+        vy -= Math.abs(noise3D(vx, vy, vz)) * scale * 0.3
       }
       pos.setXYZ(i, vx, vy, vz)
     }
@@ -107,34 +105,105 @@ function StillIsland({ scale, color, accentColor, hovered }) {
     return geo
   }, [scale])
 
+  // Small scattered rocks on the terrain surface
+  const rocks = useMemo(() => {
+    const rng = seededRng(42)
+    return Array.from({ length: 8 }, () => ({
+      angle: rng() * Math.PI * 2,
+      dist:  scale * (0.3 + rng() * 0.7),
+      size:  scale * (0.04 + rng() * 0.08),
+      y:     scale * 0.12,
+    }))
+  }, [scale])
+
   return (
     <group>
+      {/* Lush grassy terrain — deep green with emissive underfill */}
       <mesh geometry={terrainGeo} castShadow receiveShadow position={[0, -scale*0.5, 0]}>
-        <meshStandardMaterial color={color} roughness={0.9} metalness={0.0} flatShading={false} />
+        <meshStandardMaterial
+          color="#1a5c3a"
+          emissive="#0a2e1e"
+          emissiveIntensity={hovered ? 0.8 : 0.3}
+          roughness={0.85}
+          metalness={0.0}
+          flatShading={false}
+        />
       </mesh>
-      
+
+      {/* Mossy ground cap — glowing layer on top surface */}
+      <mesh position={[0, scale * 0.26, 0]} rotation={[-Math.PI/2, 0, 0]}>
+        <circleGeometry args={[scale * 1.0, 24]} />
+        <meshStandardMaterial
+          color="#2d8c52"
+          emissive="#1a6b38"
+          emissiveIntensity={hovered ? 1.2 : 0.5}
+          transparent opacity={0.7}
+        />
+      </mesh>
+
+      {/* Scattered mossy rocks */}
+      {rocks.map((r, i) => (
+        <mesh key={i} position={[
+          Math.cos(r.angle) * r.dist,
+          r.y,
+          Math.sin(r.angle) * r.dist
+        ]}>
+          <dodecahedronGeometry args={[r.size, 0]} />
+          <meshStandardMaterial color="#2a5c3e" roughness={0.95} />
+        </mesh>
+      ))}
+
       {/* Central Magical Tree */}
       <group position={[0, scale * 0.2, 0]}>
-        {/* Trunk */}
+        {/* Trunk — warm bark brown */}
         <mesh position={[0, scale * 0.6, 0]}>
-          <cylinderGeometry args={[scale * 0.08, scale * 0.15, scale * 1.2, 8]} />
-          <meshStandardMaterial color="#223344" roughness={1.0} />
+          <cylinderGeometry args={[scale * 0.09, scale * 0.16, scale * 1.2, 10]} />
+          <meshStandardMaterial color="#5c3317" roughness={0.95} />
         </mesh>
-        {/* Glowing Leaves/Canopy */}
-        <mesh position={[0, scale * 1.5, 0]}>
-          <sphereGeometry args={[scale * 0.8, 16, 16]} />
-          <meshStandardMaterial 
-            color={accentColor} 
-            emissive={accentColor}
-            emissiveIntensity={hovered ? 2.5 : 1.0}
+        {/* Lower wide canopy — deep forest green */}
+        <mesh position={[0, scale * 1.3, 0]}>
+          <sphereGeometry args={[scale * 1.0, 16, 16]} />
+          <meshStandardMaterial
+            color="#1e7a40"
+            emissive="#0d5a28"
+            emissiveIntensity={hovered ? 1.5 : 0.5}
+            transparent opacity={0.95}
+            roughness={0.2}
+          />
+        </mesh>
+        {/* Mid canopy — bright lime with glow */}
+        <mesh position={[0, scale * 1.65, 0]}>
+          <sphereGeometry args={[scale * 0.72, 14, 14]} />
+          <meshStandardMaterial
+            color="#3ecf6e"
+            emissive="#1fa84a"
+            emissiveIntensity={hovered ? 2.0 : 0.8}
             transparent opacity={0.9}
             roughness={0.1}
           />
         </mesh>
-        <pointLight position={[0, scale * 1.5, 0]} color={accentColor} intensity={hovered ? 3.0 : 1.0} distance={15} />
+        {/* Top crown — luminous gold-teal accent */}
+        <mesh position={[0, scale * 1.95, 0]}>
+          <sphereGeometry args={[scale * 0.42, 12, 12]} />
+          <meshStandardMaterial
+            color={accentColor}
+            emissive={accentColor}
+            emissiveIntensity={hovered ? 3.5 : 1.5}
+            transparent opacity={0.95}
+            roughness={0.05}
+          />
+        </mesh>
+
+        {/* Canopy lights */}
+        <pointLight position={[0, scale * 1.5, 0]}  color="#4fffaa" intensity={hovered ? 4.0 : 1.8} distance={18} />
+        <pointLight position={[0, scale * 2.0, 0]}  color={accentColor} intensity={hovered ? 3.0 : 1.2} distance={12} />
       </group>
 
-      <ThematicParticles count={hovered ? 40 : 20} color={accentColor} radius={scale * 1.5} height={scale * 2} randomPhase={0} isDripping={false} isFast={false} />
+      {/* Soft underglow from the roots */}
+      <pointLight position={[0, -scale * 0.5, 0]} color="#14a857" intensity={hovered ? 2.0 : 0.8} distance={10} />
+
+      <ThematicParticles count={hovered ? 50 : 25} color="#4fffaa" radius={scale * 1.5} height={scale * 2} randomPhase={0} isDripping={false} isFast={false} />
+      <ThematicParticles count={hovered ? 20 : 8}  color={accentColor} radius={scale * 1.0} height={scale * 2.5} randomPhase={1.1} isDripping={false} isFast={false} />
     </group>
   )
 }
@@ -321,13 +390,11 @@ function SunkenIsland({ scale, color, accentColor, hovered }) {
       let vx = pos.getX(i)
       let vy = pos.getY(i)
       let vz = pos.getZ(i)
-      
       const n = noise3D(vx, vy, vz)
-      
       if (vy > 0) {
-        vy = vy * 0.3 + n * scale * 0.1 // flat, sad top
+        vy = vy * 0.3 + n * scale * 0.1
       } else {
-        vy -= Math.abs(n) * scale * 1.2 // deep, hanging bottom
+        vy -= Math.abs(n) * scale * 1.2
       }
       pos.setXYZ(i, vx, vy, vz)
     }
@@ -338,7 +405,7 @@ function SunkenIsland({ scale, color, accentColor, hovered }) {
   // Drooping weeping willow vines
   const vines = useMemo(() => {
     const rng = seededRng(99)
-    return Array.from({ length: 15 }, () => {
+    return Array.from({ length: 18 }, () => {
       const angle = rng() * Math.PI * 2
       const radius = scale * (0.8 + rng() * 0.5)
       return {
@@ -346,40 +413,82 @@ function SunkenIsland({ scale, color, accentColor, hovered }) {
         z: Math.sin(angle) * radius,
         y: scale * 0.2,
         length: scale * (1.0 + rng() * 2.0),
+        hue: rng(), // for color variation
       }
     })
   }, [scale])
 
   return (
     <group>
+      {/* Deep teal-purple terrain — heavy & melancholic */}
       <mesh geometry={terrainGeo} castShadow receiveShadow position={[0, -scale*0.4, 0]}>
-        <meshStandardMaterial color={color} roughness={0.9} metalness={0.1} flatShading={true} />
+        <meshStandardMaterial
+          color="#1a2d4a"
+          emissive="#0a1828"
+          emissiveIntensity={hovered ? 0.9 : 0.4}
+          roughness={0.88}
+          metalness={0.1}
+          flatShading={true}
+        />
       </mesh>
 
-      {/* Bioluminescent moss patches */}
-      <mesh position={[0, scale * 0.1, 0]} rotation={[-Math.PI/2, 0, 0]}>
-        <circleGeometry args={[scale * 1.1, 16]} />
-        <meshStandardMaterial 
-          color="#0d2424" 
-          emissive={accentColor} 
-          emissiveIntensity={hovered ? 1.5 : 0.5} 
+      {/* Primary bioluminescent moss — deep teal glow */}
+      <mesh position={[0, scale * 0.08, 0]} rotation={[-Math.PI/2, 0, 0]}>
+        <circleGeometry args={[scale * 1.15, 20]} />
+        <meshStandardMaterial
+          color="#0d3040"
+          emissive="#00a8cc"
+          emissiveIntensity={hovered ? 2.5 : 1.0}
+          transparent opacity={0.7}
+        />
+      </mesh>
+
+      {/* Secondary moss patch — purple/violet accent */}
+      <mesh position={[scale * 0.3, scale * 0.09, scale * 0.2]} rotation={[-Math.PI/2, 0, 0]}>
+        <circleGeometry args={[scale * 0.55, 16]} />
+        <meshStandardMaterial
+          color="#1a0a30"
+          emissive="#8844cc"
+          emissiveIntensity={hovered ? 2.0 : 0.8}
+          transparent opacity={0.65}
+        />
+      </mesh>
+
+      {/* Tertiary patch — cold blue shimmer */}
+      <mesh position={[-scale * 0.4, scale * 0.09, -scale * 0.3]} rotation={[-Math.PI/2, 0, 0]}>
+        <circleGeometry args={[scale * 0.4, 14]} />
+        <meshStandardMaterial
+          color="#081830"
+          emissive="#2255ff"
+          emissiveIntensity={hovered ? 1.8 : 0.7}
           transparent opacity={0.6}
         />
       </mesh>
 
-      {/* Hanging Vines */}
+      {/* Hanging Vines — with subtle teal/purple tinting */}
       {vines.map((vine, i) => (
         <mesh key={i} position={[vine.x, vine.y - vine.length/2, vine.z]}>
-          <cylinderGeometry args={[0.03, 0.01, vine.length, 4]} />
-          <meshStandardMaterial color="#081820" roughness={1.0} />
+          <cylinderGeometry args={[0.04, 0.01, vine.length, 4]} />
+          <meshStandardMaterial
+            color={vine.hue > 0.5 ? '#0d3028' : '#1a1040'}
+            emissive={vine.hue > 0.5 ? '#004433' : '#220044'}
+            emissiveIntensity={0.5}
+            roughness={1.0}
+          />
         </mesh>
       ))}
 
-      {/* Ambient underglow representing deep-sea bioluminescence */}
-      <pointLight position={[0, -scale * 1.5, 0]} color={accentColor} intensity={hovered ? 3.0 : 1.0} distance={15} />
+      {/* Multi-color bioluminescent underglow */}
+      <pointLight position={[0,            -scale * 1.5,  0           ]} color="#00ccee" intensity={hovered ? 4.0 : 1.8} distance={18} />
+      <pointLight position={[scale * 1.0,  -scale * 0.8,  scale * 0.5 ]} color="#7722cc" intensity={hovered ? 3.0 : 1.2} distance={14} />
+      <pointLight position={[-scale * 0.8, -scale * 0.6, -scale * 0.8 ]} color="#2244ff" intensity={hovered ? 2.5 : 1.0} distance={12} />
+      {/* Top dim surface shimmer */}
+      <pointLight position={[0, scale * 0.5, 0]} color="#00aadd" intensity={hovered ? 1.5 : 0.5} distance={8} />
 
-      {/* Slowly dripping water particles */}
-      <ThematicParticles count={hovered ? 50 : 25} color={accentColor} radius={scale * 1.4} height={scale * 2} randomPhase={2.5} isDripping={true} isFast={false} />
+      {/* Slowly dripping water particles — teal */}
+      <ThematicParticles count={hovered ? 60 : 30} color="#00ccee" radius={scale * 1.4} height={scale * 2} randomPhase={2.5} isDripping={true} isFast={false} />
+      {/* Rising bioluminescent wisps — purple */}
+      <ThematicParticles count={hovered ? 25 : 12} color="#aa44ff" radius={scale * 1.0} height={scale * 2.5} randomPhase={1.3} isDripping={false} isFast={false} />
     </group>
   )
 }

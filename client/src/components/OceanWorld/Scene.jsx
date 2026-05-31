@@ -92,25 +92,26 @@ export default function Scene({ onExploreStart }) {
 
       {/* ── Environment Atmosphere ── */}
       <color attach="background" args={["#020E18"]} />
-      <fogExp2 attach="fog" color="#020E18" density={0.015} />
+      <fogExp2 attach="fog" color="#020E18" density={0.004} />
 
       {/* ── Lighting ── */}
-      <ambientLight intensity={0.45} color="#5184C0" />
+      {/* Ambient — cool blue sky fill */}
+      <ambientLight intensity={0.55} color="#4488bb" />
 
-      {/* Main moonlight/directional light */}
+      {/* Primary sun — warm white, matches ocean shader uSunDir */}
       <directionalLight
-        position={[25, 30, 20]}
-        intensity={1.8}
-        color="#91BFF6"
+        position={[60, 75, 30]}
+        intensity={3.5}
+        color="#fff5e0"
         castShadow
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={[2048, 2048]}
       />
 
-      {/* Subtle ocean underglow */}
+      {/* Cool blue fill from opposite side */}
       <directionalLight
-        position={[-10, -15, -10]}
-        intensity={0.4}
-        color="#05395E"
+        position={[-30, 20, -20]}
+        intensity={0.8}
+        color="#3388cc"
       />
 
       {/* ── Dynamic Components ── */}
