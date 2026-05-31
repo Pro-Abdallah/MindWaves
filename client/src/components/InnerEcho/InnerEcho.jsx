@@ -203,8 +203,9 @@ export default function InnerEcho() {
               transition={{ duration: 0.6, ease: 'easeOut' }}
               className="ie-card ie-card--intro"
             >
-              <span className="ie-card__tag">SECTION III</span>
-              <h2 className="ie-card__title">{t.title[lang]}</h2>
+              <div className="ie-card__header">
+                <h2 className="ie-card__title">{t.title[lang]}</h2>
+              </div>
               <p className="ie-card__subtitle">{t.subtitle[lang]}</p>
               
               <button 

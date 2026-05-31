@@ -108,7 +108,6 @@ export default function SafeHarbor() {
 
         {/* ── Section label at the top ── */}
         <div className="sh-board-label">
-          <span className="sh-board-label__tag">SECTION IV</span>
           <h2 className="sh-board-label__title">Safe Harbor</h2>
         </div>
 

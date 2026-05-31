@@ -69,7 +69,6 @@ export default function OceanWorld() {
           transition={{ duration: 1.0, ease: 'easeOut' }}
           className="ow-header__content"
         >
-          <span className="ow-header__tag">SECTION II</span>
           <h2 className="ow-header__title">Understanding The Waves</h2>
           <p className="ow-header__subtitle">
             An interactive mental-health exploration. Click on the floating islands to explore Bipolar Disorder concepts.
