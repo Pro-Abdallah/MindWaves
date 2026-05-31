@@ -20,11 +20,11 @@ export default function Ocean() {
 
   const uniforms = useMemo(() => ({
     uTime:      { value: 0.0 },
-    uColDeep:   { value: new THREE.Color('#003d7a') },   // vivid deep blue
-    uColMid:    { value: new THREE.Color('#0077bb') },   // ocean blue
-    uColLight:  { value: new THREE.Color('#22aadd') },   // bright surface
+    uColDeep:   { value: new THREE.Color('#011a2e') },   // deep sapphire-indigo
+    uColMid:    { value: new THREE.Color('#005d7a') },   // rich deep teal
+    uColLight:  { value: new THREE.Color('#1fe5d5') },   // glowing tropical turquoise
     uSunDir:    { value: new THREE.Vector3(0.6, 0.75, 0.3).normalize() },
-    uSkyColor:  { value: new THREE.Color('#0099cc') },   // Fresnel sky tint
+    uSkyColor:  { value: new THREE.Color('#55ddff') },   // vibrant sky reflection
   }), [])
 
   useFrame(({ clock }) => {
@@ -124,37 +124,65 @@ export default function Ocean() {
     void main() {
       vec3  N       = normalize(vNormal);
       vec3  viewDir = normalize(cameraPosition - vWorldPos);
-      float t       = uTime * 0.5;
+      float t       = uTime * 0.8; // slightly faster animation for livelier ripples
 
-      // Perturb world-space normal with animated fBm micro-ripples
-      vec2  uv = vWorldPos.xz * 0.25;
-      float bx = fbm(uv + vec2( t*0.11,  t*0.07));
-      float bz = fbm(uv + vec2(-t*0.08,  t*0.13));
-      N = normalize(N + vec3(bx, 0.0, bz) * 0.15);
+      // Dual-frequency fBm normal perturbation for extremely rich micro-ripple details
+      vec2  uv1 = vWorldPos.xz * 0.45;
+      vec2  uv2 = vWorldPos.xz * 1.5; // high frequency for sparkly micro-shimmer
+      
+      float bx = fbm(uv1 + vec2(t * 0.15, t * 0.08)) * 0.6 + fbm(uv2 - vec2(t * 0.25, t * 0.35)) * 0.4;
+      float bz = fbm(uv1 + vec2(-t * 0.12, t * 0.18)) * 0.6 + fbm(uv2 + vec2(t * 0.30, -t * 0.20)) * 0.4;
+      
+      N = normalize(N + vec3(bx, 0.0, bz) * 0.18);
 
       // ── 3-stop colour ramp based on world-space wave height ──────────
-      // vWaveH is local Z (= world Y after rotation), range roughly -0.8 to +0.8 per wave
-      // total stacked range ≈ -2 to +2
+      // vWaveH range is roughly -0.8 to +0.8 per wave, total stacked range ≈ -1.8 to +1.8
       float blend = smoothstep(-1.5, 2.0, vWaveH);
-      vec3  col   = mix(uColDeep, uColMid,   smoothstep(0.0, 0.5, blend));
-      col         = mix(col,      uColLight, smoothstep(0.5, 1.0, blend));
+      vec3  col   = mix(uColDeep, uColMid,   smoothstep(0.0, 0.55, blend));
+      col         = mix(col,      uColLight, smoothstep(0.55, 1.0, blend));
+
+      // Subtle translucent aquamarine peak glow (NOT opaque foam)
+      float peakGlow = smoothstep(0.65, 1.0, blend);
+      col = mix(col, vec3(0.5, 1.0, 0.95), peakGlow * 0.20);
 
       // ── Diffuse from sun ─────────────────────────────────────────────
       float diff = max(dot(N, uSunDir), 0.0);
-      col += uColMid * diff * 0.45;
+      col += uColLight * diff * 0.35;
+
+      // ── Subsurface Scattering (waves glow beautifully when backlit) ──
+      float sss = max(dot(viewDir, -uSunDir), 0.0);
+      sss = pow(sss, 4.0) * (vWaveH + 0.9) * 0.55;
+      col += vec3(0.05, 0.95, 0.85) * sss;
 
       // ── Schlick Fresnel — sky reflection at grazing angles ────────────
       float NdotV  = clamp(dot(N, viewDir), 0.0, 1.0);
       float fresnel = 0.02 + 0.98 * pow(1.0 - NdotV, 5.0);
-      col = mix(col, uSkyColor, fresnel * 0.72);
+      col = mix(col, uSkyColor, fresnel * 0.75);
 
-      // ── Sharp sun specular glint ──────────────────────────────────────
-      vec3  H     = normalize(uSunDir + viewDir);
+      // ── Specular & Sparkle Lobes ──────────────────────────────────────
+      vec3  H = normalize(uSunDir + viewDir);
       float NdotH = max(dot(N, H), 0.0);
-      col += vec3(1.0, 0.96, 0.88) * pow(NdotH, 500.0) * 4.0;
 
-      // ── Broad sky shimmer ─────────────────────────────────────────────
-      col += uSkyColor * pow(NdotH, 20.0) * 0.3;
+      // 1. Broad Sky Shimmer
+      col += uSkyColor * pow(NdotH, 20.0) * 0.25;
+
+      // 2. Direct Sun Specular Disc
+      col += vec3(1.0, 0.97, 0.92) * pow(NdotH, 200.0) * 2.5;
+
+      // 3. Sharp Sun Specular Glint
+      col += vec3(1.0, 0.99, 0.95) * pow(NdotH, 800.0) * 5.0;
+
+      // 4. Magical Sparkle / Glitter (twinkles dynamically over space/time)
+      float sparkleBase = pow(NdotH, 3000.0);
+      vec2  sparkleUV = vWorldPos.xz * 3.5;
+      float twinkle = snoise(sparkleUV + vec2(t * 3.5, -t * 2.8)) * 0.5 + 0.5;
+      twinkle = smoothstep(0.40, 0.90, twinkle); // make the twinkles very sharp
+      col += vec3(0.9, 0.98, 1.0) * sparkleBase * twinkle * 85.0;
+
+      float sparkleBase2 = pow(NdotH, 1500.0);
+      float twinkle2 = snoise(sparkleUV * 1.8 - vec2(t * 2.2, t * 3.9)) * 0.5 + 0.5;
+      twinkle2 = smoothstep(0.45, 0.95, twinkle2);
+      col += vec3(0.85, 0.97, 1.0) * sparkleBase2 * twinkle2 * 25.0;
 
       gl_FragColor = vec4(col, 1.0);
     }
