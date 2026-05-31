@@ -17,10 +17,11 @@ export const islandsData = [
     scale: 2.1,
     elevation: 1.5,
     image: "/island_still.png",
+    heroImage: "/hero_still_island.png",
     introText: "At first glance, everything here feels calm. The sea is quiet. The land is steady. But beneath the surface, something is always shifting.",
     mainContent: [
       "Bipolar disorder is a mental health condition that affects mood, energy, activity, and the way a person experiences the world around them.",
-      "It is not simply “being emotional” or having mood swings.",
+      "It is not simply \"being emotional\" or having mood swings.",
       "The changes are deeper, more intense, and can affect sleep, thinking, decision-making, and daily life.",
       "Many people living with bipolar disorder appear completely fine from the outside, even while struggling internally.",
       "Around 1 in 200 people worldwide live with bipolar disorder.",
@@ -34,11 +35,12 @@ export const islandsData = [
     subtitle: "Mania",
     route: "/island/2",
     position: [-8, 0, 10],
-    color: "#05395E", // Deep Navy
-    accentColor: "#5184C0",
+    color: "#C05118", // Deep Ember
+    accentColor: "#F0813A",
     scale: 1.8,
     elevation: 1.1,
     image: "/island_burning.png",
+    heroImage: "/hero_burning_island.png",
     introText: "From far away, this island looks powerful. Bright. Alive. Almost impossible to ignore. But the closer you get, the more unstable it becomes.",
     mainContent: [
       "A manic episode can feel intense and unstoppable.",
@@ -64,6 +66,7 @@ export const islandsData = [
     scale: 2.3,
     elevation: 2.0,
     image: "/island_sunken.png",
+    heroImage: "/hero_sunken_island.png",
     introText: "This island barely rises above the water. Quiet. Heavy. Almost disappearing into the sea.",
     mainContent: [
       "A depressive episode is more than sadness.",
@@ -90,6 +93,7 @@ export const islandsData = [
     scale: 1.9,
     elevation: 1.4,
     image: "/island_twin.png",
+    heroImage: "/hero_twin_island.png",
     introText: "These islands belong to the same sea. But they are not the same place.",
     mainContent: [
       "Bipolar disorder exists in different forms.",
@@ -97,7 +101,7 @@ export const islandsData = [
       "Bipolar II involves hypomania a milder form of mania that may appear productive or even normal from the outside combined with long and deeply painful depressive episodes.",
       "Because hypomania may seem normal, Bipolar II is often misunderstood or overlooked entirely.",
       "Both experiences are real.",
-      "Both can deeply affect a person’s life."
+      "Both can deeply affect a person's life."
     ],
     endingLine: "Not every storm arrives the same way."
   },
@@ -112,6 +116,7 @@ export const islandsData = [
     scale: 2.0,
     elevation: 1.3,
     image: "/island_root.png",
+    heroImage: "/hero_root_island.png",
     introText: "Nothing on this island grew overnight. Every root reaches into something deeper.",
     mainContent: [
       "There is no single cause of bipolar disorder.",
@@ -136,6 +141,7 @@ export const islandsData = [
     scale: 1.6,
     elevation: 1.0,
     image: "/island_lighthouse.png",
+    heroImage: "/hero_lighthouse_island.png",
     introText: "The sea does not become calm here. But for the first time, there is a direction.",
     mainContent: [
       "Recovery does not mean becoming a different person.",

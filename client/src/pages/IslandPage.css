@@ -1,198 +1,354 @@
 /* ================================================================
-   IslandPage.css
-   Detailed presentation page styling
+   IslandPage.css  –  Cinematic frameless island detail page
    ================================================================ */
 
-.ip-container {
-  position: relative;
+/* ── Page wrapper ──
+   Pull up 70 px to compensate for the layout's padding-top,
+   so the hero image fills the entire viewport behind the navbar */
+.ip-page {
+  width: 100%;
   min-height: 100vh;
-  width: 100vw;
   background: #020E18;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 24px;
   overflow-x: hidden;
+  margin-top: -70px;
 }
 
-.ip-background {
+/* ── Hero fills 100vh including the area behind the navbar ── */
+.ip-hero {
+  height: 100vh;
+}
+
+/* ================================================================
+   HERO SECTION
+   ================================================================ */
+.ip-hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+/* The actual background image — zooms in via framer-motion */
+.ip-hero__img {
+  position: absolute;
+  inset: -8%;           /* extra bleed so zoom never shows edges */
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
+  transform-origin: center center;
+}
+
+/* ── Custom Animated Silhouettes for Root and Lighthouse Islands ── */
+.ip-hero__silhouette-container {
+  position: absolute;
+  bottom: -30px; /* Sits nicely on the frame bottom border */
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: min(340px, 70vw);
+  height: min(340px, 70vw);
+  z-index: 2; /* In front of background image, behind vignettes & text */
+  pointer-events: none;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transform-origin: bottom center;
+}
+
+.ip-hero__silhouette-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 25px rgba(2, 14, 24, 0.95));
+  animation: ip-breathe 7s ease-in-out infinite alternate;
+}
+
+/* Fine-tune individual alignment */
+.ip-hero__silhouette-svg.sitting {
+  transform: translateY(10px);
+}
+
+.ip-hero__silhouette-svg.standing {
+  transform: translateY(15px);
+}
+
+@keyframes ip-breathe {
+  0% {
+    transform: translateY(0px) scale(0.98);
+  }
+  100% {
+    transform: translateY(-6px) scale(1.02);
+  }
+}
+
+
+/* Top vignette — dark-to-transparent so nav sits comfortably */
+.ip-hero__overlay-top {
   position: absolute;
   inset: 0;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(81, 132, 192, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(5, 57, 94, 0.35) 0%, transparent 60%),
-    #020E18;
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 14, 24, 0.55) 0%,
+    transparent 35%
+  );
   z-index: 1;
 }
 
-.ip-content {
-  position: relative;
+/* Bottom vignette — heavy fade into the content section */
+.ip-hero__overlay-bottom {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    #020E18 0%,
+    rgba(2, 14, 24, 0.85) 22%,
+    rgba(2, 14, 24, 0.4) 50%,
+    transparent 100%
+  );
   z-index: 2;
-  width: 100%;
-  max-width: 680px;
 }
 
-/* ── Content Card Design ── */
-
-.ip-card {
-  padding: 48px;
-  background: rgba(2, 14, 24, 0.82);
-  border: 1px solid rgba(81, 132, 192, 0.22);
-  border-radius: 8px;
-  backdrop-filter: blur(30px) saturate(1.4);
-  -webkit-backdrop-filter: blur(30px) saturate(1.4);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+/* Hero text block */
+.ip-hero__text {
+  position: relative;
+  z-index: 3;
   text-align: center;
-}
-
-.ip-card__tag {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-}
-
-.ip-card__title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(24px, 4vw, 36px);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: #DFE1E6;
-  text-transform: uppercase;
-  margin: 12px 0 6px 0;
-  line-height: 1.2;
-}
-
-.ip-card__subtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(13px, 2vw, 15px);
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  margin-bottom: 24px;
-}
-
-.ip-card__divider {
-  height: 1px;
+  padding: 0 24px 100px;
   width: 100%;
-  margin: 24px 0;
-  opacity: 0.4;
-}
-
-/* ── Content Body ── */
-
-.ip-card__body {
-  text-align: left;
-  margin-bottom: 36px;
-}
-
-/* Intro Text Panel */
-.ip-card__intro {
-  padding: 16px 20px;
-  background: rgba(5, 57, 94, 0.25);
-  border-left: 3px solid;
-  border-radius: 0 6px 6px 0;
-  margin-bottom: 28px;
-}
-
-.ip-card__intro-text {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(13.5px, 1.8vw, 15px);
-  font-style: italic;
-  line-height: 1.6;
-  color: rgba(223, 225, 230, 0.9);
-  margin: 0;
-}
-
-/* Paragraph mappings */
-.ip-card__paragraphs {
+  max-width: 860px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 16px;
 }
 
-.ip-card__paragraph {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(14px, 1.8vw, 15.5px);
-  color: rgba(223, 225, 230, 0.85);
-  line-height: 1.7;
-  margin: 0;
-}
-
-/* Ending Quote */
-.ip-card__quote-wrapper {
-  position: relative;
-  text-align: center;
-  padding: 12px 24px;
-}
-
-.ip-card__quote-deco {
+.ip-hero__tag {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 38px;
-  line-height: 1;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+.ip-hero__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(36px, 7vw, 80px);
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  color: #DFE1E6;
+  text-transform: uppercase;
+  line-height: 1.05;
+  margin: 0;
+  text-shadow: 0 4px 40px rgba(2, 14, 24, 0.8);
+}
+
+.ip-hero__line {
+  width: 60px;
+  height: 2px;
+  border-radius: 2px;
+  transform-origin: left center;
+}
+
+/* Scroll cue */
+.ip-hero__scroll-cue {
   position: absolute;
-  top: -10px;
+  bottom: 32px;
   left: 50%;
   transform: translateX(-50%);
-  opacity: 0.15;
-  user-select: none;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
-.ip-card__quote-text {
+.ip-hero__scroll-cue span {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(14px, 2vw, 17px);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  opacity: 0.6;
+}
+
+.ip-hero__scroll-arrow {
+  width: 18px;
+  height: 18px;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
+  transform: rotate(45deg);
+  opacity: 0.6;
+  animation: ip-bounce 1.8s ease-in-out infinite;
+}
+
+@keyframes ip-bounce {
+  0%, 100% { transform: rotate(45deg) translateY(0); }
+  50%       { transform: rotate(45deg) translateY(5px); }
+}
+
+/* ================================================================
+   CONTENT SECTION  –  no card / no frame, raw page flow
+   ================================================================ */
+.ip-content {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 72px 32px 100px;
+}
+
+/* Subtle ambient glow behind the text */
+.ip-content__glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120%;
+  height: 340px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* All direct content children sit above the glow */
+.ip-content > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Intro block ── */
+.ip-content__intro {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 48px;
+}
+
+.ip-content__intro-bar {
+  flex-shrink: 0;
+  width: 3px;
+  min-height: 100%;
+  align-self: stretch;
+  border-radius: 2px;
+  opacity: 0.75;
+}
+
+.ip-content__intro-text {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(16px, 2.2vw, 20px);
+  font-style: italic;
+  line-height: 1.7;
+  color: rgba(223, 225, 230, 0.88);
+  margin: 0;
+}
+
+/* ── Divider ── */
+.ip-content__divider {
+  height: 1px;
+  width: 100%;
+  margin: 48px 0;
+  opacity: 0.5;
+  border: none;
+}
+
+/* ── Main paragraphs ── */
+.ip-content__body {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.ip-content__paragraph {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(15px, 1.9vw, 17px);
+  color: rgba(223, 225, 230, 0.78);
+  line-height: 1.85;
+  margin: 0;
+  padding-left: 0;
+}
+
+/* ── Ending quote ── */
+.ip-content__quote {
+  position: relative;
+  text-align: center;
+  padding: 24px 16px 8px;
+}
+
+.ip-content__quote-mark {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 72px;
+  line-height: 0.6;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.12;
+  user-select: none;
+  pointer-events: none;
+}
+
+.ip-content__quote-text {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(17px, 2.4vw, 22px);
   font-weight: 700;
   font-style: italic;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
+  line-height: 1.45;
   margin: 0;
-  line-height: 1.4;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
-/* ── Return Button ── */
+/* ── Footer / back button ── */
+.ip-content__footer {
+  margin-top: 56px;
+  display: flex;
+  justify-content: center;
+}
 
-.ip-card__back-btn {
+.ip-back-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px 28px;
+  gap: 12px;
+  padding: 16px 36px;
   background: transparent;
-  border: 1px solid;
+  border: 1px solid var(--accent-dim);
   border-radius: 4px;
   color: #DFE1E6;
   font-family: 'Space Grotesk', sans-serif;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   cursor: pointer;
   outline: none;
-  transition: all 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease,
+              color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.ip-card__back-icon {
+.ip-back-btn__icon {
   width: 16px;
   height: 16px;
   transition: transform 0.3s ease;
 }
 
-.ip-card__back-btn:hover {
-  background: #DFE1E6;
+.ip-back-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
   color: #020E18;
-  border-color: #DFE1E6 !important;
-  box-shadow: 0 0 20px rgba(223, 225, 230, 0.3);
+  box-shadow: 0 0 28px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
-.ip-card__back-btn:hover .ip-card__back-icon {
-  transform: translateX(-4px);
+.ip-back-btn:hover .ip-back-btn__icon {
+  transform: translateX(-5px);
 }
 
-.ip-card__back-btn:active {
+.ip-back-btn:active {
   transform: scale(0.97);
 }
 
-/* Error page fallback */
+/* ── Error fallback ── */
 .ip-error-page {
   display: flex;
   flex-direction: column;
@@ -200,14 +356,21 @@
   justify-content: center;
   min-height: 100vh;
   gap: 16px;
+  color: #DFE1E6;
+  font-family: 'Space Grotesk', sans-serif;
 }
 
-/* Mobile responsive adjustments */
+/* ── Mobile ── */
 @media (max-width: 600px) {
-  .ip-card {
-    padding: 32px 20px;
+  .ip-content {
+    padding: 48px 20px 72px;
   }
-  .ip-container {
-    padding: 24px 16px;
+
+  .ip-hero__title {
+    font-size: clamp(28px, 10vw, 48px);
+  }
+
+  .ip-hero__text {
+    padding-bottom: 72px;
   }
 }
