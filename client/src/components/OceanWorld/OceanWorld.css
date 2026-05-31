@@ -73,7 +73,7 @@
 
 .ow-header-framed__tag {
   display: inline-block;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.35em;
@@ -83,9 +83,10 @@
 }
 
 .ow-header-framed__title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: clamp(20px, 3.2vw, 28px);
-  font-weight: 700;
+  font-weight: 400;
+  font-style: italic;
   letter-spacing: 0.05em;
   color: #DFE1E6;
   text-transform: uppercase;
@@ -122,7 +123,7 @@
 }
 
 .ow-tooltip-subtitle {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 8.5px;
   font-weight: 700;
   letter-spacing: 0.15em;
@@ -132,9 +133,10 @@
 }
 
 .ow-tooltip-title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 400;
+  font-style: italic;
   color: #DFE1E6;
   margin: 0 0 6px 0;
   text-transform: uppercase;
@@ -152,7 +154,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 9.5px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -172,7 +174,7 @@
 }
 
 .ow-footer-framed__guidance {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.15em;
@@ -215,7 +217,7 @@
 }
 
 .ow-island-label__title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -235,7 +237,7 @@
 }
 
 .ow-island-label__action {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.28em;

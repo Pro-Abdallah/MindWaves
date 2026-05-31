@@ -3,7 +3,6 @@
    Hero image dimmed constantly. All text centered.
    ================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap');
 
 /* ── Page wrapper ── */
 .ip-page {
@@ -85,7 +84,7 @@
 
 
 .ip-title__tag {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: clamp(11px, 1.3vw, 13px);
   font-weight: 700;
   letter-spacing: 0.38em;
@@ -95,12 +94,13 @@
 }
 
 .ip-title__heading {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: clamp(32px, 8vw, 76px);
-  font-weight: 800;
+  font-weight: 400;
+  font-style: italic;
   letter-spacing: 0.03em;
   color: #DFE1E6;
-  text-transform: uppercase;
+  text-transform: none;
   line-height: 1.04;
   margin: 0;
   text-shadow: 0 4px 48px rgba(2, 14, 24, 0.9);
@@ -254,7 +254,7 @@
   border: 1px solid var(--accent-dim);
   border-radius: 4px;
   color: #DFE1E6;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.22em;
@@ -295,7 +295,7 @@
   min-height: 100vh;
   gap: 16px;
   color: #DFE1E6;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
 }
 
 /* ── Mobile ── */

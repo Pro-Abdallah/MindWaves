@@ -92,7 +92,7 @@
 }
 
 .wws-header__tag {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.3em;
@@ -101,9 +101,10 @@
 }
 
 .wws-header__title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: clamp(30px, 4vw, 42px);
-  font-weight: 700;
+  font-weight: 400;
+  font-style: italic;
   color: #DFE1E6;
   margin: 12px 0 8px 0;
   letter-spacing: 0.02em;
@@ -147,7 +148,7 @@
 }
 
 .wws-panel__tag {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.25em;
@@ -157,9 +158,10 @@
 }
 
 .wws-panel__title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: clamp(20px, 2.5vw, 24px);
-  font-weight: 700;
+  font-weight: 400;
+  font-style: italic;
   color: #DFE1E6;
   margin-bottom: 24px;
 }
@@ -252,7 +254,7 @@
 }
 
 .wws-vision-highlight__text {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: 15px;
   font-weight: 700;
   font-style: italic;
@@ -274,7 +276,7 @@
 }
 
 .wws-crew-header__tag {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.25em;
@@ -283,9 +285,10 @@
 }
 
 .wws-crew-header__title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: 28px;
-  font-weight: 700;
+  font-weight: 400;
+  font-style: italic;
   color: #DFE1E6;
   margin: 8px 0 6px 0;
   letter-spacing: 0.05em;
@@ -330,7 +333,7 @@
 }
 
 .wws-crew-card__role {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -352,7 +355,7 @@
 }
 
 .wws-crew-card__member-name {
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-family: var(--font-primary);
   font-size: 16px;
   font-weight: 500;
   color: #DFE1E6;
