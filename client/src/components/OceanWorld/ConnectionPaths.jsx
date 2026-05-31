@@ -61,12 +61,8 @@ export default function ConnectionPaths() {
   // Define links between islands
   const connections = useMemo(() => [
     { from: 1, to: 2, color: "#5184C0" },
-    { from: 2, to: 5, color: "#91BFF6" },
-    { from: 5, to: 4, color: "#5184C0" },
-    { from: 4, to: 3, color: "#91BFF6" },
-    { from: 3, to: 1, color: "#DFE1E6" },
-    { from: 6, to: 1, color: "#91BFF6" },
-    { from: 6, to: 2, color: "#5184C0" }
+    { from: 2, to: 3, color: "#91BFF6" },
+    { from: 3, to: 1, color: "#DFE1E6" }
   ], [])
 
   return (

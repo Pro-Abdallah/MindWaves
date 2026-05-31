@@ -3,111 +3,124 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
 /**
- * Ocean water plane component.
- * Uses a custom ShaderMaterial to displace vertices in a wave-like manner
- * and color them using the project's ocean blue palette.
+ * Deep, glassy, serene ocean without foam.
+ * Uses Gerstner waves but with smoother, darker styling for a premium aesthetic.
  */
 export default function Ocean() {
   const meshRef = useRef()
 
-  // Custom shader uniforms
   const uniforms = useMemo(() => ({
     uTime: { value: 0 },
-    uColorDeep: { value: new THREE.Color("#05395E") }, // Deep Navy
-    uColorMid: { value: new THREE.Color("#5184C0") },  // Steel Blue
-    uColorPeak: { value: new THREE.Color("#91BFF6") }, // Sky Blue
-    uColorMist: { value: new THREE.Color("#DFE1E6") }  // Mist
+    uDeepColor: { value: new THREE.Color("#010b14") },    // Very deep black-blue
+    uSurfaceColor: { value: new THREE.Color("#05284a") }, // Dark sapphire blue
+    uWaveSteepness: { value: 0.15 }, // Lower steepness for smoother, calmer waves
+    uWaveLength: { value: 16.0 },    // Longer, more majestic waves
+    uWaveSpeed: { value: 0.8 },      // Slower, more relaxing
+    uLightDir: { value: new THREE.Vector3(0.5, 1.0, 0.5).normalize() },
   }), [])
 
-  // Animate the wave time uniform on each frame
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.material.uniforms.uTime.value = state.clock.getElapsedTime()
+      meshRef.current.material.uniforms.uTime.value = state.clock.getElapsedTime() * 0.6
     }
   })
 
-  // Vertex Shader for wave displacement
+  // Gerstner Wave Shader
   const vertexShader = `
     uniform float uTime;
-    varying vec3 vPosition;
-    varying float vElevation;
+    uniform float uWaveSteepness;
+    uniform float uWaveLength;
+    uniform float uWaveSpeed;
+
+    varying vec3 vWorldPosition;
     varying vec3 vNormal;
+    varying float vElevation;
 
-    // Simple pseudo-random hash
-    float hash(vec2 p) {
-      return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123);
-    }
+    // Gerstner wave function
+    vec3 gerstnerWave(vec4 wave, vec3 p, inout vec3 tangent, inout vec3 binormal) {
+      float steepness = wave.z;
+      float amplitude = wave.w;
+      float k = 2.0 * 3.14159 / uWaveLength;
+      float c = sqrt(9.8 / k);
+      vec2 d = normalize(wave.xy);
+      float f = k * (dot(d, p.xz) - c * uTime * uWaveSpeed);
+      float a = steepness / k;
 
-    // Simple noise function
-    float noise(vec2 p) {
-      vec2 i = floor(p);
-      vec2 f = fract(p);
-      vec2 u = f * f * (3.0 - 2.0 * f);
-      return mix(mix(hash(i + vec2(0.0,0.0)), hash(i + vec2(1.0,0.0)), u.x),
-                 mix(hash(i + vec2(0.0,1.0)), hash(i + vec2(1.0,1.0)), u.x), u.y);
+      tangent += vec3(
+        -d.x * d.x * (steepness * sin(f)),
+        d.x * (steepness * cos(f)),
+        -d.x * d.y * (steepness * sin(f))
+      );
+      binormal += vec3(
+        -d.x * d.y * (steepness * sin(f)),
+        d.y * (steepness * cos(f)),
+        -d.y * d.y * (steepness * sin(f))
+      );
+      return vec3(
+        d.x * (a * cos(f)),
+        a * sin(f),
+        d.y * (a * cos(f))
+      );
     }
 
     void main() {
-      vPosition = position;
-      
-      // Calculate waves using multiple sine/cosine waves and noise
-      float elevation = sin(position.x * 0.15 + uTime * 0.8) * 0.35
-                      + cos(position.y * 0.18 + uTime * 0.6) * 0.35;
-      
-      // Add micro-ripples via noise
-      elevation += noise(position.xy * 0.4 + uTime * 1.2) * 0.15;
+      vec3 gridPoint = position;
+      vec3 tangent = vec3(1.0, 0.0, 0.0);
+      vec3 binormal = vec3(0.0, 0.0, 1.0);
+      vec3 p = gridPoint;
 
-      vElevation = elevation;
+      // Add smoother, longer waves
+      p += gerstnerWave(vec4(1.0, 0.3, 0.15, 1.2), gridPoint, tangent, binormal);
+      p += gerstnerWave(vec4(0.7, -0.7, 0.15, 0.8), gridPoint, tangent, binormal);
+      p += gerstnerWave(vec4(-0.4, 0.8, 0.1, 0.5), gridPoint, tangent, binormal);
+
+      vec3 normal = normalize(cross(binormal, tangent));
+      vNormal = normal;
+      vElevation = p.y;
       
-      vec3 displacedPosition = position;
-      displacedPosition.z = elevation; // Offset height (in PlaneGeometry, normal is along Z axis before rotation)
-
-      vec4 modelPosition = modelMatrix * vec4(displacedPosition, 1.0);
-      vec4 viewPosition = viewMatrix * modelPosition;
-      gl_Position = projectionMatrix * viewPosition;
-
-      vNormal = normalMatrix * vec3(0.0, 0.0, 1.0); // simple normal direction
+      vec4 modelPosition = modelMatrix * vec4(p, 1.0);
+      vWorldPosition = modelPosition.xyz;
+      gl_Position = projectionMatrix * viewMatrix * modelPosition;
     }
   `
 
-  // Fragment Shader for coloring and ambient lighting matching the palette
   const fragmentShader = `
-    uniform vec3 uColorDeep;
-    uniform vec3 uColorMid;
-    uniform vec3 uColorPeak;
-    uniform vec3 uColorMist;
+    uniform vec3 uDeepColor;
+    uniform vec3 uSurfaceColor;
+    uniform vec3 uLightDir;
     
-    varying vec3 vPosition;
-    varying float vElevation;
+    varying vec3 vWorldPosition;
     varying vec3 vNormal;
+    varying float vElevation;
 
     void main() {
-      // Normalize elevation to range [0.0, 1.0] for color blending
-      // Elevation swings roughly from -0.85 to +0.85
-      float mixStrength = (vElevation + 0.85) / 1.7;
-      mixStrength = clamp(mixStrength, 0.0, 1.0);
+      vec3 viewDir = normalize(cameraPosition - vWorldPosition);
+      vec3 normal = normalize(vNormal);
 
-      // Gradient color blend based on wave height
-      vec3 waterColor = mix(uColorDeep, uColorMid, mixStrength);
-      
-      // Add foam/peak highlight on the highest parts of waves
-      if (vElevation > 0.4) {
-        float peakStrength = smoothstep(0.4, 0.8, vElevation);
-        waterColor = mix(waterColor, uColorPeak, peakStrength);
-      }
+      // Smooth blend between deep and surface color based on height
+      float heightMix = smoothstep(-1.0, 1.5, vElevation);
+      vec3 color = mix(uDeepColor, uSurfaceColor, heightMix);
 
-      // Add a subtle touch of mist highlight on the extreme wave tops
-      if (vElevation > 0.65) {
-        float mistStrength = smoothstep(0.65, 0.85, vElevation);
-        waterColor = mix(waterColor, uColorMist, mistStrength * 0.3);
-      }
+      // Diffuse lighting (very subtle for dark water)
+      float diff = max(dot(normal, uLightDir), 0.0);
+      color += uSurfaceColor * diff * 0.15;
 
-      // Ambient reflection based on height
-      vec3 viewDir = vec3(0.0, 0.0, 1.0);
-      float fresnel = pow(1.0 - max(dot(vNormal, viewDir), 0.0), 3.0);
-      waterColor += uColorPeak * fresnel * 0.25;
+      // Glassy Fresnel reflection (reflecting a soft cyan/moonlight sky)
+      float fresnel = pow(1.0 - max(dot(viewDir, normal), 0.0), 3.0);
+      vec3 skyReflection = vec3(0.3, 0.6, 0.9); // Cyan moonlight glow
+      color = mix(color, skyReflection, fresnel * 0.4);
 
-      gl_FragColor = vec4(waterColor, 0.94);
+      // Specular highlight for a glassy look (no foam)
+      vec3 halfVector = normalize(uLightDir + viewDir);
+      float spec = pow(max(dot(normal, halfVector), 0.0), 256.0);
+      vec3 specColor = vec3(0.7, 0.9, 1.0);
+      color += specColor * spec * 0.6;
+
+      // Edge fading for soft horizon
+      float dist = length(vWorldPosition.xz);
+      float alpha = smoothstep(120.0, 80.0, dist);
+
+      gl_FragColor = vec4(color, alpha * 0.98);
     }
   `
 
@@ -118,7 +131,7 @@ export default function Ocean() {
       position={[0, -0.5, 0]}
       receiveShadow
     >
-      <planeGeometry args={[180, 180, 96, 96]} />
+      <planeGeometry args={[250, 250, 256, 256]} />
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}

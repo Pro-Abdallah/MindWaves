@@ -5,6 +5,7 @@ import { islandsData } from './islands.data'
 import Ocean from './Ocean'
 import Island from './Island'
 import Ship from './Ship'
+import { Text } from '@react-three/drei'
 import Particles from './Particles'
 import ConnectionPaths from './ConnectionPaths'
 
@@ -67,6 +68,7 @@ function CameraController({ zoomTarget, setZoomTarget, onZoomFinished }) {
 export default function Scene({ onExploreStart }) {
   const [zoomTarget, setZoomTarget] = useState(null)
   const [pendingRoute, setPendingRoute] = useState(null)
+  const [hoveredTitle, setHoveredTitle] = useState(null)
 
   const handleIslandExplore = (position, route) => {
     setZoomTarget({ position })
@@ -114,6 +116,23 @@ export default function Scene({ onExploreStart }) {
       {/* ── Dynamic Components ── */}
       <Ocean />
       <Ship />
+      
+      {/* ── Central Sea Title (appears on hover) ── */}
+      <Text
+        position={[0, 1.5, 0]}
+        rotation={[-Math.PI / 2.5, 0, 0]} // Slightly tilted back for readability
+        fontSize={2.5}
+        color="#ffffff"
+        anchorX="center"
+        anchorY="middle"
+        outlineWidth={0.08}
+        outlineColor="#05284a"
+        fillOpacity={hoveredTitle ? 0.9 : 0}
+        outlineOpacity={hoveredTitle ? 0.8 : 0}
+      >
+        {hoveredTitle || ""}
+      </Text>
+
       <Particles count={400} />
       <ConnectionPaths />
 
@@ -129,8 +148,10 @@ export default function Scene({ onExploreStart }) {
           accentColor={island.accentColor}
           scale={island.scale}
           elevation={island.elevation}
+          image={island.image}
           route={island.route}
           onExploreStart={handleIslandExplore}
+          onHoverChange={(title) => setHoveredTitle(title)}
         />
       ))}
     </>

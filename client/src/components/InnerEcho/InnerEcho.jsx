@@ -17,8 +17,6 @@ export default function InnerEcho() {
   const [answers, setAnswers] = useState([])
   const [activeSelectIdx, setActiveSelectIdx] = useState(-1) // active choice for keyboard navigation
 
-  // Ambient sound state indicator (Visual only - placeholder for actual ambient audio)
-  const [audioActive, setAudioActive] = useState(false)
 
   // Floating particles generation
   const particles = useRef(
@@ -163,31 +161,7 @@ export default function InnerEcho() {
         </div>
       </div>
 
-      {/* ── Top Bar (Language toggle + Audio Indicator) ── */}
-      <div className="ie-topbar">
-        {/* Language selector toggle pill */}
-        <button
-          className="ie-lang-toggle"
-          onClick={() => setLang(prev => prev === 'en' ? 'ar' : 'en')}
-          aria-label="Toggle language"
-        >
-          {lang === 'en' ? 'العربية' : 'English'}
-        </button>
 
-        {/* Ambient music visual placeholder */}
-        <button
-          className={`ie-audio-toggle ${audioActive ? 'ie-audio-toggle--active' : ''}`}
-          onClick={() => setAudioActive(prev => !prev)}
-          title={t.audioToggle[lang]}
-        >
-          <span className="ie-audio-toggle__lines">
-            <span className="ie-audio-bar" />
-            <span className="ie-audio-bar" />
-            <span className="ie-audio-bar" />
-          </span>
-          <span className="ie-audio-toggle__label">{t.audioToggle[lang]}</span>
-        </button>
-      </div>
 
       {/* ── Content View Wrapper ── */}
       <div className="ie-content">
