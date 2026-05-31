@@ -124,7 +124,7 @@ export default function CinematicIntro({ onComplete }) {
   const [autoplayFailed, setAutoplayFailed] = useState(false)
   
   // Single sound state that controls audio for the active video
-  const [isMuted, setIsMuted]               = useState(true)
+  const [isMuted, setIsMuted]               = useState(false)
 
   const firstVideoRef  = useRef(null)
   const secondVideoRef = useRef(null)
@@ -163,8 +163,8 @@ export default function CinematicIntro({ onComplete }) {
     const tryPlay = async () => {
       setPhase('firstVideo')
       try {
-        video.muted = true
-        setIsMuted(true) // Force start muted due to browser autoplay limits
+        video.muted = false
+        setIsMuted(false) 
         await video.play()
       } catch {
         setAutoplayFailed(true)
@@ -253,7 +253,6 @@ export default function CinematicIntro({ onComplete }) {
         className={`ci-video${showFirstVideo ? ' ci-video--active' : ''}`}
         src={firstHalfSrc}
         autoPlay
-        muted
         playsInline
         preload="auto"
         onEnded={handleFirstVideoEnd}

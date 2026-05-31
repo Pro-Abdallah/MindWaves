@@ -27,7 +27,7 @@ function CameraController({ zoomTarget, setZoomTarget, onZoomFinished }) {
         zoomTarget.position[1] + 2.5,
         zoomTarget.position[2] + 4.5
       )
-      
+
       camera.position.lerp(targetCamPos, 0.065)
       currentLookAt.current.lerp(new THREE.Vector3(...zoomTarget.position), 0.065)
       camera.lookAt(currentLookAt.current)
@@ -94,7 +94,7 @@ export default function Scene({ onExploreStart }) {
 
       {/* ── Lighting ── */}
       <ambientLight intensity={0.45} color="#5184C0" />
-      
+
       {/* Main moonlight/directional light */}
       <directionalLight
         position={[25, 30, 20]}
