@@ -1,7 +1,9 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { questionsData, resultsData } from './questions.data'
+import OceanBackground from '../ABottleReturned/components/OceanBackground'
 import './InnerEcho.css'
+import '../ABottleReturned/ABottleReturned.css'
 
 /**
  * Immersive Interactive Psychological Reflection Quiz.
@@ -18,17 +20,7 @@ export default function InnerEcho() {
   const [activeSelectIdx, setActiveSelectIdx] = useState(-1) // active choice for keyboard navigation
 
 
-  // Floating particles generation
-  const particles = useRef(
-    Array.from({ length: 25 }, (_, i) => ({
-      id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: 4 + Math.random() * 8,
-      delay: Math.random() * 5,
-      duration: 8 + Math.random() * 12
-    }))
-  )
+  // Particles ref removed because we are using OceanBackground
 
   // Keyboard navigation controller
   useEffect(() => {
@@ -137,29 +129,8 @@ export default function InnerEcho() {
 
   return (
     <section className={`ie-container ${lang === 'ar' ? 'ie-rtl' : ''}`} id="inner-echo" aria-label="Inner Echo Quiz">
-      {/* ── Immersive Ambient Animated Backdrop ── */}
-      <div className="ie-ambient-bg">
-        <div className="ie-glow-orb ie-glow-orb--left" />
-        <div className="ie-glow-orb ie-glow-orb--right" />
-        
-        {/* Particle System */}
-        <div className="ie-particles">
-          {particles.current.map((p) => (
-            <span
-              key={p.id}
-              className="ie-particle"
-              style={{
-                left: `${p.x}%`,
-                top: `${p.y}%`,
-                width: `${p.size}px`,
-                height: `${p.size}px`,
-                animationDelay: `${p.delay}s`,
-                animationDuration: `${p.duration}s`
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      {/* Ocean background — same as Ride The Waves & ABottleReturned */}
+      <OceanBackground isBlurred={false} />
 
 
 
@@ -171,10 +142,10 @@ export default function InnerEcho() {
           {stage === 'intro' && (
             <motion.div
               key="intro"
-              initial={{ opacity: 0, scale: 0.96 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.04 }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 1 }}
               className="ie-card ie-card--intro"
             >
               <div className="ie-card__header">
@@ -196,10 +167,10 @@ export default function InnerEcho() {
           {stage === 'quiz' && (
             <motion.div
               key={`question-${currentIdx}`}
-              initial={{ opacity: 0, x: lang === 'en' ? 40 : -40 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: lang === 'en' ? -40 : 40 }}
-              transition={{ duration: 0.45, ease: 'easeInOut' }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -30 }}
+              transition={{ duration: 1 }}
               className="ie-card ie-card--quiz"
             >
               {/* Question Header Progress */}
@@ -250,7 +221,7 @@ export default function InnerEcho() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.7, ease: 'easeOut' }}
+              transition={{ duration: 1 }}
               className={`ie-card ie-card--result ${result.class}`}
             >
               <span className="ie-card__tag">REFLECTION COMPLETED</span>

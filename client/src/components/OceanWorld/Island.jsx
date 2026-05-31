@@ -434,7 +434,10 @@ export default function Island({
           transform: `scale(${hovered ? 1.06 : 1})`
         }}
       >
-        <div className={`ow-island-label ${hovered ? 'ow-island-label--active' : ''}`}>
+        <div
+          className={`ow-island-label ${hovered ? 'ow-island-label--active' : ''}`}
+          style={{ '--island-accent': accentColor }}
+        >
           <h3 className="ow-island-label__title">{title}</h3>
           <span className="ow-island-label__sub">{subtitle}</span>
           <span className="ow-island-label__action">EXPLORE</span>

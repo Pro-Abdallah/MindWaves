@@ -191,6 +191,101 @@
   pointer-events: auto;
 }
 
+/* ── Island Labels (HTML overlays rendered via drei/Html) ── */
+
+.ow-island-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 16px 12px;
+  background: rgba(2, 14, 24, 0.72);
+  border: 1px solid rgba(145, 191, 246, 0.18);
+  border-radius: 8px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  transition:
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s ease;
+}
+
+.ow-island-label__title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #DFE1E6;
+  text-transform: uppercase;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.ow-island-label__sub {
+  font-family: 'Inter', sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: rgba(145, 191, 246, 0.75);
+  text-transform: uppercase;
+}
+
+.ow-island-label__action {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: rgba(145, 191, 246, 0.5);
+  text-transform: uppercase;
+  margin-top: 2px;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+/* ── Hover / Active glow state ── */
+
+.ow-island-label--active {
+  background: rgba(2, 14, 24, 0.88);
+  border-color: color-mix(in srgb, var(--island-accent, #91BFF6) 55%, transparent);
+  /* multi-layer glow: inner halo + outer bloom */
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--island-accent, #91BFF6) 35%, transparent),
+    0 0 32px color-mix(in srgb, var(--island-accent, #91BFF6) 20%, transparent),
+    0 0 64px color-mix(in srgb, var(--island-accent, #91BFF6) 10%, transparent),
+    inset 0 0 10px color-mix(in srgb, var(--island-accent, #91BFF6) 6%, transparent);
+  animation: ow-label-pulse 2s ease-in-out infinite alternate;
+}
+
+.ow-island-label--active .ow-island-label__title {
+  color: #ffffff;
+  text-shadow: 0 0 18px color-mix(in srgb, var(--island-accent, #91BFF6) 60%, transparent);
+}
+
+.ow-island-label--active .ow-island-label__action {
+  color: var(--island-accent, #91BFF6);
+  opacity: 1;
+}
+
+@keyframes ow-label-pulse {
+  0% {
+    box-shadow:
+      0 0 10px color-mix(in srgb, var(--island-accent, #91BFF6) 30%, transparent),
+      0 0 28px color-mix(in srgb, var(--island-accent, #91BFF6) 16%, transparent),
+      0 0 56px color-mix(in srgb, var(--island-accent, #91BFF6) 8%, transparent),
+      inset 0 0 8px color-mix(in srgb, var(--island-accent, #91BFF6) 5%, transparent);
+  }
+  100% {
+    box-shadow:
+      0 0 18px color-mix(in srgb, var(--island-accent, #91BFF6) 50%, transparent),
+      0 0 44px color-mix(in srgb, var(--island-accent, #91BFF6) 28%, transparent),
+      0 0 80px color-mix(in srgb, var(--island-accent, #91BFF6) 14%, transparent),
+      inset 0 0 14px color-mix(in srgb, var(--island-accent, #91BFF6) 8%, transparent);
+  }
+}
+
 /* ── Responsive adjustments ── */
 
 @media (max-width: 768px) {

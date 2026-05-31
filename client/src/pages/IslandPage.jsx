@@ -1,28 +1,50 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { motion, useScroll, useTransform } from 'framer-motion'
-import { useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import { islandsData } from '../components/OceanWorld/islands.data'
 import './IslandPage.css'
 
 /**
- * Detailed Island presentation page.
- * Cinematic hero image with zoom-in effect, frameless flowing content.
+ * High-Performance GPU Glide Timeline
+ *  0 ms     — Page fades in (PageLayout)
+ *  400 ms   — Big title fades IN (centered via transform translate3d)
+ *  4000 ms  — Title glides to top-left and scales down (pure GPU transform, zero layout repaint)
+ *  4400 ms  — Highlight intro text appears (centered)
+ *  10400 ms — Highlight fades, full paragraph + quote + button appear
  */
 export default function IslandPage() {
-  const { id } = useParams()
+  const { id }   = useParams()
   const navigate = useNavigate()
-  const heroRef = useRef(null)
 
-  const island = islandsData.find(item => item.id === parseInt(id, 10))
+  const [phase, setPhase]               = useState('title')   // title | content
+  const [contentPhase, setContentPhase] = useState('hidden')  // hidden | highlight | full
+  const [isVisible, setIsVisible]       = useState(false)
 
-  // Parallax scroll effect on the hero image
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ['start start', 'end start'],
-  })
-  const heroScale    = useTransform(scrollYProgress, [0, 1], [1.12, 1.22])
-  const heroOpacity  = useTransform(scrollYProgress, [0, 0.8], [1, 0])
-  const heroY        = useTransform(scrollYProgress, [0, 1], ['0%', '12%'])
+  const island = islandsData.find(i => i.id === parseInt(id, 10))
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden'
+
+    // Micro-delay to trigger native CSS fade-in transition
+    const t0 = setTimeout(() => setIsVisible(true), 50)
+
+    // 4 s: switch from big centered title → mini badge
+    const t1 = setTimeout(() => {
+      setPhase('content')
+      document.body.style.overflow = ''
+    }, 4000)
+
+    // 4.4 s: show highlight intro text
+    const t2 = setTimeout(() => setContentPhase('highlight'), 4400)
+
+    // 10.4 s: switch to full content
+    const t3 = setTimeout(() => setContentPhase('full'), 10400)
+
+    return () => {
+      clearTimeout(t0); clearTimeout(t1); clearTimeout(t2); clearTimeout(t3)
+      document.body.style.overflow = ''
+    }
+  }, [])
 
   if (!island) {
     return (
@@ -33,154 +55,90 @@ export default function IslandPage() {
     )
   }
 
+  const fullParagraph = island.mainContent.join(' ')
+  const isContent     = phase === 'content'
+
   return (
     <div className="ip-page">
+      {/* Hero background — fixed, uniformly dimmed */}
+      <div className="ip-hero-bg" style={{ backgroundImage: `url(${island.heroImage})` }} />
+      <div className="ip-hero-dim" />
 
-      {/* ── HERO SECTION ── */}
-      <section className="ip-hero" ref={heroRef}>
-        {/* Zoom-in background image */}
-        <motion.div
-          className="ip-hero__img"
-          style={{
-            backgroundImage: `url(${island.heroImage})`,
-            scale: heroScale,
-            y: heroY,
-          }}
-        />
+      {/* ── Title block — GPU-accelerated translate3d glide ── */}
+      <div
+        className={`ip-title-block ${isVisible ? 'ip-title-block--visible' : ''} ${isContent ? 'ip-title-block--mini' : ''}`}
+      >
+        <span className="ip-title__tag" style={{ color: island.accentColor }}>
+          TOPIC 0{island.id}&nbsp;·&nbsp;{island.subtitle.toUpperCase()}
+        </span>
 
-        {/* Dark gradient overlays */}
-        <div className="ip-hero__overlay-top" />
-        <div className="ip-hero__overlay-bottom" />
+        <h1 className="ip-title__heading">
+          {island.title}
+        </h1>
 
-        {/* Hero text — fades as you scroll */}
-        <motion.div className="ip-hero__text" style={{ opacity: heroOpacity }}>
-          <motion.span
-            className="ip-hero__tag"
-            style={{ color: island.accentColor }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.7 }}
-          >
-            TOPIC 0{island.id} &nbsp;·&nbsp; {island.subtitle.toUpperCase()}
-          </motion.span>
+        <div className="ip-title__line" style={{ background: island.accentColor }} />
+      </div>
 
-          <motion.h1
-            className="ip-hero__title"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-          >
-            {island.title}
-          </motion.h1>
+      {/* Narrative content (Centered) */}
+      <div className="ip-content-wrap">
+        <div className="ip-content">
+          <AnimatePresence mode="wait">
+            {(contentPhase === 'highlight' || contentPhase === 'full') && (
+              <motion.div
+                key="highlight"
+                className="ip-highlight"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.8, ease: 'easeInOut' }}
+              >
+                <div className="ip-highlight__bar" style={{ background: island.accentColor }} />
+                <p className="ip-highlight__text">{island.introText}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-          <motion.div
-            className="ip-hero__line"
-            style={{ background: island.accentColor }}
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.9, duration: 0.8 }}
-          />
-        </motion.div>
-
-        {/* Scroll cue */}
-        <motion.div
-          className="ip-hero__scroll-cue"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
-        >
-          <div className="ip-hero__scroll-arrow" style={{ borderColor: island.accentColor }} />
-          <span style={{ color: island.accentColor }}>SCROLL</span>
-        </motion.div>
-      </section>
-
-      {/* ── CONTENT SECTION ── */}
-      <section className="ip-content">
-
-        {/* Ambient background glow */}
-        <div
-          className="ip-content__glow"
-          style={{ background: `radial-gradient(ellipse at 50% 0%, ${island.color}22 0%, transparent 70%)` }}
-        />
-
-        {/* Intro block */}
-        <motion.div
-          className="ip-content__intro"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="ip-content__intro-bar" style={{ background: island.accentColor }} />
-          <p className="ip-content__intro-text">{island.introText}</p>
-        </motion.div>
-
-        {/* Divider */}
-        <div
-          className="ip-content__divider"
-          style={{ background: `linear-gradient(90deg, transparent, ${island.color}88, transparent)` }}
-        />
-
-        {/* Main paragraphs */}
-        <div className="ip-content__body">
-          {island.mainContent.map((paragraph, index) => (
-            <motion.p
-              key={index}
-              className="ip-content__paragraph"
-              initial={{ opacity: 0, x: index % 2 === 0 ? -24 : 24 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, delay: index * 0.05 }}
-            >
-              {paragraph}
-            </motion.p>
-          ))}
+          <AnimatePresence>
+            {contentPhase === 'full' && (
+              <motion.div
+                key="full"
+                className="ip-full"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.9, ease: 'easeOut' }}
+              >
+                <p className="ip-full__paragraph">{fullParagraph}</p>
+                <div
+                  className="ip-full__divider"
+                  style={{ background: `linear-gradient(90deg, transparent, ${island.color}99, transparent)` }}
+                />
+                <div className="ip-full__quote">
+                  <span className="ip-full__quote-mark" style={{ color: island.accentColor }}>"</span>
+                  <p className="ip-full__quote-text" style={{ color: island.accentColor }}>
+                    {island.endingLine}
+                  </p>
+                </div>
+                <div className="ip-full__footer">
+                  <button
+                    id="ip-back-btn"
+                    className="ip-back-btn"
+                    onClick={() => navigate('/understanding-the-waves')}
+                    style={{ '--accent': island.accentColor, '--accent-dim': island.color }}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                      strokeLinecap="round" strokeLinejoin="round" className="ip-back-btn__icon">
+                      <line x1="19" y1="12" x2="5" y2="12" />
+                      <polyline points="12 19 5 12 12 5" />
+                    </svg>
+                    RETURN TO OCEAN JOURNEY
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-
-        {/* Divider */}
-        <div
-          className="ip-content__divider"
-          style={{ background: `linear-gradient(90deg, transparent, ${island.color}88, transparent)` }}
-        />
-
-        {/* Ending quote */}
-        <motion.div
-          className="ip-content__quote"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.9 }}
-        >
-          <span className="ip-content__quote-mark" style={{ color: island.accentColor }}>"</span>
-          <p className="ip-content__quote-text" style={{ color: island.accentColor }}>
-            {island.endingLine}
-          </p>
-        </motion.div>
-
-        {/* Back button */}
-        <motion.div
-          className="ip-content__footer"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.2 }}
-        >
-          <button
-            id="ip-back-btn"
-            className="ip-back-btn"
-            onClick={() => navigate('/understanding-the-waves')}
-            style={{ '--accent': island.accentColor, '--accent-dim': island.color }}
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-              strokeLinecap="round" strokeLinejoin="round" className="ip-back-btn__icon">
-              <line x1="19" y1="12" x2="5" y2="12" />
-              <polyline points="12 19 5 12 12 5" />
-            </svg>
-            RETURN TO OCEAN JOURNEY
-          </button>
-        </motion.div>
-
-      </section>
+      </div>
     </div>
   )
 }

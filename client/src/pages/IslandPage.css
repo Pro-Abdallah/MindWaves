@@ -1,11 +1,13 @@
 /* ================================================================
-   IslandPage.css  –  Cinematic frameless island detail page
+   IslandPage.css  —  Cinematic island detail page
+   Hero image dimmed constantly. All text centered.
    ================================================================ */
 
-/* ── Page wrapper ──
-   Pull up 70 px to compensate for the layout's padding-top,
-   so the hero image fills the entire viewport behind the navbar */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&display=swap');
+
+/* ── Page wrapper ── */
 .ip-page {
+  position: relative;
   width: 100%;
   min-height: 100vh;
   background: #020E18;
@@ -13,296 +15,231 @@
   margin-top: -70px;
 }
 
-/* ── Hero fills 100vh including the area behind the navbar ── */
-.ip-hero {
-  height: 100vh;
-}
-
 /* ================================================================
-   HERO SECTION
+   HERO BACKGROUND — always present
    ================================================================ */
-.ip-hero {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-
-/* The actual background image — zooms in via framer-motion */
-.ip-hero__img {
-  position: absolute;
-  inset: -8%;           /* extra bleed so zoom never shows edges */
+.ip-hero-bg {
+  position: fixed;
+  inset: 0;
   background-size: cover;
   background-position: center;
-  will-change: transform;
-  transform-origin: center center;
-}
-
-/* ── Custom Animated Silhouettes for Root and Lighthouse Islands ── */
-.ip-hero__silhouette-container {
-  position: absolute;
-  bottom: -30px; /* Sits nicely on the frame bottom border */
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  width: min(340px, 70vw);
-  height: min(340px, 70vw);
-  z-index: 2; /* In front of background image, behind vignettes & text */
-  pointer-events: none;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  transform-origin: bottom center;
-}
-
-.ip-hero__silhouette-svg {
-  width: 100%;
-  height: 100%;
-  filter: drop-shadow(0 0 25px rgba(2, 14, 24, 0.95));
-  animation: ip-breathe 7s ease-in-out infinite alternate;
-}
-
-/* Fine-tune individual alignment */
-.ip-hero__silhouette-svg.sitting {
-  transform: translateY(10px);
-}
-
-.ip-hero__silhouette-svg.standing {
-  transform: translateY(15px);
+  z-index: 0;
+  /* gentle perpetual breathe */
+  animation: ip-breathe 20s ease-in-out infinite alternate;
 }
 
 @keyframes ip-breathe {
-  0% {
-    transform: translateY(0px) scale(0.98);
-  }
-  100% {
-    transform: translateY(-6px) scale(1.02);
-  }
+  0%   { transform: scale(1.00); }
+  100% { transform: scale(1.05); }
 }
 
-
-/* Top vignette — dark-to-transparent so nav sits comfortably */
-.ip-hero__overlay-top {
-  position: absolute;
+/* Single uniform dim overlay — keeps image opacity consistent */
+.ip-hero-dim {
+  position: fixed;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(2, 14, 24, 0.55) 0%,
-    transparent 35%
-  );
   z-index: 1;
+  pointer-events: none;
+  background: rgba(2, 14, 24, 0.55);
 }
 
-/* Bottom vignette — heavy fade into the content section */
-.ip-hero__overlay-bottom {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    #020E18 0%,
-    rgba(2, 14, 24, 0.85) 22%,
-    rgba(2, 14, 24, 0.4) 50%,
-    transparent 100%
-  );
-  z-index: 2;
-}
+/* ================================================================
+   GPU-ACCELERATED GLIDE TITLE BLOCK
+   Stays fixed at top: 0, left: 0. Animate purely via hardware-accelerated
+   transform scale and translate3d to guarantee absolutely 0% glitch or lag.
+   Supports responsive CSS variables.
+   ================================================================ */
+.ip-title-block {
+  --dest-x: 36px;
+  --dest-y: 96px;
+  --dest-scale: 0.48;
 
-/* Hero text block */
-.ip-hero__text {
-  position: relative;
-  z-index: 3;
-  text-align: center;
-  padding: 0 24px 100px;
-  width: 100%;
-  max-width: 860px;
+  position: fixed;
+  z-index: 20;
+  pointer-events: none;
+  top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   gap: 16px;
+  transform-origin: top left;
+  will-change: transform, opacity;
+
+  /* Native CSS transition for absolutely seamless GPU-accelerated performance */
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Initial state: hidden and perfectly centered on the screen */
+  opacity: 0;
+  transform: translate3d(calc(50vw - 50%), calc(50vh - 50%), 0) scale(1);
 }
 
-.ip-hero__tag {
+.ip-title-block--visible {
+  opacity: 1;
+}
+
+.ip-title-block--mini {
+  transform: translate3d(var(--dest-x), var(--dest-y), 0) scale(var(--dest-scale));
+}
+
+
+.ip-title__tag {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 11px;
+  font-size: clamp(11px, 1.3vw, 13px);
   font-weight: 700;
   letter-spacing: 0.38em;
   text-transform: uppercase;
   opacity: 0.85;
+  white-space: nowrap;
 }
 
-.ip-hero__title {
+.ip-title__heading {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(36px, 7vw, 80px);
+  font-size: clamp(32px, 8vw, 76px);
   font-weight: 800;
   letter-spacing: 0.03em;
   color: #DFE1E6;
   text-transform: uppercase;
-  line-height: 1.05;
+  line-height: 1.04;
   margin: 0;
-  text-shadow: 0 4px 40px rgba(2, 14, 24, 0.8);
+  text-shadow: 0 4px 48px rgba(2, 14, 24, 0.9);
+  white-space: nowrap;
 }
 
-.ip-hero__line {
-  width: 60px;
+.ip-title__line {
+  width: 68px;
   height: 2px;
   border-radius: 2px;
-  transform-origin: left center;
-}
-
-/* Scroll cue */
-.ip-hero__scroll-cue {
-  position: absolute;
-  bottom: 32px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.ip-hero__scroll-cue span {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.35em;
-  opacity: 0.6;
-}
-
-.ip-hero__scroll-arrow {
-  width: 18px;
-  height: 18px;
-  border-right: 2px solid;
-  border-bottom: 2px solid;
-  transform: rotate(45deg);
-  opacity: 0.6;
-  animation: ip-bounce 1.8s ease-in-out infinite;
-}
-
-@keyframes ip-bounce {
-  0%, 100% { transform: rotate(45deg) translateY(0); }
-  50%       { transform: rotate(45deg) translateY(5px); }
+  transform-origin: center;
 }
 
 /* ================================================================
-   CONTENT SECTION  –  no card / no frame, raw page flow
+   CONTENT WRAP — centered, below the fold initially
    ================================================================ */
-.ip-content {
+.ip-content-wrap {
   position: relative;
-  width: 100%;
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 72px 32px 100px;
-}
-
-/* Subtle ambient glow behind the text */
-.ip-content__glow {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 120%;
-  height: 340px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* All direct content children sit above the glow */
-.ip-content > * {
-  position: relative;
-  z-index: 1;
-}
-
-/* ── Intro block ── */
-.ip-content__intro {
+  z-index: 10;
+  min-height: 100vh;
   display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 140px 24px 100px;
+}
+
+.ip-content {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  /* min-height keeps layout stable when content phases switch */
+  min-height: 260px;
+}
+
+/* ================================================================
+   HIGHLIGHT INTRO TEXT  — Playfair Display, appears first
+   ================================================================ */
+.ip-highlight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   gap: 20px;
-  align-items: flex-start;
-  margin-bottom: 48px;
+  max-width: 620px;
 }
 
-.ip-content__intro-bar {
-  flex-shrink: 0;
-  width: 3px;
-  min-height: 100%;
-  align-self: stretch;
+.ip-highlight__bar {
+  width: 40px;
+  height: 2px;
   border-radius: 2px;
-  opacity: 0.75;
+  opacity: 0.80;
+  flex-shrink: 0;
 }
 
-.ip-content__intro-text {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(16px, 2.2vw, 20px);
+.ip-highlight__text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 3vw, 30px);
   font-style: italic;
-  line-height: 1.7;
-  color: rgba(223, 225, 230, 0.88);
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(223, 225, 230, 0.95);
   margin: 0;
+  text-shadow: 0 2px 24px rgba(2, 14, 24, 0.7);
+  letter-spacing: 0.01em;
 }
 
-/* ── Divider ── */
-.ip-content__divider {
+/* ================================================================
+   FULL CONTENT — one merged paragraph + quote + button
+   ================================================================ */
+.ip-full {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  text-align: center;
+  margin-top: 48px; /* Beautiful spatial breathing room below the highlight intro text */
+}
+
+.ip-full__paragraph {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(15px, 1.9vw, 17px);
+  color: rgba(223, 225, 230, 0.85);
+  line-height: 1.9;
+  margin: 0;
+  text-shadow: 0 2px 12px rgba(2, 14, 24, 0.6);
+  text-align: center;
+  max-width: 640px;
+}
+
+/* ── Thin coloured divider ── */
+.ip-full__divider {
   height: 1px;
   width: 100%;
+  max-width: 480px;
   margin: 48px 0;
-  opacity: 0.5;
+  opacity: 0.55;
   border: none;
 }
 
-/* ── Main paragraphs ── */
-.ip-content__body {
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-}
-
-.ip-content__paragraph {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(15px, 1.9vw, 17px);
-  color: rgba(223, 225, 230, 0.78);
-  line-height: 1.85;
-  margin: 0;
-  padding-left: 0;
-}
-
-/* ── Ending quote ── */
-.ip-content__quote {
+/* ── Closing quote ── */
+.ip-full__quote {
   position: relative;
   text-align: center;
-  padding: 24px 16px 8px;
+  padding: 24px 8px 8px;
+  max-width: 580px;
 }
 
-.ip-content__quote-mark {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 72px;
+.ip-full__quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 80px;
   line-height: 0.6;
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  opacity: 0.12;
+  opacity: 0.10;
   user-select: none;
   pointer-events: none;
 }
 
-.ip-content__quote-text {
-  font-family: 'Space Grotesk', sans-serif;
+.ip-full__quote-text {
+  font-family: 'Playfair Display', serif;
   font-size: clamp(17px, 2.4vw, 22px);
-  font-weight: 700;
+  font-weight: 400;
   font-style: italic;
-  letter-spacing: 0.04em;
-  line-height: 1.45;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
   margin: 0;
   position: relative;
   z-index: 1;
+  text-shadow: 0 2px 20px rgba(2, 14, 24, 0.55);
 }
 
 /* ── Footer / back button ── */
-.ip-content__footer {
-  margin-top: 56px;
+.ip-full__footer {
+  margin-top: 52px;
   display: flex;
   justify-content: center;
 }
@@ -323,8 +260,11 @@
   letter-spacing: 0.22em;
   cursor: pointer;
   outline: none;
-  transition: background 0.3s ease, border-color 0.3s ease,
-              color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background    0.3s ease,
+    border-color  0.3s ease,
+    color         0.3s ease,
+    box-shadow    0.3s ease;
 }
 
 .ip-back-btn__icon {
@@ -344,9 +284,7 @@
   transform: translateX(-5px);
 }
 
-.ip-back-btn:active {
-  transform: scale(0.97);
-}
+.ip-back-btn:active { transform: scale(0.97); }
 
 /* ── Error fallback ── */
 .ip-error-page {
@@ -362,15 +300,13 @@
 
 /* ── Mobile ── */
 @media (max-width: 600px) {
-  .ip-content {
-    padding: 48px 20px 72px;
+  .ip-title-block {
+    --dest-x: 16px;
+    --dest-y: 76px;
+    --dest-scale: 0.44;
   }
 
-  .ip-hero__title {
-    font-size: clamp(28px, 10vw, 48px);
-  }
-
-  .ip-hero__text {
-    padding-bottom: 72px;
+  .ip-content-wrap {
+    padding: 120px 20px 80px;
   }
 }
