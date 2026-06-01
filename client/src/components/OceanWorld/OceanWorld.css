@@ -223,11 +223,9 @@
   align-items: center;
   gap: 4px;
   padding: 10px 16px 12px;
-  background: rgba(2, 14, 24, 0.72);
+  background: #020E18;
   border: 1px solid rgba(145, 191, 246, 0.18);
   border-radius: 8px;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   text-align: center;
   white-space: nowrap;
   pointer-events: none;
@@ -272,7 +270,7 @@
 /* ── Hover / Active glow state ── */
 
 .ow-island-label--active {
-  background: rgba(2, 14, 24, 0.88);
+  background: #020E18;
   border-color: color-mix(in srgb, var(--island-accent, #91BFF6) 55%, transparent);
   /* multi-layer glow: inner halo + outer bloom */
   box-shadow:

@@ -1,6 +1,6 @@
-import { useRef } from 'react'
 import { motion } from 'framer-motion'
 import { projectTeam } from './team.data'
+import OceanBackground from '../ABottleReturned/components/OceanBackground'
 import './WhyWeSail.css'
 
 export default function WhyWeSail() {
@@ -34,17 +34,6 @@ export default function WhyWeSail() {
     }
   }
 
-  // Floating lanterns decoration mimicking sunset light rising
-  const lanterns = useRef(
-    Array.from({ length: 12 }, (_, i) => ({
-      id: i,
-      left: 10 + Math.random() * 80,
-      delay: Math.random() * 10,
-      duration: 15 + Math.random() * 15,
-      size: 8 + Math.random() * 12
-    }))
-  )
-
   const missionPoints = [
     "To raise awareness about bipolar disorder using simple, clear, and scientifically accurate information.",
     "To correct common misconceptions surrounding the disorder, especially confusion with other mental health conditions.",
@@ -61,28 +50,7 @@ export default function WhyWeSail() {
 
   return (
     <section className="wws-container" id="why-we-sail" aria-label="Why We Sail Section">
-      {/* ── Immersive Sunset Sea Backdrop ── */}
-      <div className="wws-ambient-bg">
-        <div className="wws-sunset-glow" />
-        <div className="wws-water-reflection" />
-        
-        {/* Floating sky lanterns */}
-        <div className="wws-lanterns">
-          {lanterns.current.map(l => (
-            <span
-              key={l.id}
-              className="wws-lantern"
-              style={{
-                left: `${l.left}%`,
-                width: `${l.size}px`,
-                height: `${l.size}px`,
-                animationDelay: `${l.delay}s`,
-                animationDuration: `${l.duration}s`
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      <OceanBackground isBlurred={false} />
 
       {/* ── Section Content Wrapper ── */}
       <div className="wws-content">
