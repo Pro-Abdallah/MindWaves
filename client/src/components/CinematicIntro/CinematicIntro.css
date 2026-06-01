@@ -366,7 +366,7 @@
 .ci-start-btn__inner {
   position: relative;
   z-index: 1;
-  padding: 12px 42px;
+  padding: clamp(10px, 1.5vw, 14px) clamp(28px, 5vw, 48px);
   background: rgba(2, 14, 24, 0.85);
   backdrop-filter: blur(24px) saturate(1.6);
   -webkit-backdrop-filter: blur(24px) saturate(1.6);
@@ -500,7 +500,8 @@
 
 .ci-skip-btn {
   position: absolute;
-  top: 68px;   /* sits below the intro navbar strip */
+  top: 90px;
+  /* sits below the intro navbar strip */
   right: 32px;
   z-index: 10002;
   display: flex;
@@ -596,7 +597,30 @@
   filter: brightness(1.4) drop-shadow(0 0 6px rgba(145, 191, 246, 0.5));
 }
 
-/* ── Mobile Responsive ────────────────────────────────────────── */
+/* ── Tablet Responsive ─────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .ci-skip-btn {
+    top: 78px;
+    right: 20px;
+    padding: 9px 16px;
+  }
+
+  .ci-skip-btn__label {
+    font-size: 11px;
+  }
+
+  .ci-sound-btn {
+    bottom: 22px;
+    left: 22px;
+  }
+
+  .ci-start-wrapper {
+    padding-bottom: 60px;
+  }
+}
+
+/* ── Mobile Responsive ─────────────────────────────────── */
 
 @media (max-width: 480px) {
   .ci-start-wrapper {
@@ -609,7 +633,8 @@
   }
 
   .ci-skip-btn {
-    top: 68px;   /* below the intro navbar on mobile */
+    top: 68px;
+    /* below the intro navbar on mobile */
     right: 18px;
     padding: 9px 16px;
   }

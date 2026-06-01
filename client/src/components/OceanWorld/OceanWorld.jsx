@@ -4,14 +4,16 @@ import { useNavigate } from 'react-router-dom'
 import { islandsData } from './islands.data'
 import './OceanWorld.css'
 
-// Absolute percentage coordinates matching the visual centers of the actual islands in the chart picture (for CSS zoom-origins)
+const VIEWBOX = { x: 0, y: 0, w: 1600, h: 900 }
+
+// Absolute coordinates matching the visual centers of the actual islands in the chart picture
 const TOOLTIP_CENTERS = {
-  1: { top: '49%', left: '14%', x: 224, y: 441 },   // Still Island (Snowy mountains center)
-  2: { top: '29%', left: '35%', x: 560, y: 261 },   // Burning Island (Volcano crater center)
-  3: { top: '70%', left: '36%', x: 576, y: 630 },   // Sunken Island (Castle ruins center)
-  4: { top: '28%', left: '65%', x: 1040, y: 252 },  // Twin Islands (Stone arch center)
-  5: { top: '62%', left: '71%', x: 1136, y: 558 },  // Root Island (Giant tree canopy center)
-  6: { top: '45%', left: '91%', x: 1456, y: 405 },  // Lighthouse Island (Lighthouse deck center)
+  1: { x: 224, y: 441 },   // Still Island (Snowy mountains center)
+  2: { x: 560, y: 261 },   // Burning Island (Volcano crater center)
+  3: { x: 576, y: 630 },   // Sunken Island (Castle ruins center)
+  4: { x: 1040, y: 252 },  // Twin Islands (Stone arch center)
+  5: { x: 1136, y: 558 },  // Root Island (Giant tree canopy center)
+  6: { x: 1456, y: 405 },  // Lighthouse Island (Lighthouse deck center)
 }
 
 // Custom coordinate paths outlining the actual visual boundaries of each island in the 1600x900 SVG grid space
@@ -64,8 +66,13 @@ export default function OceanWorld() {
   const handleIslandClick = (island) => {
     if (transitioning) return
 
-    const coords = TOOLTIP_CENTERS[island.id] || { top: '50%', left: '50%' }
-    const origin = `${coords.left} ${coords.top}`
+    const coords = TOOLTIP_CENTERS[island.id]
+    let origin = '50% 50%'
+    if (coords) {
+      const leftPct = ((coords.x - VIEWBOX.x) / VIEWBOX.w) * 100
+      const topPct = ((coords.y - VIEWBOX.y) / VIEWBOX.h) * 100
+      origin = `${leftPct}% ${topPct}%`
+    }
     
     // Save zoom origin in session storage for the zone-out animation on return!
     sessionStorage.setItem('mw-prev-zoom', origin)
@@ -85,7 +92,7 @@ export default function OceanWorld() {
       {/* ── Full Screen Interactive SVG Chart Container ── */}
       <div className="ow-fullscreen-wrapper">
         <svg 
-          viewBox="0 0 1600 900" 
+          viewBox={`${VIEWBOX.x} ${VIEWBOX.y} ${VIEWBOX.w} ${VIEWBOX.h}`} 
           preserveAspectRatio="xMidYMid slice" 
           className="ow-fullscreen-svg"
           style={{
@@ -102,9 +109,11 @@ export default function OceanWorld() {
             y="0" 
             width="1600" 
             height="900" 
+            style={{
+              filter: hoveredIdx !== null ? 'brightness(0.35) saturate(0.8)' : 'none',
+              transition: 'filter 0.4s ease',
+            }}
           />
-
-          {/* Ship graphics removed to maintain clean widescreen aesthetic without occlusion */}
 
           {/* Interactive SVG Hitboxes */}
           {islandsData.map((island, idx) => {
@@ -123,21 +132,95 @@ export default function OceanWorld() {
               />
             )
           })}
+
+          {/* Sonar pulses for island centers (cool landing hints) */}
+          {islandsData.map((island, idx) => {
+            const center = TOOLTIP_CENTERS[island.id]
+            if (!center) return null
+
+            const isHovered = hoveredIdx === idx
+            const hasHover = hoveredIdx !== null
+
+            return (
+              <g 
+                key={`sonar-${island.id}`} 
+                style={{ 
+                  '--accent-color': island.accentColor || '#1fe5d5',
+                  opacity: hasHover ? (isHovered ? 1.0 : 0.15) : 0.8,
+                  transition: 'opacity 0.4s ease',
+                }}
+              >
+                <circle
+                  cx={center.x}
+                  cy={center.y}
+                  className="ow-sonar-ring"
+                />
+                <circle
+                  cx={center.x}
+                  cy={center.y}
+                  className="ow-sonar-ring ow-sonar-ring--delay"
+                />
+                <circle
+                  cx={center.x}
+                  cy={center.y}
+                  className="ow-sonar-dot"
+                />
+              </g>
+            )
+          })}
+
+          {/* Active Hover Tooltip */}
+          <AnimatePresence>
+            {hoveredIdx !== null && !isZoomed && !transitioning && (() => {
+              const island = islandsData[hoveredIdx]
+              const center = TOOLTIP_CENTERS[island.id]
+              if (!center) return null
+
+              const width = 260
+              const height = 175
+              const x = center.x - width / 2
+              const y = center.y - height - 15
+
+              return (
+                <foreignObject
+                  key={`tooltip-${island.id}`}
+                  x={x}
+                  y={y}
+                  width={width}
+                  height={height}
+                  style={{ pointerEvents: 'none' }}
+                >
+                  <motion.div
+                    className="ow-hotspot-tooltip"
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                    style={{ '--accent-color': island.accentColor || '#1fe5d5' }}
+                  >
+                    <span className="ow-tooltip-subtitle" style={{ color: island.accentColor }}>
+                      {island.subtitle}
+                    </span>
+                    <h3 className="ow-tooltip-title">
+                      {island.title}
+                    </h3>
+                    <p className="ow-tooltip-desc">
+                      {island.introText}
+                    </p>
+                    <div className="ow-tooltip-action">
+                      <span>Explore Island</span>
+                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 1L9 4L6 7" stroke="#1fe5d5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M9 4L1 4" stroke="#1fe5d5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </motion.div>
+                </foreignObject>
+              )
+            })()}
+          </AnimatePresence>
         </svg>
       </div>
-
-
-      {/* ── Framed Footer ── */}
-      <footer className="ow-footer-framed">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.6 }}
-          transition={{ delay: 0.8 }}
-          className="ow-footer-framed__guidance"
-        >
-          <span>Safe Harbor Bipolar Recovery Map • Click any island to explore</span>
-        </motion.div>
-      </footer>
 
       {/* ── Cinematic Transition Fade-out Mask ── */}
       <AnimatePresence>

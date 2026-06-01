@@ -7,13 +7,14 @@
 .ie-container {
   position: relative;
   min-height: 100vh;
-  width: 100vw;
+  width: 100%;
+  max-width: 100vw;
   background: #020E18;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 100px 24px;
+  padding: clamp(60px, 8vw, 100px) clamp(16px, 4vw, 24px);
   overflow: hidden;
   font-family: var(--font-primary);
 }
@@ -61,7 +62,7 @@
   position: relative;
   z-index: 5;
   width: 100%;
-  max-width: 680px;
+  max-width: clamp(520px, 80vw, 720px);
   min-height: 480px;
   display: flex;
   justify-content: center;
@@ -600,7 +601,31 @@
 }
 
 /* ── Responsive Viewports ── */
+@media (max-width: 900px) {
+  .ie-content {
+    max-width: 90vw;
+  }
+}
+
+@media (max-width: 768px) {
+  .ie-container {
+    padding: 80px 20px;
+  }
+
+  .ie-content {
+    max-width: 94vw;
+  }
+
+  .ie-card__title {
+    font-size: clamp(24px, 5vw, 36px);
+  }
+}
+
 @media (max-width: 600px) {
+  .ie-container {
+    padding: 70px 16px;
+  }
+
   .ie-card {
     padding: 24px 0;
   }
@@ -625,3 +650,30 @@
     padding: 8px 18px 0 18px;
   }
 }
+
+@media (max-width: 380px) {
+  .ie-container {
+    padding: 60px 12px;
+  }
+
+  .ie-content {
+    max-width: 100%;
+  }
+
+  .ie-card__title {
+    font-size: clamp(20px, 7vw, 30px);
+  }
+
+  .ie-quiz-answer-btn {
+    padding: 12px 14px;
+    font-size: 13px;
+    gap: 10px;
+  }
+
+  .ie-quiz-keycap {
+    width: 20px;
+    height: 20px;
+    font-size: 10px;
+  }
+}
+

@@ -91,3 +91,28 @@
     display: none;
   }
 }
+
+@media (max-width: 480px) {
+  .social-sidebar {
+    right: 10px;
+    gap: 10px;
+  }
+
+  .social-sidebar__link {
+    width: 34px;
+    height: 34px;
+  }
+
+  .social-sidebar__link svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Hide completely on very small phones to avoid overlap with content */
+@media (max-width: 360px) {
+  .social-sidebar {
+    display: none;
+  }
+}
+

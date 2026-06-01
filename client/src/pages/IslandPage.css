@@ -124,12 +124,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 140px 24px 100px;
+  padding: clamp(100px, 14vh, 160px) clamp(16px, 4vw, 40px) clamp(80px, 10vh, 120px);
 }
 
 .ip-content {
   width: 100%;
-  max-width: 700px;
+  max-width: clamp(520px, 80vw, 760px);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -298,6 +298,19 @@
   font-family: var(--font-primary);
 }
 
+/* ── Tablet ── */
+@media (max-width: 900px) {
+  .ip-title-block {
+    --dest-x: 24px;
+    --dest-y: 86px;
+    --dest-scale: 0.46;
+  }
+
+  .ip-title__heading {
+    font-size: clamp(28px, 7vw, 62px);
+  }
+}
+
 /* ── Mobile ── */
 @media (max-width: 600px) {
   .ip-title-block {
@@ -307,6 +320,34 @@
   }
 
   .ip-content-wrap {
-    padding: 120px 20px 80px;
+    padding: clamp(80px, 12vh, 120px) 16px clamp(60px, 8vh, 90px);
+  }
+
+  .ip-highlight__text {
+    font-size: clamp(17px, 4.5vw, 26px);
+  }
+
+  .ip-full__paragraph {
+    font-size: clamp(14px, 3.5vw, 16px);
   }
 }
+
+/* ── Small phones ── */
+@media (max-width: 380px) {
+  .ip-title-block {
+    --dest-x: 12px;
+    --dest-y: 70px;
+    --dest-scale: 0.40;
+  }
+
+  .ip-content-wrap {
+    padding: 70px 12px 60px;
+  }
+
+  .ip-back-btn {
+    padding: 14px 24px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+}
+

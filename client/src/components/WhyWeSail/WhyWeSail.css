@@ -365,18 +365,80 @@
 
 /* ── Responsiveness ── */
 
+@media (max-width: 1200px) {
+  .wws-container {
+    padding: 80px 20px;
+  }
+
+  .wws-panels-grid {
+    gap: 24px;
+  }
+}
+
 @media (max-width: 1000px) {
   .wws-panels-grid {
-    grid-template-columns: 1fr;
+    /* 2-column on tablets */
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .wws-panels-grid > *:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
     max-width: 580px;
     margin: 0 auto;
   }
+
+  .wws-crew-grid {
+    gap: 16px;
+  }
+}
+
+@media (max-width: 720px) {
+  .wws-panels-grid {
+    grid-template-columns: 1fr;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .wws-panel {
+    padding: 28px 24px;
+  }
+
   .wws-crew-grid {
     flex-direction: column;
     align-items: center;
   }
+
   .wws-crew-card {
     width: 100%;
     max-width: 420px;
   }
+
+  .wws-content {
+    gap: 56px;
+  }
 }
+
+@media (max-width: 480px) {
+  .wws-container {
+    padding: 60px 16px;
+  }
+
+  .wws-panel {
+    padding: 24px 20px;
+  }
+
+  .wws-header__title {
+    font-size: clamp(24px, 7vw, 36px);
+  }
+
+  .wws-crew-section {
+    margin-top: 40px;
+  }
+
+  .wws-crew-card {
+    padding: 24px 18px;
+  }
+}
+

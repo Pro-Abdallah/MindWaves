@@ -35,6 +35,8 @@
   position: relative;
   z-index: 2;
   width: min(960px, 92vw);
+  /* On smaller screens, allow a bit more height usage */
+  min-width: 280px;
   /* force the board to keep its natural square-ish ratio */
   aspect-ratio: 1 / 1;
   display: flex;
@@ -44,7 +46,7 @@
   filter:
     drop-shadow(0 8px 24px rgba(0,0,0,0.55))
     drop-shadow(0 30px 80px rgba(0,0,0,0.45));
-  margin: 60px 0;
+  margin: 80px 0 60px;
 }
 
 /* ── Bulletin Board Image — fills the wrapper naturally ── */
@@ -566,6 +568,27 @@
    Responsiveness
    ================================================================ */
 
+@media (max-width: 1100px) {
+  .sh-board-wrap {
+    width: min(820px, 94vw);
+  }
+}
+
+@media (max-width: 900px) {
+  .sh-board-wrap {
+    width: min(700px, 96vw);
+    margin: 60px 0 50px;
+  }
+
+  .sh-board-label {
+    top: -48px;
+  }
+
+  .sh-board-label__title {
+    font-size: clamp(20px, 3vw, 32px);
+  }
+}
+
 @media (max-width: 760px) {
   .sh-therapy-grid {
     grid-template-columns: 1fr;
@@ -584,4 +607,68 @@
     width: 100%;
     justify-content: center;
   }
+
+  .sh-board-wrap {
+    width: min(600px, 96vw);
+    margin: 50px 0 40px;
+  }
+
+  .sh-board-label {
+    top: -44px;
+  }
+
+  .sh-board-hint {
+    bottom: -38px;
+    font-size: 10px;
+  }
 }
+
+@media (max-width: 540px) {
+  .sh-board-wrap {
+    width: 98vw;
+    aspect-ratio: 1 / 1;
+    margin: 44px 0 36px;
+  }
+
+  .sh-board-label {
+    top: -40px;
+  }
+
+  .sh-board-label__title {
+    font-size: clamp(18px, 5vw, 26px);
+  }
+
+  .sh-board-label__tag {
+    font-size: 9px;
+  }
+
+  .sh-board-hint {
+    bottom: -32px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .sh-paper {
+    max-width: 100%;
+  }
+
+  .sh-paper__body {
+    padding: 24px 16px 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .sh-board-wrap {
+    width: 100vw;
+    margin: 36px 0 28px;
+  }
+
+  .sh-overlay {
+    padding: 16px 12px;
+  }
+
+  .sh-paper__body {
+    padding: 20px 14px 16px;
+  }
+}
+
