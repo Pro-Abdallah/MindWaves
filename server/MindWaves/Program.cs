@@ -19,9 +19,12 @@ builder.Services.AddCors(options =>
     options.AddPolicy("FrontendOnly",
         policy =>
         {
-            policy.WithOrigins("https://frontend.com", "http://localhost:5173/")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
+            policy.WithOrigins(
+                    "https://mind-waves-live.netlify.app",
+                    "http://localhost:5173"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod();
         });
 });
 
@@ -41,10 +44,9 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseCors("FrontendOnly");
-
-
 app.UseHttpsRedirection();
+
+app.UseCors("FrontendOnly");
 
 app.UseAuthorization();
 
