@@ -193,12 +193,27 @@
 }
 
 /* ── Responsive ── */
+@media (max-width: 1024px) {
+  .mfts-header {
+    padding-top: 12vh;
+    gap: 20px;
+  }
+
+  .hero-bottles-row {
+    max-width: 880px;
+  }
+}
+
 @media (max-width: 768px) {
   .mfts-header {
     min-height: auto;
     padding-top: 10vh;
     padding-bottom: 6vh;
     gap: 18px;
+  }
+
+  .mfts-title {
+    font-size: clamp(22px, 6vw, 40px);
   }
 
   .hero-bottles-row {
@@ -236,4 +251,30 @@
   .mfts-inner {
     padding: 0 16px;
   }
+
+  .mfts-title {
+    font-size: clamp(20px, 7vw, 34px);
+    padding: 0 0.5rem;
+  }
+
+  .mfts-subtitle {
+    font-size: clamp(12px, 3.5vw, 15px);
+    padding: 0 0.5rem;
+  }
 }
+
+@media (max-width: 400px) {
+  .hero-bottle-item {
+    width: clamp(50px, 20%, 120px);
+  }
+
+  .mfts-header {
+    padding-top: 6vh;
+    gap: 12px;
+  }
+
+  .mfts-eyebrow {
+    font-size: 10px;
+  }
+}
+

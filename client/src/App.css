@@ -15,3 +15,46 @@
 .app-main--visible { opacity: 1; pointer-events: auto; }
 
 /* ── Cleaned styles ── */
+
+/* Route transition loader fallback */
+.app-route-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  background: #020E18;
+  color: #DFE1E6;
+  font-family: var(--font-primary);
+}
+
+.app-route-loader__ring {
+  width: 50px;
+  height: 50px;
+  border: 2px solid rgba(81, 132, 192, 0.1);
+  border-top-color: var(--color-sky, #91BFF6);
+  border-radius: 50%;
+  animation: appLoaderSpin 1.5s linear infinite;
+  margin-bottom: 20px;
+  box-shadow: 0 0 15px rgba(145, 191, 246, 0.25);
+}
+
+.app-route-loader__text {
+  font-size: 14px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(223, 225, 230, 0.7);
+  animation: appLoaderFade 1.5s ease-in-out infinite;
+}
+
+@keyframes appLoaderSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes appLoaderFade {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+

@@ -1,19 +1,33 @@
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import { BrowserRouter, Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 
 import CinematicIntro from './components/CinematicIntro'
-import OceanWorld from './components/OceanWorld/OceanWorld'
-import MessagesFromTheSea from './components/MessagesFromTheSea/MessagesFromTheSea'
-import InnerEcho from './components/InnerEcho/InnerEcho'
-import SafeHarbor from './components/SafeHarbor/SafeHarbor'
-import WhyWeSail from './components/WhyWeSail/WhyWeSail'
-import RideTheWaves from './components/RideTheWaves/RideTheWaves'
-import ABottleReturned from './components/ABottleReturned/ABottleReturned'
-import Trailer from './components/Trailer/Trailer'
-import IslandPage from './pages/IslandPage'
+
+// Lazy-loaded components for other routes
+const OceanWorld = lazy(() => import('./components/OceanWorld/OceanWorld'))
+const MessagesFromTheSea = lazy(() => import('./components/MessagesFromTheSea/MessagesFromTheSea'))
+const InnerEcho = lazy(() => import('./components/InnerEcho/InnerEcho'))
+const SafeHarbor = lazy(() => import('./components/SafeHarbor/SafeHarbor'))
+const WhyWeSail = lazy(() => import('./components/WhyWeSail/WhyWeSail'))
+const RideTheWaves = lazy(() => import('./components/RideTheWaves/RideTheWaves'))
+const ABottleReturned = lazy(() => import('./components/ABottleReturned/ABottleReturned'))
+const Trailer = lazy(() => import('./components/Trailer/Trailer'))
+const IslandPage = lazy(() => import('./pages/IslandPage'))
 
 import PageLayout from './components/Layout/PageLayout'
 import './App.css'
+
+/**
+ * Route Loading Fallback component
+ */
+function RouteLoader() {
+  return (
+    <div className="app-route-loader" role="status" aria-label="Loading page">
+      <div className="app-route-loader__ring" aria-hidden="true" />
+      <p className="app-route-loader__text">Loading Journey...</p>
+    </div>
+  )
+}
 
 /**
  * Landing page wrapper for the intro sequence.
@@ -44,21 +58,23 @@ function AppRoutes() {
 
   return (
     <PageLayout>
-      <Routes location={location} key={location.pathname}>
-        {/* The 9 Pages */}
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/understanding-the-waves" element={<OceanWorld />} />
-        <Route path="/messages-from-the-sea" element={<MessagesFromTheSea />} />
-        <Route path="/ride-the-waves" element={<RideTheWaves />} />
-        <Route path="/inner-echo" element={<InnerEcho />} />
-        <Route path="/safe-harbor" element={<SafeHarbor />} />
-        <Route path="/a-bottle-returned" element={<ABottleReturned />} />
-        <Route path="/trailer" element={<Trailer />} />
-        <Route path="/why-we-sail" element={<WhyWeSail />} />
-        
-        {/* Dedicated island page for OceanWorld nodes */}
-        <Route path="/island/:id" element={<IslandPage />} />
-      </Routes>
+      <Suspense fallback={<RouteLoader />}>
+        <Routes location={location} key={location.pathname}>
+          {/* The 9 Pages */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/understanding-the-waves" element={<OceanWorld />} />
+          <Route path="/messages-from-the-sea" element={<MessagesFromTheSea />} />
+          <Route path="/ride-the-waves" element={<RideTheWaves />} />
+          <Route path="/inner-echo" element={<InnerEcho />} />
+          <Route path="/safe-harbor" element={<SafeHarbor />} />
+          <Route path="/a-bottle-returned" element={<ABottleReturned />} />
+          <Route path="/trailer" element={<Trailer />} />
+          <Route path="/why-we-sail" element={<WhyWeSail />} />
+          
+          {/* Dedicated island page for OceanWorld nodes */}
+          <Route path="/island/:id" element={<IslandPage />} />
+        </Routes>
+      </Suspense>
     </PageLayout>
   )
 }
@@ -70,3 +86,4 @@ export default function App() {
     </BrowserRouter>
   )
 }
+

@@ -121,6 +121,18 @@
   flex-shrink: 0;
 }
 
+/* ── Tablet ── */
+@media (max-width: 900px) {
+  .bottle-ui-layer {
+    padding: 8rem 5% 10rem 5%;
+  }
+
+  .write-message-btn {
+    top: 4.5rem;
+    right: 1.2rem;
+  }
+}
+
 /* ── Mobile ── */
 @media (max-width: 600px) {
   .write-message-btn {
@@ -140,3 +152,16 @@
     padding: 6rem 4% 10rem 4%;
   }
 }
+
+@media (max-width: 380px) {
+  .bottle-ui-layer {
+    padding: 5rem 3% 9rem 3%;
+  }
+
+  .write-message-btn {
+    bottom: 5.5rem;
+    padding: 10px 18px;
+    font-size: 10px;
+  }
+}
+

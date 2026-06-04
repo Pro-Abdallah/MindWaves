@@ -1,198 +1,292 @@
 /* ================================================================
-   IslandPage.css
-   Detailed presentation page styling
+   IslandPage.css  —  Cinematic island detail page
+   Hero image dimmed constantly. All text centered.
    ================================================================ */
 
-.ip-container {
+
+/* ── Page wrapper ── */
+.ip-page {
   position: relative;
+  width: 100%;
   min-height: 100vh;
-  width: 100vw;
   background: #020E18;
+  overflow-x: hidden;
+  margin-top: -70px;
+}
+
+/* ================================================================
+   HERO BACKGROUND — always present
+   ================================================================ */
+.ip-hero-bg {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: 0;
+  /* gentle perpetual breathe */
+  animation: ip-breathe 20s ease-in-out infinite alternate;
+}
+
+@keyframes ip-breathe {
+  0%   { transform: scale(1.00); }
+  100% { transform: scale(1.05); }
+}
+
+/* Single uniform dim overlay — keeps image opacity consistent */
+.ip-hero-dim {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: rgba(2, 14, 24, 0.55);
+}
+
+/* ================================================================
+   GPU-ACCELERATED GLIDE TITLE BLOCK
+   Stays fixed at top: 0, left: 0. Animate purely via hardware-accelerated
+   transform scale and translate3d to guarantee absolutely 0% glitch or lag.
+   Supports responsive CSS variables.
+   ================================================================ */
+.ip-title-block {
+  --dest-x: 36px;
+  --dest-y: 96px;
+  --dest-scale: 0.48;
+
+  position: fixed;
+  z-index: 20;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  transform-origin: top left;
+  will-change: transform, opacity;
+
+  /* Native CSS transition for absolutely seamless GPU-accelerated performance */
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Initial state: hidden and perfectly centered on the screen */
+  opacity: 0;
+  transform: translate3d(calc(50vw - 50%), calc(50vh - 50%), 0) scale(1);
+}
+
+.ip-title-block--visible {
+  opacity: 1;
+}
+
+.ip-title-block--mini {
+  transform: translate3d(var(--dest-x), var(--dest-y), 0) scale(var(--dest-scale));
+}
+
+
+.ip-title__tag {
+  font-family: var(--font-primary);
+  font-size: clamp(11px, 1.3vw, 13px);
+  font-weight: 700;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+.ip-title__heading {
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 8vw, 76px);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.03em;
+  color: #DFE1E6;
+  text-transform: none;
+  line-height: 1.04;
+  margin: 0;
+  text-shadow: 0 4px 48px rgba(2, 14, 24, 0.9);
+  white-space: nowrap;
+}
+
+.ip-title__line {
+  width: 68px;
+  height: 2px;
+  border-radius: 2px;
+  transform-origin: center;
+}
+
+/* ================================================================
+   CONTENT WRAP — centered, below the fold initially
+   ================================================================ */
+.ip-content-wrap {
+  position: relative;
+  z-index: 10;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px;
-  overflow-x: hidden;
-}
-
-.ip-background {
-  position: absolute;
-  inset: 0;
-  background: 
-    radial-gradient(circle at 20% 30%, rgba(81, 132, 192, 0.12) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(5, 57, 94, 0.35) 0%, transparent 60%),
-    #020E18;
-  z-index: 1;
+  padding: clamp(100px, 14vh, 160px) clamp(16px, 4vw, 40px) clamp(80px, 10vh, 120px);
 }
 
 .ip-content {
-  position: relative;
-  z-index: 2;
   width: 100%;
-  max-width: 680px;
-}
-
-/* ── Content Card Design ── */
-
-.ip-card {
-  padding: 48px;
-  background: rgba(2, 14, 24, 0.82);
-  border: 1px solid rgba(81, 132, 192, 0.22);
-  border-radius: 8px;
-  backdrop-filter: blur(30px) saturate(1.4);
-  -webkit-backdrop-filter: blur(30px) saturate(1.4);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  text-align: center;
-}
-
-.ip-card__tag {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.35em;
-  text-transform: uppercase;
-}
-
-.ip-card__title {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(24px, 4vw, 36px);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  color: #DFE1E6;
-  text-transform: uppercase;
-  margin: 12px 0 6px 0;
-  line-height: 1.2;
-}
-
-.ip-card__subtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(13px, 2vw, 15px);
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  margin-bottom: 24px;
-}
-
-.ip-card__divider {
-  height: 1px;
-  width: 100%;
-  margin: 24px 0;
-  opacity: 0.4;
-}
-
-/* ── Content Body ── */
-
-.ip-card__body {
-  text-align: left;
-  margin-bottom: 36px;
-}
-
-/* Intro Text Panel */
-.ip-card__intro {
-  padding: 16px 20px;
-  background: rgba(5, 57, 94, 0.25);
-  border-left: 3px solid;
-  border-radius: 0 6px 6px 0;
-  margin-bottom: 28px;
-}
-
-.ip-card__intro-text {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(13.5px, 1.8vw, 15px);
-  font-style: italic;
-  line-height: 1.6;
-  color: rgba(223, 225, 230, 0.9);
-  margin: 0;
-}
-
-/* Paragraph mappings */
-.ip-card__paragraphs {
+  max-width: clamp(520px, 80vw, 760px);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: center;
+  text-align: center;
+  /* min-height keeps layout stable when content phases switch */
+  min-height: 260px;
 }
 
-.ip-card__paragraph {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(14px, 1.8vw, 15.5px);
-  color: rgba(223, 225, 230, 0.85);
-  line-height: 1.7;
+/* ================================================================
+   HIGHLIGHT INTRO TEXT  — Playfair Display, appears first
+   ================================================================ */
+.ip-highlight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  max-width: 620px;
+}
+
+.ip-highlight__bar {
+  width: 40px;
+  height: 2px;
+  border-radius: 2px;
+  opacity: 0.80;
+  flex-shrink: 0;
+}
+
+.ip-highlight__text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 3vw, 30px);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(223, 225, 230, 0.95);
   margin: 0;
+  text-shadow: 0 2px 24px rgba(2, 14, 24, 0.7);
+  letter-spacing: 0.01em;
 }
 
-/* Ending Quote */
-.ip-card__quote-wrapper {
+/* ================================================================
+   FULL CONTENT — one merged paragraph + quote + button
+   ================================================================ */
+.ip-full {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  width: 100%;
+  text-align: center;
+  margin-top: 48px; /* Beautiful spatial breathing room below the highlight intro text */
+}
+
+.ip-full__paragraph {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(15px, 1.9vw, 17px);
+  color: rgba(223, 225, 230, 0.85);
+  line-height: 1.9;
+  margin: 0;
+  text-shadow: 0 2px 12px rgba(2, 14, 24, 0.6);
+  text-align: center;
+  max-width: 640px;
+}
+
+/* ── Thin coloured divider ── */
+.ip-full__divider {
+  height: 1px;
+  width: 100%;
+  max-width: 480px;
+  margin: 48px 0;
+  opacity: 0.55;
+  border: none;
+}
+
+/* ── Closing quote ── */
+.ip-full__quote {
   position: relative;
   text-align: center;
-  padding: 12px 24px;
+  padding: 24px 8px 8px;
+  max-width: 580px;
 }
 
-.ip-card__quote-deco {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 38px;
-  line-height: 1;
+.ip-full__quote-mark {
+  font-family: 'Playfair Display', serif;
+  font-size: 80px;
+  line-height: 0.6;
   position: absolute;
-  top: -10px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  opacity: 0.15;
+  opacity: 0.10;
   user-select: none;
+  pointer-events: none;
 }
 
-.ip-card__quote-text {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(14px, 2vw, 17px);
-  font-weight: 700;
+.ip-full__quote-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(17px, 2.4vw, 22px);
+  font-weight: 400;
   font-style: italic;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
   margin: 0;
-  line-height: 1.4;
   position: relative;
-  z-index: 2;
+  z-index: 1;
+  text-shadow: 0 2px 20px rgba(2, 14, 24, 0.55);
 }
 
-/* ── Return Button ── */
+/* ── Footer / back button ── */
+.ip-full__footer {
+  margin-top: 52px;
+  display: flex;
+  justify-content: center;
+}
 
-.ip-card__back-btn {
+.ip-back-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 14px 28px;
+  gap: 12px;
+  padding: 16px 36px;
   background: transparent;
-  border: 1px solid;
+  border: 1px solid var(--accent-dim);
   border-radius: 4px;
   color: #DFE1E6;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   cursor: pointer;
   outline: none;
-  transition: all 0.3s ease;
+  transition:
+    background    0.3s ease,
+    border-color  0.3s ease,
+    color         0.3s ease,
+    box-shadow    0.3s ease;
 }
 
-.ip-card__back-icon {
+.ip-back-btn__icon {
   width: 16px;
   height: 16px;
   transition: transform 0.3s ease;
 }
 
-.ip-card__back-btn:hover {
-  background: #DFE1E6;
+.ip-back-btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
   color: #020E18;
-  border-color: #DFE1E6 !important;
-  box-shadow: 0 0 20px rgba(223, 225, 230, 0.3);
+  box-shadow: 0 0 28px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
-.ip-card__back-btn:hover .ip-card__back-icon {
-  transform: translateX(-4px);
+.ip-back-btn:hover .ip-back-btn__icon {
+  transform: translateX(-5px);
 }
 
-.ip-card__back-btn:active {
-  transform: scale(0.97);
-}
+.ip-back-btn:active { transform: scale(0.97); }
 
-/* Error page fallback */
+/* ── Error fallback ── */
 .ip-error-page {
   display: flex;
   flex-direction: column;
@@ -200,14 +294,60 @@
   justify-content: center;
   min-height: 100vh;
   gap: 16px;
+  color: #DFE1E6;
+  font-family: var(--font-primary);
 }
 
-/* Mobile responsive adjustments */
-@media (max-width: 600px) {
-  .ip-card {
-    padding: 32px 20px;
+/* ── Tablet ── */
+@media (max-width: 900px) {
+  .ip-title-block {
+    --dest-x: 24px;
+    --dest-y: 86px;
+    --dest-scale: 0.46;
   }
-  .ip-container {
-    padding: 24px 16px;
+
+  .ip-title__heading {
+    font-size: clamp(28px, 7vw, 62px);
   }
 }
+
+/* ── Mobile ── */
+@media (max-width: 600px) {
+  .ip-title-block {
+    --dest-x: 16px;
+    --dest-y: 76px;
+    --dest-scale: 0.44;
+  }
+
+  .ip-content-wrap {
+    padding: clamp(80px, 12vh, 120px) 16px clamp(60px, 8vh, 90px);
+  }
+
+  .ip-highlight__text {
+    font-size: clamp(17px, 4.5vw, 26px);
+  }
+
+  .ip-full__paragraph {
+    font-size: clamp(14px, 3.5vw, 16px);
+  }
+}
+
+/* ── Small phones ── */
+@media (max-width: 380px) {
+  .ip-title-block {
+    --dest-x: 12px;
+    --dest-y: 70px;
+    --dest-scale: 0.40;
+  }
+
+  .ip-content-wrap {
+    padding: 70px 12px 60px;
+  }
+
+  .ip-back-btn {
+    padding: 14px 24px;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+}
+

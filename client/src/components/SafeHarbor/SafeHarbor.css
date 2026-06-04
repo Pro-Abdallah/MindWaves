@@ -35,6 +35,8 @@
   position: relative;
   z-index: 2;
   width: min(960px, 92vw);
+  /* On smaller screens, allow a bit more height usage */
+  min-width: 280px;
   /* force the board to keep its natural square-ish ratio */
   aspect-ratio: 1 / 1;
   display: flex;
@@ -44,7 +46,7 @@
   filter:
     drop-shadow(0 8px 24px rgba(0,0,0,0.55))
     drop-shadow(0 30px 80px rgba(0,0,0,0.45));
-  margin: 60px 0;
+  margin: 80px 0 60px;
 }
 
 /* ── Bulletin Board Image — fills the wrapper naturally ── */
@@ -72,7 +74,7 @@
 }
 
 .sh-board-label__tag {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.35em;
@@ -83,9 +85,10 @@
 }
 
 .sh-board-label__title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: clamp(24px, 3.5vw, 40px);
-  font-weight: 800;
+  font-weight: 400;
+  font-style: italic;
   color: #fff8dc;
   letter-spacing: 0.04em;
   text-shadow:
@@ -123,16 +126,50 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 8px;
   z-index: 20;
   padding: 0;
   outline: none;
   -webkit-tap-highlight-color: transparent;
+  transform: rotate(var(--note-rotate, 0deg));
+  transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Pseudo-element for soft, organic (non-square) golden glow */
+.sh-note-hotspot::after {
+  content: '';
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%; /* perfect ellipse/circle */
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 248, 220, 0.6) 0%,
+    rgba(255, 220, 120, 0.2) 40%,
+    rgba(145, 191, 246, 0.05) 70%,
+    transparent 100%
+  );
+  filter: blur(15px); /* extremely soft and mist-like */
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+  transform: scale(0.85);
+  transition: opacity 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Hover effects */
+.sh-note-hotspot:hover {
+  transform: rotate(var(--note-rotate, 0deg)) scale(1.025);
+}
+
+.sh-note-hotspot:hover::after {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 /* Slight scale-down on press to give tactile feedback */
 .sh-note-hotspot:active {
-  transform: scale(0.97);
+  transform: rotate(var(--note-rotate, 0deg)) scale(0.97) !important;
+  transition: transform 0.1s ease;
 }
 
 .sh-note-ripple {
@@ -292,7 +329,7 @@
 /* ── Stamp Tag ── */
 .sh-paper__stamp {
   display: inline-block;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 9px;
   font-weight: 800;
   letter-spacing: 0.35em;
@@ -322,9 +359,10 @@
 
 /* ── Paper Title ── */
 .sh-paper__title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: clamp(22px, 3.5vw, 32px);
-  font-weight: 800;
+  font-weight: 400;
+  font-style: italic;
   color: #3a2a0a;
   line-height: 1.2;
   margin-bottom: 8px;
@@ -405,7 +443,7 @@
 }
 
 .sh-therapy-card__cat {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 8.5px;
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -416,9 +454,10 @@
 }
 
 .sh-therapy-card__name {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 400;
+  font-style: italic;
   color: #3a2a0a;
   margin-bottom: 8px;
 }
@@ -441,7 +480,7 @@
   border: 1px solid rgba(60, 40, 10, 0.22);
   border-radius: 4px;
   color: #3a2a0a;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 10.5px;
   font-weight: 700;
   letter-spacing: 0.07em;
@@ -478,9 +517,10 @@
 }
 
 .sh-info-item__title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-serif);
   font-size: 15.5px;
-  font-weight: 700;
+  font-weight: 400;
+  font-style: italic;
   color: #1a3a6a;
   margin-bottom: 5px;
 }
@@ -515,7 +555,7 @@
 }
 
 .sh-hotline-card__title {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 14px;
   font-weight: 500;
   color: #4a1a1a;
@@ -532,7 +572,7 @@
   border: 1.5px solid #c04040;
   border-radius: 20px;
   color: #c04040;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: var(--font-primary);
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
@@ -562,6 +602,27 @@
    Responsiveness
    ================================================================ */
 
+@media (max-width: 1100px) {
+  .sh-board-wrap {
+    width: min(820px, 94vw);
+  }
+}
+
+@media (max-width: 900px) {
+  .sh-board-wrap {
+    width: min(700px, 96vw);
+    margin: 60px 0 50px;
+  }
+
+  .sh-board-label {
+    top: -48px;
+  }
+
+  .sh-board-label__title {
+    font-size: clamp(20px, 3vw, 32px);
+  }
+}
+
 @media (max-width: 760px) {
   .sh-therapy-grid {
     grid-template-columns: 1fr;
@@ -580,4 +641,68 @@
     width: 100%;
     justify-content: center;
   }
+
+  .sh-board-wrap {
+    width: min(600px, 96vw);
+    margin: 50px 0 40px;
+  }
+
+  .sh-board-label {
+    top: -44px;
+  }
+
+  .sh-board-hint {
+    bottom: -38px;
+    font-size: 10px;
+  }
 }
+
+@media (max-width: 540px) {
+  .sh-board-wrap {
+    width: 98vw;
+    aspect-ratio: 1 / 1;
+    margin: 44px 0 36px;
+  }
+
+  .sh-board-label {
+    top: -40px;
+  }
+
+  .sh-board-label__title {
+    font-size: clamp(18px, 5vw, 26px);
+  }
+
+  .sh-board-label__tag {
+    font-size: 9px;
+  }
+
+  .sh-board-hint {
+    bottom: -32px;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .sh-paper {
+    max-width: 100%;
+  }
+
+  .sh-paper__body {
+    padding: 24px 16px 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .sh-board-wrap {
+    width: 100vw;
+    margin: 36px 0 28px;
+  }
+
+  .sh-overlay {
+    padding: 16px 12px;
+  }
+
+  .sh-paper__body {
+    padding: 20px 14px 16px;
+  }
+}
+

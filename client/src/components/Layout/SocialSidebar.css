@@ -54,7 +54,7 @@
   border: 1px solid rgba(81, 132, 192, 0.3);
   padding: 6px 12px;
   border-radius: 6px;
-  font-family: 'Space Grotesk', 'Inter', sans-serif;
+  font-family: var(--font-primary);
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.05em;
@@ -91,3 +91,28 @@
     display: none;
   }
 }
+
+@media (max-width: 480px) {
+  .social-sidebar {
+    right: 10px;
+    gap: 10px;
+  }
+
+  .social-sidebar__link {
+    width: 34px;
+    height: 34px;
+  }
+
+  .social-sidebar__link svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Hide completely on very small phones to avoid overlap with content */
+@media (max-width: 360px) {
+  .social-sidebar {
+    display: none;
+  }
+}
+

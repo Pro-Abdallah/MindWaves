@@ -1,6 +1,6 @@
-import { useRef } from 'react'
 import { motion } from 'framer-motion'
-import { projectTeam } from './team.data'
+import { projectTeam, supervisors, medicalConsultants } from './team.data'
+import OceanBackground from '../ABottleReturned/components/OceanBackground'
 import './WhyWeSail.css'
 
 export default function WhyWeSail() {
@@ -34,17 +34,6 @@ export default function WhyWeSail() {
     }
   }
 
-  // Floating lanterns decoration mimicking sunset light rising
-  const lanterns = useRef(
-    Array.from({ length: 12 }, (_, i) => ({
-      id: i,
-      left: 10 + Math.random() * 80,
-      delay: Math.random() * 10,
-      duration: 15 + Math.random() * 15,
-      size: 8 + Math.random() * 12
-    }))
-  )
-
   const missionPoints = [
     "To raise awareness about bipolar disorder using simple, clear, and scientifically accurate information.",
     "To correct common misconceptions surrounding the disorder, especially confusion with other mental health conditions.",
@@ -61,28 +50,7 @@ export default function WhyWeSail() {
 
   return (
     <section className="wws-container" id="why-we-sail" aria-label="Why We Sail Section">
-      {/* ── Immersive Sunset Sea Backdrop ── */}
-      <div className="wws-ambient-bg">
-        <div className="wws-sunset-glow" />
-        <div className="wws-water-reflection" />
-        
-        {/* Floating sky lanterns */}
-        <div className="wws-lanterns">
-          {lanterns.current.map(l => (
-            <span
-              key={l.id}
-              className="wws-lantern"
-              style={{
-                left: `${l.left}%`,
-                width: `${l.size}px`,
-                height: `${l.size}px`,
-                animationDelay: `${l.delay}s`,
-                animationDuration: `${l.duration}s`
-              }}
-            />
-          ))}
-        </div>
-      </div>
+      <OceanBackground isBlurred={false} />
 
       {/* ── Section Content Wrapper ── */}
       <div className="wws-content">
@@ -178,12 +146,62 @@ export default function WhyWeSail() {
           </motion.div>
         </motion.div>
 
-        {/* ── PROJECT TEAM ── */}
+        {/* ── SUPERVISION & ADVISORY ── */}
         <div className="wws-crew-section">
+          <div className="wws-crew-header">
+            <span className="wws-crew-header__tag">GUIDANCE & EXPERTISE</span>
+            <h3 className="wws-crew-header__title">Supervision & Advisory</h3>
+            <p className="wws-crew-header__sub">The academic and medical guides of our journey.</p>
+          </div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="wws-crew-grid"
+          >
+            {supervisors.map(item => (
+              <motion.div
+                key={item.id}
+                variants={cardVariants}
+                className="wws-crew-card wws-crew-card--highlighted"
+              >
+                <span className="wws-crew-card__role">{item.role}</span>
+                <div className="wws-crew-card__members">
+                  {item.members.map((name, idx) => (
+                    <div key={idx} className="wws-crew-card__member-name">
+                      {name}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+            {medicalConsultants.map(item => (
+              <motion.div
+                key={item.id}
+                variants={cardVariants}
+                className="wws-crew-card wws-crew-card--highlighted"
+              >
+                <span className="wws-crew-card__role">{item.role}</span>
+                <div className="wws-crew-card__members">
+                  {item.members.map((name, idx) => (
+                    <div key={idx} className="wws-crew-card__member-name">
+                      {name}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* ── PROJECT TEAM ── */}
+        <div className="wws-crew-section" style={{ marginTop: '80px' }}>
           <div className="wws-crew-header">
             <span className="wws-crew-header__tag">THE CREATORS</span>
             <h3 className="wws-crew-header__title">Project Team</h3>
-            <p className="wws-crew-header__sub">The minds guiding the journey.</p>
+            <p className="wws-crew-header__sub">The minds shaping the creative vision.</p>
           </div>
 
           <motion.div

@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import './CinematicIntro.css'
 
-const firstHalfSrc  = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/Intro_2_pef8yr.mp4'
-const secondHalfSrc = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/Whole_Message_m0wrrn.mp4'
+const firstHalfSrc = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/Intro_2_pef8yr.mp4'
+const secondHalfSrc = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/v1780273682/2nd_Half_Intro_-_New_diemensions_assuge.mp4'
 
 function IconVolumeOn() {
   return (
@@ -113,32 +113,32 @@ function SkipButton({ onClick }) {
 function IntroNavbar() {
   return (
     <div className="ci-navbar-strip" aria-label="MindWaves navigation">
-      <img src="/logo 1.png"         alt="MindWaves Logo" className="ci-navbar-logo-img" />
-      <img src="/mind waves png.png" alt="MindWaves"      className="ci-navbar-logo-text" />
+      <img src="/logo 1.png" alt="MindWaves Logo" className="ci-navbar-logo-img" />
+      <img src="/mind waves png.png" alt="MindWaves" className="ci-navbar-logo-text" />
     </div>
   )
 }
 
 export default function CinematicIntro({ onComplete }) {
-  const [phase, setPhase]                   = useState('loading')
+  const [phase, setPhase] = useState('loading')
   const [autoplayFailed, setAutoplayFailed] = useState(false)
-  
-  // Single sound state that controls audio for the active video
-  const [isMuted, setIsMuted]               = useState(false)
 
-  const firstVideoRef  = useRef(null)
+  // Single sound state that controls audio for the active video
+  const [isMuted, setIsMuted] = useState(false)
+
+  const firstVideoRef = useRef(null)
   const secondVideoRef = useRef(null)
 
   // Lock body scroll for duration of intro
   useEffect(() => {
-    const prevOverflow   = document.body.style.overflow
+    const prevOverflow = document.body.style.overflow
     const prevUserSelect = document.body.style.userSelect
 
-    document.body.style.overflow   = 'hidden'
+    document.body.style.overflow = 'hidden'
     document.body.style.userSelect = 'none'
 
     return () => {
-      document.body.style.overflow   = prevOverflow
+      document.body.style.overflow = prevOverflow
       document.body.style.userSelect = prevUserSelect
     }
   }, [])
@@ -156,6 +156,7 @@ export default function CinematicIntro({ onComplete }) {
   }, [isMuted])
 
   // Attempt autoplay of first video
+  // Tries unmuted autoplay first, falling back to muted autoplay if blocked by browser policies.
   useEffect(() => {
     const video = firstVideoRef.current
     if (!video) return
@@ -164,16 +165,28 @@ export default function CinematicIntro({ onComplete }) {
       setPhase('firstVideo')
       try {
         video.muted = false
-        setIsMuted(false) 
+        setIsMuted(false)
         await video.play()
-      } catch {
-        setAutoplayFailed(true)
-        setPhase('awaitingStart')
+      } catch (err) {
+        console.log("Unmuted autoplay blocked, trying muted autoplay...", err)
+        try {
+          video.muted = true
+          setIsMuted(true)
+          await video.play()
+        } catch (err2) {
+          console.error("Muted autoplay also blocked:", err2)
+          setAutoplayFailed(true)
+          setPhase('awaitingStart')
+        }
       }
     }
 
-    video.addEventListener('canplay', tryPlay, { once: true })
-    return () => video.removeEventListener('canplay', tryPlay)
+    if (video.readyState >= 2) {
+      tryPlay()
+    } else {
+      video.addEventListener('canplay', tryPlay, { once: true })
+      return () => video.removeEventListener('canplay', tryPlay)
+    }
   }, [])
 
   // Unified audio toggling handler
@@ -195,7 +208,7 @@ export default function CinematicIntro({ onComplete }) {
 
     setTimeout(() => {
       setPhase('done')
-      document.body.style.overflow   = ''
+      document.body.style.overflow = ''
       document.body.style.userSelect = ''
       onComplete?.()
     }, 1100)
@@ -228,9 +241,9 @@ export default function CinematicIntro({ onComplete }) {
 
   if (phase === 'done') return null
 
-  const showFirstVideo  = phase === 'firstVideo' || phase === 'awaitingStart'
+  const showFirstVideo = phase === 'firstVideo' || phase === 'awaitingStart'
   const showSecondVideo = phase === 'secondVideo'
-  const isExiting       = phase === 'exiting'
+  const isExiting = phase === 'exiting'
 
   // Determine if we show sound control
   // Spec: "mute and unmute toggle buttons before start and after start"
@@ -253,6 +266,7 @@ export default function CinematicIntro({ onComplete }) {
         className={`ci-video${showFirstVideo ? ' ci-video--active' : ''}`}
         src={firstHalfSrc}
         autoPlay
+        muted={isMuted}
         playsInline
         preload="auto"
         onEnded={handleFirstVideoEnd}
@@ -263,6 +277,7 @@ export default function CinematicIntro({ onComplete }) {
         ref={secondVideoRef}
         className={`ci-video${showSecondVideo ? ' ci-video--active' : ''}`}
         src={secondHalfSrc}
+        muted={isMuted}
         playsInline
         preload="auto"
         onEnded={handleSecondVideoEnd}

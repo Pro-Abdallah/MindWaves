@@ -41,3 +41,20 @@ export const projectTeam = [
     members: ["Rana Khaled", "Hoda Maged"]
   }
 ];
+
+export const supervisors = [
+  {
+    id: "sup-1",
+    role: "Under the Supervision of",
+    members: ["Dr. Fatma El Zahraa", "Dr. Hoda Elshazely", "T.A. Rawan Hany"]
+  }
+];
+
+export const medicalConsultants = [
+  {
+    id: "med-1",
+    role: "Medical Consultants",
+    members: ["Amr Yosry", "Nagwa Nagy", "Ghada Elkady"]
+  }
+];
+
