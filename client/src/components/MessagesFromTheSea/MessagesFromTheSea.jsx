@@ -56,7 +56,7 @@ export default function MessagesFromTheSea() {
           >
             The ocean carries stories
             <br />
-            <em>no one dared speak aloud.</em>
+            <em>no one dared speak aloud</em>
           </motion.h2>
 
           <motion.p
@@ -67,7 +67,7 @@ export default function MessagesFromTheSea() {
           >
             Scroll down to uncover the four messages
             <br />
-            that drifted here across the water.
+            that drifted here across the water
           </motion.p>
 
           {/* The 4 floating transparent bottles in the header */}

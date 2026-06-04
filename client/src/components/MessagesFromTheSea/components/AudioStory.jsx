@@ -274,22 +274,24 @@ export default function AudioStory({ story }) {
       </motion.div>
 
       {/* Subtitle display */}
-      <AnimatePresence mode="wait">
-        {currentSub && (
-          <motion.div
-            key={currentSub.text}
-            className="audio-subtitle"
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.4 }}
-            style={{ borderColor: story.color + '60' }}
-          >
-            <span className="subtitle-bar" style={{ background: story.color }} />
-            <p>{currentSub.text}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div className="audio-subtitle-wrapper" style={{ width: '100%', maxWidth: '540px', display: 'flex', justifyContent: 'center' }}>
+        <AnimatePresence mode="wait">
+          {currentSub && (
+            <motion.div
+              key={currentSub.text}
+              className="audio-subtitle"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.4 }}
+              style={{ borderColor: story.color + '60', width: '100%' }}
+            >
+              <span className="subtitle-bar" style={{ background: story.color }} />
+              <p>{currentSub.text}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   )
 }

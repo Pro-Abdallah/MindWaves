@@ -75,18 +75,19 @@
   font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(145, 191, 246, 0.6);
+  color: rgba(223, 225, 230, 0.95); /* Increased contrast */
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .mfts-wave-icon {
   font-size: 14px;
-  color: rgba(81, 132, 192, 0.5);
+  color: rgba(145, 191, 246, 0.9); /* Brighter icon */
   animation: waveShimmer 2.5s ease-in-out infinite;
 }
 
 @keyframes waveShimmer {
-  0%, 100% { opacity: 0.4; transform: scaleX(1); }
-  50%       { opacity: 0.9; transform: scaleX(1.1); }
+  0%, 100% { opacity: 0.6; transform: scaleX(1); }
+  50%       { opacity: 1; transform: scaleX(1.1); }
 }
 
 .mfts-title {

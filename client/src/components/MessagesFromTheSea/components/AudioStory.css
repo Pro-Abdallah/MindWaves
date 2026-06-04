@@ -7,6 +7,7 @@
   padding: 48px 32px;
   min-height: 100%;
   overflow: hidden;
+  width: 100%;
 }
 
 .audio-particles {
@@ -206,6 +207,10 @@
 /* Subtitles */
 .audio-subtitle {
   max-width: 540px;
+  width: 100%;
+  height: 260px; /* Fixed height to accommodate long text without resizing player */
+  overflow-y: auto;
+  box-sizing: border-box;
   background: rgba(5, 57, 94, 0.5);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -220,8 +225,8 @@
 .subtitle-bar {
   width: 3px;
   height: 100%;
-  border-radius: 2px;
   min-height: 40px;
+  border-radius: 2px;
   flex-shrink: 0;
 }
 
