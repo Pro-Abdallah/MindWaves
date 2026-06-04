@@ -21,7 +21,7 @@ export default function OceanBackground({ opacity = 1 }) {
         style={{
           width: '105%',
           height: '105%',
-          backgroundImage: 'url("/realistic-ocean-bg.png")',
+          backgroundImage: 'url("/5.png")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -36,14 +36,7 @@ export default function OceanBackground({ opacity = 1 }) {
           ease: 'easeInOut',
         }}
       />
-      {/* Dark overlay to ensure text legibility and match moody vibe */}
-      <div 
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to bottom, rgba(2,14,24,0.4) 0%, rgba(2,14,24,0.1) 40%, rgba(2,14,24,0.7) 100%)'
-        }}
-      />
+      {/* Removed dark overlay */}
     </div>
   )
 }

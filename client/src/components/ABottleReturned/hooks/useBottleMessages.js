@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 
-const API_URL = '/api/messages';
+const API_URL = 'https://mind-waves.runasp.net/api/messages';
 
 export const useBottleMessages = () => {
   const [messages, setMessages] = useState([]);

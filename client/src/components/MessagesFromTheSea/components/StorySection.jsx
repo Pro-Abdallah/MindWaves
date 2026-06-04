@@ -20,7 +20,7 @@ export default function StorySection({ story, index }) {
     if (isCentered) {
       timer = setTimeout(() => {
         setIsOpened(true)
-      }, 2000) // 2 seconds delay
+      }, 500) // 0.5 seconds delay
     } else {
       setIsOpened(false)
     }

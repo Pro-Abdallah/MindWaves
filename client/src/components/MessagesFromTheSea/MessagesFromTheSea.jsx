@@ -29,8 +29,8 @@ export default function MessagesFromTheSea() {
       {/* Living ocean canvas */}
       <OceanBackground />
 
-      {/* Horizon fog */}
-      <div className="mfts-horizon" />
+      {/* Living ocean canvas */}
+      <OceanBackground />
 
       {/* Content */}
       <div className="mfts-inner">
@@ -73,50 +73,7 @@ export default function MessagesFromTheSea() {
           {/* The 4 floating transparent bottles in the header */}
           <div className="hero-bottles-row" style={{ position: 'relative' }}>
             
-            {/* Unified Sea Surface under all bottles */}
-            <div style={{
-              position: 'absolute',
-              bottom: '5%',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '110%',
-              height: '100px',
-              zIndex: 0,
-            }}>
-              {/* Deep water shadow to ground them */}
-              <div style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'radial-gradient(ellipse at center, rgba(3, 22, 40, 0.9) 0%, rgba(2, 14, 24, 0.6) 50%, transparent 75%)',
-                borderRadius: '50%',
-                transform: 'rotateX(75deg)',
-                filter: 'blur(15px)'
-              }} />
-              {/* Subtle water reflection / surface line */}
-              <motion.div 
-                animate={{ scaleX: [1, 1.05, 1], opacity: [0.2, 0.5, 0.2] }}
-                transition={{ duration: 8, repeat: Infinity, ease: 'easeInOut' }}
-                style={{
-                  position: 'absolute',
-                  inset: '30% 5%',
-                  background: 'radial-gradient(ellipse at center, rgba(145, 191, 246, 0.2) 0%, transparent 70%)',
-                  borderRadius: '50%',
-                  transform: 'rotateX(75deg)',
-                  filter: 'blur(8px)'
-                }}
-              />
-              <motion.div 
-                animate={{ scaleX: [0.95, 1.02, 0.95], opacity: [0.4, 0.1, 0.4] }}
-                transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-                style={{
-                  position: 'absolute',
-                  inset: '45% 15%',
-                  borderTop: '1px solid rgba(145, 191, 246, 0.4)',
-                  borderRadius: '50%',
-                  transform: 'rotateX(75deg)',
-                }}
-              />
-            </div>
+
 
             {/* Bottles */}
             {[
@@ -178,8 +135,6 @@ export default function MessagesFromTheSea() {
           ))}
         </div>
 
-        {/* Deep ocean below cards */}
-        <div className="mfts-deep-ocean" />
 
         {/* ── Ambient floating particles ── */}
         <div className="mfts-ambient-particles" aria-hidden="true">

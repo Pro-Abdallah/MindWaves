@@ -33,6 +33,7 @@ export default function SceneCard({ scene, onChoice, selectedChoice, showFeedbac
     if (videoRef.current) {
       videoRef.current.play();
       setIsPlaying(true);
+      setVideoWatched(true);
     }
   };
 

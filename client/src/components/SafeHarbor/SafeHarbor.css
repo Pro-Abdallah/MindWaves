@@ -18,6 +18,7 @@
   background-repeat: no-repeat;
   /* Dark overlay to deepen the mood */
   isolation: isolate;
+  margin-top: -70px;
 }
 
 /* Subtle dark overlay on the ocean to help the board stand out */
@@ -71,6 +72,7 @@
   z-index: 10;
   pointer-events: none;
   white-space: nowrap;
+  margin-top: 100px;
 }
 
 .sh-board-label__tag {
