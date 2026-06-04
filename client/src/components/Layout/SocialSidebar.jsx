@@ -1,5 +1,21 @@
 import './SocialSidebar.css';
 
+function IconFacebook() {
+  return (
+    <svg 
+      viewBox="0 0 24 24" 
+      fill="none" 
+      stroke="currentColor" 
+      strokeWidth="2.2" 
+      strokeLinecap="round" 
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+    </svg>
+  );
+}
+
 function IconInstagram() {
   return (
     <svg 
@@ -37,6 +53,16 @@ function IconTikTok() {
 export default function SocialSidebar() {
   return (
     <div className="social-sidebar" aria-label="Social Media Links">
+      <a 
+        href="https://www.facebook.com/profile.php?id=61590158747010&mibextid=wwXIfr" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        className="social-sidebar__link facebook"
+        title="Follow us on Facebook"
+      >
+        <IconFacebook />
+        <span className="social-sidebar__tooltip">Facebook</span>
+      </a>
       <a 
         href="https://www.instagram.com/mindwaves2026?igsh=MXFrYWV0OXMyZ2N0aA==" 
         target="_blank" 
