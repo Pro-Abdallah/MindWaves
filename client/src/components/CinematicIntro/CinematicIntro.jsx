@@ -156,6 +156,7 @@ export default function CinematicIntro({ onComplete }) {
   }, [isMuted])
 
   // Attempt autoplay of first video
+  // Tries unmuted autoplay first, falling back to muted autoplay if blocked by browser policies.
   useEffect(() => {
     const video = firstVideoRef.current
     if (!video) return
@@ -166,14 +167,26 @@ export default function CinematicIntro({ onComplete }) {
         video.muted = false
         setIsMuted(false)
         await video.play()
-      } catch {
-        setAutoplayFailed(true)
-        setPhase('awaitingStart')
+      } catch (err) {
+        console.log("Unmuted autoplay blocked, trying muted autoplay...", err)
+        try {
+          video.muted = true
+          setIsMuted(true)
+          await video.play()
+        } catch (err2) {
+          console.error("Muted autoplay also blocked:", err2)
+          setAutoplayFailed(true)
+          setPhase('awaitingStart')
+        }
       }
     }
 
-    video.addEventListener('canplay', tryPlay, { once: true })
-    return () => video.removeEventListener('canplay', tryPlay)
+    if (video.readyState >= 2) {
+      tryPlay()
+    } else {
+      video.addEventListener('canplay', tryPlay, { once: true })
+      return () => video.removeEventListener('canplay', tryPlay)
+    }
   }, [])
 
   // Unified audio toggling handler
@@ -253,6 +266,7 @@ export default function CinematicIntro({ onComplete }) {
         className={`ci-video${showFirstVideo ? ' ci-video--active' : ''}`}
         src={firstHalfSrc}
         autoPlay
+        muted={isMuted}
         playsInline
         preload="auto"
         onEnded={handleFirstVideoEnd}
@@ -263,6 +277,7 @@ export default function CinematicIntro({ onComplete }) {
         ref={secondVideoRef}
         className={`ci-video${showSecondVideo ? ' ci-video--active' : ''}`}
         src={secondHalfSrc}
+        muted={isMuted}
         playsInline
         preload="auto"
         onEnded={handleSecondVideoEnd}
