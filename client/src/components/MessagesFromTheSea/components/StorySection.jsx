@@ -9,9 +9,12 @@ export default function StorySection({ story, index }) {
   // Fade in text as it comes into view
   const inView = useInView(sectionRef, { margin: '-20%' })
 
-  // Magic scroll trigger: when section is in the absolute center of the viewport
-  // We use a tight margin so it only opens when you are truly looking at it
-  const isCentered = useInView(sectionRef, { margin: '-40% 0px -40% 0px' })
+  // On mobile, use a much tighter trigger zone so two stories
+  // don't open at the same time when scrolling.
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
+  const isCentered = useInView(sectionRef, {
+    margin: isMobile ? '-35% 0px -35% 0px' : '-40% 0px -40% 0px'
+  })
   const [isOpened, setIsOpened] = useState(false)
 
   // Wait 2 seconds before triggering the opening animation so the user can read the text
