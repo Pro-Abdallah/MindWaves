@@ -157,17 +157,17 @@ export default function InnerEcho() {
   const t = {
     title: { en: "Test Your Inner Echo", ar: "اختبر صدى روحك الداخلي" },
     subtitle: { en: "An awareness journey designed to map your emotional and mood patterns.", ar: "رحلة وعي مصممة لرصد تقلباتك ومزاجك النفسي الداخلي." },
-    begin: { en: "Begin Reflection", ar: "ابدأ رحلة الوعي" },
+    begin: { en: "Begin the Test", ar: "ابدأ رحلة الوعي" },
     qCount: { en: "Question", ar: "السؤال" },
     of: { en: "of", ar: "من" },
     helpCenter: { en: "Seek Safe Harbor Support", ar: "الذهاب لمراكز المساعدة" },
     restart: { en: "Begin Anew", ar: "إعادة الاختبار" },
     drApproval: {
-      en: "Reviewed and approved by psychiatrist Dr. Ghada El Qady.",
+      en: "This test has been reviewed and approved by psychiatrist Dr. Ghada El Qady.",
       ar: "تمت مراجعة واعتماد هذا الاختبار من قبل طبيبة الأمراض النفسية د. غادة القاضي."
     },
     diagnosticDisclaimer: {
-      en: "This test is not an official diagnostic tool, but rather an awareness-based guide to help you better observe your emotional experiences.",
+      en: "This test is not an official diagnostic tool, but rather an awareness-based guide designed to help users better understand their emotional and mood-related experiences.",
       ar: "هذا الاختبار ليس أداة تشخيص رسمية، بل هو دليل للتوعية مصمم لمساعدتك على فهم تقلباتك ومزاجك النفسي بشكل أفضل."
     },
     keyboardPrompt: {
@@ -218,6 +218,7 @@ export default function InnerEcho() {
                   </svg>
                   {t.drApproval[lang]}
                 </p>
+                <p className="ie-disclaimer__text">{t.diagnosticDisclaimer[lang]}</p>
               </div>
             </motion.div>
           )}
