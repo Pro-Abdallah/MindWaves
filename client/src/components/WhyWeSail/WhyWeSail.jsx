@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { projectTeam } from './team.data'
+import { projectTeam, supervisors, medicalConsultants } from './team.data'
 import OceanBackground from '../ABottleReturned/components/OceanBackground'
 import './WhyWeSail.css'
 
@@ -146,12 +146,62 @@ export default function WhyWeSail() {
           </motion.div>
         </motion.div>
 
-        {/* ── PROJECT TEAM ── */}
+        {/* ── SUPERVISION & ADVISORY ── */}
         <div className="wws-crew-section">
+          <div className="wws-crew-header">
+            <span className="wws-crew-header__tag">GUIDANCE & EXPERTISE</span>
+            <h3 className="wws-crew-header__title">Supervision & Advisory</h3>
+            <p className="wws-crew-header__sub">The academic and medical guides of our journey.</p>
+          </div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="wws-crew-grid"
+          >
+            {supervisors.map(item => (
+              <motion.div
+                key={item.id}
+                variants={cardVariants}
+                className="wws-crew-card wws-crew-card--highlighted"
+              >
+                <span className="wws-crew-card__role">{item.role}</span>
+                <div className="wws-crew-card__members">
+                  {item.members.map((name, idx) => (
+                    <div key={idx} className="wws-crew-card__member-name">
+                      {name}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+            {medicalConsultants.map(item => (
+              <motion.div
+                key={item.id}
+                variants={cardVariants}
+                className="wws-crew-card wws-crew-card--highlighted"
+              >
+                <span className="wws-crew-card__role">{item.role}</span>
+                <div className="wws-crew-card__members">
+                  {item.members.map((name, idx) => (
+                    <div key={idx} className="wws-crew-card__member-name">
+                      {name}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* ── PROJECT TEAM ── */}
+        <div className="wws-crew-section" style={{ marginTop: '80px' }}>
           <div className="wws-crew-header">
             <span className="wws-crew-header__tag">THE CREATORS</span>
             <h3 className="wws-crew-header__title">Project Team</h3>
-            <p className="wws-crew-header__sub">The minds guiding the journey.</p>
+            <p className="wws-crew-header__sub">The minds shaping the creative vision.</p>
           </div>
 
           <motion.div

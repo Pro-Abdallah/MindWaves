@@ -332,6 +332,19 @@
   background: linear-gradient(180deg, rgba(145, 191, 246, 0.03), transparent);
 }
 
+.wws-crew-card--highlighted {
+  border-top-color: rgba(145, 191, 246, 0.45);
+  background: linear-gradient(180deg, rgba(145, 191, 246, 0.02), transparent);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.wws-crew-card--highlighted:hover {
+  border-top-color: #91BFF6;
+  background: linear-gradient(180deg, rgba(145, 191, 246, 0.08), rgba(145, 191, 246, 0.01));
+  box-shadow: 0 12px 30px rgba(145, 191, 246, 0.08);
+}
+
+
 .wws-crew-card__role {
   font-family: var(--font-primary);
   font-size: 10px;
