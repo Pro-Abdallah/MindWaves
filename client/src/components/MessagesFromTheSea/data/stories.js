@@ -4,6 +4,31 @@
  * Add / modify story content here — UI components are data-driven.
  */
 
+import srtContent from './Behind_the_Silence_English.srt?raw';
+
+function parseSrt(srt) {
+  if (!srt) return [];
+  const blocks = srt.replace(/\r/g, '').trim().split('\n\n');
+  return blocks.map(block => {
+    const lines = block.split('\n');
+    if (lines.length < 3) return null;
+    const timeLine = lines[1];
+    const text = lines.slice(2).join('\n');
+    
+    const parseTime = t => {
+      const [hms, ms] = t.split(',');
+      if (!hms || !ms) return 0;
+      const [h, m, s] = hms.split(':').map(Number);
+      return h * 3600 + m * 60 + s + Number(ms) / 1000;
+    };
+    
+    const times = timeLine.split(' --> ');
+    if (times.length !== 2) return null;
+    const [start, end] = times.map(parseTime);
+    return { start, end, text };
+  }).filter(Boolean);
+}
+
 export const STORIES = [
   {
     id: 'audio',
@@ -16,12 +41,7 @@ export const STORIES = [
     color: '#7DD3FC',
     glowColor: 'rgba(125,211,252,0.6)',
     src: 'https://res.cloudinary.com/dwgbbvjbz/video/upload/v1779583794/1st_story_audio_m23eky.mp3',
-    subtitles: [
-      { start: 0,  end: 4,  text: 'Some days, the ocean inside me is perfectly still…' },
-      { start: 4,  end: 9,  text: 'Other days, it rises without warning — a tide I cannot name.' },
-      { start: 9,  end: 14, text: 'I learned that both states are part of me.' },
-      { start: 14, end: 20, text: 'And that was the beginning of understanding.' },
-    ],
+    subtitles: parseSrt(srtContent),
   },
   {
     id: 'video',
