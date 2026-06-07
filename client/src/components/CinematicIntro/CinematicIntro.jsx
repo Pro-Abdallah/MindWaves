@@ -125,6 +125,7 @@ export default function CinematicIntro({ onComplete }) {
 
   // Single sound state that controls audio for the active video
   const [isMuted, setIsMuted] = useState(false)
+  const userMutePrefRef = useRef(null) // null = no pref, true = user muted, false = user unmuted
 
   const firstVideoRef = useRef(null)
   const secondVideoRef = useRef(null)
@@ -154,6 +155,30 @@ export default function CinematicIntro({ onComplete }) {
     const video = secondVideoRef.current
     if (video) video.muted = isMuted
   }, [isMuted])
+
+  // Loop first video when phase is awaitingStart
+  useEffect(() => {
+    if (phase === 'awaitingStart') {
+      const video = firstVideoRef.current
+      if (video) {
+        video.loop = true
+        video.play().catch(err => {
+          console.log("Loop playback failed or was interrupted:", err)
+        })
+      }
+    } else if (phase === 'secondVideo' || phase === 'exiting' || phase === 'done') {
+      const video = firstVideoRef.current
+      if (video) {
+        video.loop = false
+        video.pause()
+      }
+    } else {
+      const video = firstVideoRef.current
+      if (video) {
+        video.loop = false
+      }
+    }
+  }, [phase])
 
   // Attempt autoplay of first video
   // Tries unmuted autoplay first, falling back to muted autoplay if blocked by browser policies.
@@ -191,12 +216,21 @@ export default function CinematicIntro({ onComplete }) {
 
   // Unified audio toggling handler
   const handleSoundToggle = useCallback(() => {
-    setIsMuted(prev => !prev)
+    setIsMuted(prev => {
+      const newVal = !prev
+      userMutePrefRef.current = newVal
+      return newVal
+    })
   }, [])
 
   // First video finished
   const handleFirstVideoEnd = useCallback(() => {
-    setPhase('awaitingStart')
+    setPhase(prev => {
+      if (prev === 'firstVideo') {
+        return 'awaitingStart'
+      }
+      return prev
+    })
   }, [])
 
   // Exit intro
@@ -220,9 +254,10 @@ export default function CinematicIntro({ onComplete }) {
     const video = secondVideoRef.current
     if (!video) return
 
-    // Since the user explicitly clicked Start, we can play with audio (unmuted)
-    setIsMuted(false)
-    video.muted = false
+    // If the user explicitly muted, keep it muted. Otherwise, play unmuted (since start is a user gesture)
+    const nextMuted = userMutePrefRef.current === true
+    setIsMuted(nextMuted)
+    video.muted = nextMuted
     video.volume = 1.0
 
     try {
@@ -271,6 +306,7 @@ export default function CinematicIntro({ onComplete }) {
         preload="auto"
         onEnded={handleFirstVideoEnd}
         aria-hidden="true"
+        loop={phase === 'awaitingStart'}
       />
 
       <video

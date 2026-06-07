@@ -6,24 +6,25 @@ import './OceanWorld.css'
 
 const VIEWBOX = { x: 0, y: 0, w: 1600, h: 900 }
 
-// Absolute coordinates matching the visual centers of the actual islands in the chart picture
+// Absolute coordinates matching the visual centers of each island in the new island map image
+// Derived from: New Islands Image.jpg (2752x1536), scaled to 1600x900 SVG space
 const TOOLTIP_CENTERS = {
-  1: { x: 224, y: 441 },   // Still Island (Snowy mountains center)
-  2: { x: 560, y: 261 },   // Burning Island (Volcano crater center)
-  3: { x: 576, y: 630 },   // Sunken Island (Castle ruins center)
-  4: { x: 1040, y: 252 },  // Twin Islands (Stone arch center)
-  5: { x: 1136, y: 558 },  // Root Island (Giant tree canopy center)
-  6: { x: 1456, y: 405 },  // Lighthouse Island (Lighthouse deck center)
+  1: { x: 334, y: 492 },   // Still Island (green grassy island, bottom-left)
+  2: { x: 401, y: 219 },   // Burning Island (volcano, top-left)
+  3: { x: 752, y: 360 },   // Sunken Island (misty/foggy island, center)
+  4: { x: 1017, y: 193 },  // Twin Islands (twin rocky peaks, top-right)
+  5: { x: 1139, y: 389 },  // Root Island (green tree-covered island, right)
+  6: { x: 1133, y: 632 },  // Lighthouse Island (rocky island with lighthouse, bottom-right)
 }
 
 // Custom coordinate paths outlining the actual visual boundaries of each island in the 1600x900 SVG grid space
 const HITBOX_PATHS = {
-  1: "M 224 306 L 384 405 L 432 468 L 368 540 L 224 576 L 64 540 L 16 468 L 80 369 Z", // Still Island snowy outline
-  2: "M 544 153 L 688 216 L 768 297 L 688 378 L 560 414 L 416 378 L 352 288 L 416 207 Z", // Burning Island volcano outline
-  3: "M 560 495 L 704 567 L 784 666 L 720 738 L 576 774 L 448 738 L 384 630 L 448 540 Z", // Sunken Island ruins outline
-  4: "M 1040 171 L 1184 198 L 1248 252 L 1152 324 L 1008 351 L 864 324 L 816 252 L 896 189 Z", // Twin Islands arch outline
-  5: "M 1136 378 L 1280 459 L 1344 549 L 1408 648 L 1280 738 L 1136 846 L 992 738 L 928 639 L 880 540 L 992 450 Z", // Root Island tree canopy outline
-  6: "M 1456 171 L 1504 252 L 1552 324 L 1600 405 L 1584 585 L 1504 774 L 1392 612 L 1328 477 L 1408 315 L 1424 252 Z", // Lighthouse Island outline
+  1: "M 185 480 L 400 450 L 475 535 L 465 650 L 355 695 L 190 685 L 100 615 L 115 520 Z",         // Still Island
+  2: "M 245 120 L 440 110 L 510 195 L 490 300 L 360 340 L 215 310 L 155 210 Z",                    // Burning Island
+  3: "M 490 275 L 740 260 L 820 345 L 800 445 L 650 475 L 460 425 L 400 340 Z",                    // Sunken Island
+  4: "M 855 110 L 1075 80 L 1195 155 L 1175 275 L 1070 315 L 880 295 L 800 215 Z",                 // Twin Islands
+  5: "M 970 280 L 1200 245 L 1345 325 L 1360 455 L 1240 500 L 1000 490 L 905 395 L 920 295 Z",     // Root Island
+  6: "M 975 515 L 1145 480 L 1310 545 L 1335 665 L 1245 745 L 1035 735 L 885 660 L 895 565 Z",     // Lighthouse Island
 }
 
 /**
@@ -104,7 +105,7 @@ export default function OceanWorld() {
         >
           {/* Background Image rendered inside the SVG to share the exact same scaling & cropping space! */}
           <image 
-            href="/Gemini_Generated_Image_f44bisf44bisf44b.png" 
+            href="/New Islands Image.jpg" 
             x="0" 
             y="0" 
             width="1600" 
