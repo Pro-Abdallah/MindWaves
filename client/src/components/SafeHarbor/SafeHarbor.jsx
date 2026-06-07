@@ -101,7 +101,8 @@ export default function SafeHarbor() {
             aria-label={`Open ${note.label} panel`}
             title={note.label}
           >
-            {/* Invisible but keyboard-focusable — hover shows a ripple */}
+            {/* Shimmer container to allow overflow on the button for the glow */}
+            <span className="sh-note-shimmer-wrap" />
             <span className="sh-note-ripple" />
           </button>
         ))}
@@ -110,9 +111,6 @@ export default function SafeHarbor() {
         <div className="sh-board-label">
           <h2 className="sh-board-label__title">Safe Harbor</h2>
         </div>
-
-        {/* ── Hint text at the bottom ── */}
-        <p className="sh-board-hint">Tap a note to open it</p>
       </div>
 
       {/* ── Paper scroll overlay (modal) ── */}

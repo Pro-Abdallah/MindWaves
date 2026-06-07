@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useNavigate } from 'react-router-dom'
 import { islandsData } from './islands.data'
 import './OceanWorld.css'
 
@@ -27,100 +26,142 @@ const HITBOX_PATHS = {
   6: "M 975 515 L 1145 480 L 1310 545 L 1335 665 L 1245 745 L 1035 735 L 885 660 L 895 565 Z",     // Lighthouse Island
 }
 
-/**
- * Interactive Ocean World component — Aspect-Ratio Preserving Full Screen SVG Hitbox Chart.
- * 
- * Takes the absolute full width and height of the page. Uses a professional SVG coordinate system
- * with preserveAspectRatio="xMidYMid slice" to scale and cover the screen dynamically.
- * 
- * Hitboxes are 100% invisible by default to display the raw beautiful picture itself. 
- * Clicking an island navigates you there. Tooltips have been removed on hover.
- * 
- * A majestic 2D vector galleon sailboat (rendered big, centered initially at 800x450, and 
- * completely steady/not floating) sails fast across the screen toward the clicked island,
- * trailing bioluminescent foam bubbles, before zooming in ("zone in") to transition.
- */
-export default function OceanWorld() {
-  const navigate = useNavigate()
-  const [hoveredIdx, setHoveredIdx] = useState(null)
-  const [transitioning, setTransitioning] = useState(false)
-  const [zoomOrigin, setZoomOrigin] = useState('50% 50%')
-  const [isZoomed, setIsZoomed] = useState(false)
-
-  // Zoom-out transition on mount
+/* ─────────────────────────────────────────────
+   Island Modal — cinematic pop-up overlay
+───────────────────────────────────────────── */
+function IslandModal({ island, onClose }) {
+  // Close on Escape key
   useEffect(() => {
-    const prevZoom = sessionStorage.getItem('mw-prev-zoom')
-    if (prevZoom) {
-      setZoomOrigin(prevZoom)
-      setIsZoomed(true)
-      sessionStorage.removeItem('mw-prev-zoom')
-    }
-    
-    // Smooth zoom out from active zoom/mount state on load
-    const timer = setTimeout(() => {
-      setIsZoomed(false)
-    }, 100)
-    
-    return () => clearTimeout(timer)
+    const handleKey = (e) => { if (e.key === 'Escape') onClose() }
+    window.addEventListener('keydown', handleKey)
+    return () => window.removeEventListener('keydown', handleKey)
+  }, [onClose])
+
+  return (
+    <motion.div
+      className="ow-modal-backdrop"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.3 }}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`${island.title} island details`}
+    >
+      <motion.div
+        className="ow-modal-card"
+        initial={{ opacity: 0, scale: 0.88, y: 60 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 40 }}
+        transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+        onClick={(e) => e.stopPropagation()}
+        style={{ '--island-accent': island.accentColor, '--island-color': island.color }}
+      >
+        {/* ── Header: island image with gradient overlay ── */}
+        <div className="ow-modal-header">
+          <div
+            className="ow-modal-header-bg"
+            style={{ backgroundImage: `url(${island.heroImage})` }}
+          />
+          <div
+            className="ow-modal-header-gradient"
+            style={{ background: `linear-gradient(to bottom, rgba(2,12,30,0.05) 0%, ${island.color}f0 100%)` }}
+          />
+          <div className="ow-modal-header-content">
+            <span className="ow-modal-subtitle">{island.subtitle}</span>
+            <h2 className="ow-modal-title">{island.title}</h2>
+          </div>
+        </div>
+
+        {/* ── Close button ── */}
+        <button className="ow-modal-close" onClick={onClose} aria-label="Close island panel">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        {/* ── Body ── */}
+        <div className="ow-modal-body">
+          {/* Intro text */}
+          <p className="ow-modal-intro">{island.introText}</p>
+
+          {/* Accent divider */}
+          <div className="ow-modal-divider" />
+
+          {/* Numbered fact blocks */}
+          <div className="ow-modal-facts">
+            {island.mainContent.map((text, i) => (
+              <motion.div
+                key={i}
+                className="ow-modal-fact"
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.25 + i * 0.08, duration: 0.35, ease: 'easeOut' }}
+              >
+                <span className="ow-modal-fact-num">{String(i + 1).padStart(2, '0')}</span>
+                <p className="ow-modal-fact-text">{text}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Ending quote */}
+          {island.endingLine && (
+            <motion.blockquote
+              className="ow-modal-ending"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 + island.mainContent.length * 0.08, duration: 0.4 }}
+            >
+              "{island.endingLine}"
+            </motion.blockquote>
+          )}
+        </div>
+      </motion.div>
+    </motion.div>
+  )
+}
+
+/* ─────────────────────────────────────────────
+   OceanWorld — main interactive map
+───────────────────────────────────────────── */
+export default function OceanWorld() {
+  const [hoveredIdx, setHoveredIdx]     = useState(null)
+  const [selectedIsland, setSelectedIsland] = useState(null)
+
+  const handleIslandClick = useCallback((island) => {
+    setSelectedIsland(island)
   }, [])
 
-  const handleIslandClick = (island) => {
-    if (transitioning) return
-
-    const coords = TOOLTIP_CENTERS[island.id]
-    let origin = '50% 50%'
-    if (coords) {
-      const leftPct = ((coords.x - VIEWBOX.x) / VIEWBOX.w) * 100
-      const topPct = ((coords.y - VIEWBOX.y) / VIEWBOX.h) * 100
-      origin = `${leftPct}% ${topPct}%`
-    }
-    
-    // Save zoom origin in session storage for the zone-out animation on return!
-    sessionStorage.setItem('mw-prev-zoom', origin)
-    
-    setZoomOrigin(origin)
-    setIsZoomed(true)
-    setTransitioning(true)
-    
-    // Transition route once the zoom completes
-    setTimeout(() => {
-      navigate(island.route)
-    }, 750)
-  }
+  const handleCloseModal = useCallback(() => {
+    setSelectedIsland(null)
+  }, [])
 
   return (
     <div className="ow-container" role="region" aria-label="Understanding The Waves ocean world">
-      {/* ── Full Screen Interactive SVG Chart Container ── */}
+
+      {/* ── Full Screen Interactive SVG Chart ── */}
       <div className="ow-fullscreen-wrapper">
-        <svg 
-          viewBox={`${VIEWBOX.x} ${VIEWBOX.y} ${VIEWBOX.w} ${VIEWBOX.h}`} 
-          preserveAspectRatio="xMidYMid slice" 
+        <svg
+          viewBox={`${VIEWBOX.x} ${VIEWBOX.y} ${VIEWBOX.w} ${VIEWBOX.h}`}
+          preserveAspectRatio="xMidYMid slice"
           className="ow-fullscreen-svg"
-          style={{
-            transformOrigin: zoomOrigin,
-            transform: isZoomed ? 'scale(4.2)' : 'scale(1)',
-            filter: transitioning ? 'brightness(0.12) blur(5px)' : 'none',
-            transition: 'transform 0.8s cubic-bezier(0.25, 1, 0.35, 1), filter 0.8s ease',
-          }}
         >
-          {/* Background Image rendered inside the SVG to share the exact same scaling & cropping space! */}
-          <image 
-            href="/New Islands Image.jpg" 
-            x="0" 
-            y="0" 
-            width="1600" 
-            height="900" 
+          {/* Background image */}
+          <image
+            href="/New Islands Image.jpg"
+            x="0" y="0" width="1600" height="900"
             style={{
-              filter: hoveredIdx !== null ? 'brightness(0.35) saturate(0.8)' : 'none',
+              filter: (hoveredIdx !== null || selectedIsland) ? 'brightness(0.35) saturate(0.8)' : 'none',
               transition: 'filter 0.4s ease',
             }}
           />
 
-          {/* Interactive SVG Hitboxes */}
+          {/* Invisible interactive hitboxes */}
           {islandsData.map((island, idx) => {
             const pathData = HITBOX_PATHS[island.id]
             if (!pathData) return null
-
             return (
               <path
                 key={island.id}
@@ -134,62 +175,49 @@ export default function OceanWorld() {
             )
           })}
 
-          {/* Sonar pulses for island centers (cool landing hints) */}
+          {/* Sonar pulse rings on each island center */}
           {islandsData.map((island, idx) => {
             const center = TOOLTIP_CENTERS[island.id]
             if (!center) return null
-
             const isHovered = hoveredIdx === idx
-            const hasHover = hoveredIdx !== null
-
+            const hasHover  = hoveredIdx !== null
             return (
-              <g 
-                key={`sonar-${island.id}`} 
-                style={{ 
+              <g
+                key={`sonar-${island.id}`}
+                style={{
                   '--accent-color': island.accentColor || '#1fe5d5',
-                  opacity: hasHover ? (isHovered ? 1.0 : 0.15) : 0.8,
+                  opacity: hasHover ? (isHovered ? 1.0 : 0.1) : 0.75,
                   transition: 'opacity 0.4s ease',
                 }}
               >
-                <circle
-                  cx={center.x}
-                  cy={center.y}
-                  className="ow-sonar-ring"
-                />
-                <circle
-                  cx={center.x}
-                  cy={center.y}
-                  className="ow-sonar-ring ow-sonar-ring--delay"
-                />
-                <circle
-                  cx={center.x}
-                  cy={center.y}
-                  className="ow-sonar-dot"
-                />
+                <circle cx={center.x} cy={center.y} className="ow-sonar-ring" />
+                <circle cx={center.x} cy={center.y} className="ow-sonar-ring ow-sonar-ring--delay" />
+                <circle cx={center.x} cy={center.y} className="ow-sonar-dot" />
               </g>
             )
           })}
 
-          {/* Active Hover Tooltip */}
+          {/* Hover tooltip (only when no modal is open) */}
           <AnimatePresence>
-            {hoveredIdx !== null && !isZoomed && !transitioning && (() => {
+            {hoveredIdx !== null && !selectedIsland && (() => {
               const island = islandsData[hoveredIdx]
               const center = TOOLTIP_CENTERS[island.id]
               if (!center) return null
 
-              const width = 260
-              const height = 175
-              const x = center.x - width / 2
-              const y = center.y - height - 15
+              const width  = 260
+              const height = 160
+              // Clamp so tooltip doesn't overflow SVG viewbox
+              const rawX   = center.x - width / 2
+              const rawY   = center.y - height - 18
+              const x = Math.max(8, Math.min(rawX, VIEWBOX.w - width - 8))
+              const y = Math.max(8, rawY)
 
               return (
                 <foreignObject
                   key={`tooltip-${island.id}`}
-                  x={x}
-                  y={y}
-                  width={width}
-                  height={height}
-                  style={{ pointerEvents: 'none' }}
+                  x={x} y={y}
+                  width={width} height={height}
+                  style={{ pointerEvents: 'none', overflow: 'visible' }}
                 >
                   <motion.div
                     className="ow-hotspot-tooltip"
@@ -202,17 +230,13 @@ export default function OceanWorld() {
                     <span className="ow-tooltip-subtitle" style={{ color: island.accentColor }}>
                       {island.subtitle}
                     </span>
-                    <h3 className="ow-tooltip-title">
-                      {island.title}
-                    </h3>
-                    <p className="ow-tooltip-desc">
-                      {island.introText}
-                    </p>
+                    <h3 className="ow-tooltip-title">{island.title}</h3>
+                    <p className="ow-tooltip-desc">{island.introText}</p>
                     <div className="ow-tooltip-action">
                       <span>Explore Island</span>
                       <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 1L9 4L6 7" stroke="#1fe5d5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M9 4L1 4" stroke="#1fe5d5" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M6 1L9 4L6 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M9 4L1 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
                   </motion.div>
@@ -223,16 +247,10 @@ export default function OceanWorld() {
         </svg>
       </div>
 
-      {/* ── Cinematic Transition Fade-out Mask ── */}
+      {/* ── Island Modal popup ── */}
       <AnimatePresence>
-        {transitioning && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.6, ease: 'easeInOut' }}
-            className="ow-transition-mask"
-          />
+        {selectedIsland && (
+          <IslandModal island={selectedIsland} onClose={handleCloseModal} />
         )}
       </AnimatePresence>
     </div>

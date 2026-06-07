@@ -13,7 +13,7 @@
    * Each section that wants to go truly full-screen applies margin-top: -70px
    * and starts its own background from the very top.
    */
-  padding-top: 70px;
+  padding-top: 48px;
   box-sizing: border-box;
 }
 
