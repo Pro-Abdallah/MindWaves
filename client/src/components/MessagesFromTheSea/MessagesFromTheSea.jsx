@@ -29,9 +29,6 @@ export default function MessagesFromTheSea() {
       {/* Living ocean canvas */}
       <OceanBackground />
 
-      {/* Living ocean canvas */}
-      <OceanBackground />
-
       {/* Content */}
       <div className="mfts-inner">
 

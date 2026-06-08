@@ -130,58 +130,32 @@
 /* ── Tooltips rendered via foreignObject (aligned in 1600x900 space) ── */
 
 .ow-hotspot-tooltip {
-  width: 260px;
+  width: 100%;
+  height: 100%;
   background: rgba(1, 6, 12, 0.92);
   border: 1px solid rgba(145, 191, 246, 0.28);
   border-radius: 8px;
-  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.8),
-    0 0 25px rgba(31, 229, 213, 0.15);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  text-align: left;
+    0 15px 35px rgba(0, 0, 0, 0.75),
+    0 0 15px rgba(31, 229, 213, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  text-align: center;
   box-sizing: border-box;
-}
-
-.ow-tooltip-subtitle {
-  font-family: var(--font-primary);
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 5px;
-  display: block;
 }
 
 .ow-tooltip-title {
   font-family: var(--font-serif);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 400;
   font-style: italic;
   color: #DFE1E6;
-  margin: 0 0 6px 0;
+  margin: 0;
   text-transform: uppercase;
-}
-
-.ow-tooltip-desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  color: rgba(223, 225, 230, 0.72);
-  line-height: 1.45;
-  margin: 0 0 12px 0;
-}
-
-.ow-tooltip-action {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-primary);
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #1fe5d5;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 /* ── Framed Footer ── */
@@ -340,11 +314,6 @@
     font-size: clamp(10px, 2.5vw, 12px);
   }
 
-  .ow-hotspot-tooltip {
-    width: 220px;
-    padding: 12px 16px;
-  }
-
   .ow-footer-framed {
     bottom: 80px;
     /* Clear bottom nav buttons */
@@ -371,19 +340,6 @@
 
   .ow-header-framed__subtitle {
     display: none;
-  }
-
-  .ow-hotspot-tooltip {
-    width: 190px;
-    padding: 10px 12px;
-  }
-
-  .ow-tooltip-title {
-    font-size: 13px;
-  }
-
-  .ow-tooltip-desc {
-    font-size: 10px;
   }
 
   .ow-footer-framed {

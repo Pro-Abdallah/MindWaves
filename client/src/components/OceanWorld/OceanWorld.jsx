@@ -204,8 +204,8 @@ export default function OceanWorld() {
               const center = TOOLTIP_CENTERS[island.id]
               if (!center) return null
 
-              const width  = 260
-              const height = 160
+              const width  = 200
+              const height = 42
               // Clamp so tooltip doesn't overflow SVG viewbox
               const rawX   = center.x - width / 2
               const rawY   = center.y - height - 18
@@ -227,18 +227,7 @@ export default function OceanWorld() {
                     transition={{ duration: 0.2, ease: 'easeOut' }}
                     style={{ '--accent-color': island.accentColor || '#1fe5d5' }}
                   >
-                    <span className="ow-tooltip-subtitle" style={{ color: island.accentColor }}>
-                      {island.subtitle}
-                    </span>
                     <h3 className="ow-tooltip-title">{island.title}</h3>
-                    <p className="ow-tooltip-desc">{island.introText}</p>
-                    <div className="ow-tooltip-action">
-                      <span>Explore Island</span>
-                      <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M6 1L9 4L6 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M9 4L1 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    </div>
                   </motion.div>
                 </foreignObject>
               )

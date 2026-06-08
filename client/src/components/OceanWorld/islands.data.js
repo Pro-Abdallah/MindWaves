@@ -16,7 +16,7 @@ export const islandsData = [
     scale: 2.1,
     elevation: 1.5,
     image: "/island_still.png",
-    heroImage: "/hero_still_island.png",
+    heroImage: "/popup_images/still_island.jpeg",
     introText: "Bipolar disorder is a mental health condition that causes extreme shifts in mood, energy, sleep, and behavior.",
     mainContent: [
       "According to the World Health Organization, more than 40 million people worldwide live with bipolar disorder.",
@@ -36,7 +36,7 @@ export const islandsData = [
     scale: 1.8,
     elevation: 1.1,
     image: "/island_burning.png",
-    heroImage: "/hero_burning_island.png",
+    heroImage: "/popup_images/burning_island.jpeg",
     introText: "Mania is a state of abnormally elevated mood and energy that can last for days or weeks.",
     mainContent: [
       "Common symptoms include reduced need for sleep, rapid speech, impulsive decisions, inflated self-esteem, and risky behavior.",
@@ -57,7 +57,7 @@ export const islandsData = [
     scale: 2.3,
     elevation: 2.0,
     image: "/island_sunken.png",
-    heroImage: "/hero_sunken_island.png",
+    heroImage: "/popup_images/sunken_island.jpeg",
     introText: "Bipolar depression is more than sadness. It can affect memory, concentration, movement, sleep, appetite, and the ability to function.",
     mainContent: [
       "Research tracking patients over one year found that people with bipolar disorder spend approximately 36% of their time in depressive states.",
@@ -77,7 +77,7 @@ export const islandsData = [
     scale: 1.9,
     elevation: 1.4,
     image: "/island_twin.png",
-    heroImage: "/hero_twin_island.png",
+    heroImage: "/popup_images/twin_island.jpeg",
     introText: "The main difference between Bipolar I and Bipolar II is the severity of the manic episodes.",
     mainContent: [
       "Bipolar I involves full manic episodes that can become severe enough to disrupt daily life, require hospitalization, or include psychotic symptoms such as delusions.",
@@ -96,7 +96,7 @@ export const islandsData = [
     scale: 2.0,
     elevation: 1.3,
     image: "/island_root.png",
-    heroImage: "/hero_root_island.png",
+    heroImage: "/popup_images/root_island.jpeg",
     introText: "Research shows genetics play a major role. People with a close family history of bipolar disorder are significantly more likely to develop it themselves.",
     mainContent: [
       "Brain imaging studies also show differences in areas linked to emotional regulation, stress response, and impulse control.",
@@ -115,7 +115,7 @@ export const islandsData = [
     scale: 1.6,
     elevation: 1.0,
     image: "/island_lighthouse.png",
-    heroImage: "/hero_lighthouse_island.png",
+    heroImage: "/popup_images/lighthouse_island.jpeg",
     introText: "Bipolar disorder cannot currently be cured, but it can be managed successfully with long-term treatment.",
     mainContent: [
       "Studies show that consistent treatment greatly reduces relapse and hospitalization rates.",
