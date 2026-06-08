@@ -1,5 +1,5 @@
 .bottle-returned-container {
-  margin-top: -48px; /* Offset the PageLayout navbar padding */
+  margin-top: -48px;
   width: 100%;
   height: 100vh;
   position: relative;
@@ -68,114 +68,76 @@
   background: radial-gradient(circle, rgba(163, 217, 232, 0.15) 0%, transparent 70%);
 }
 
-/* UI Overlay */
-.bottle-ui-layer {
+/* UI Layer for Scrollable List */
+.scrollable-list-layer {
   position: relative;
   z-index: 10;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10rem 5% 12rem 5%;
+  padding-top: 100px;
+}
+
+.voices-header {
+  text-align: center;
+  padding: 20px 0 40px 0;
+  z-index: 20;
+}
+
+.voices-title {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 1rem;
+  letter-spacing: 0.3em;
+  color: #a3d9e8;
+  opacity: 0.6;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.messages-list-container {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+  padding-bottom: 80px;
+  /* Custom scrollbar to make it invisible or elegant */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(163, 217, 232, 0.3) transparent;
+}
+
+.messages-list-container::-webkit-scrollbar {
+  width: 6px;
+}
+.messages-list-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.messages-list-container::-webkit-scrollbar-thumb {
+  background-color: rgba(163, 217, 232, 0.3);
+  border-radius: 10px;
+}
+
+.messages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 0 20px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
   box-sizing: border-box;
 }
 
-/* Top Right Action Button */
-.write-message-btn {
-  position: absolute;
-  top: 5rem;
-  right: 1.5rem;
-  z-index: 40;
-  padding: 12px 24px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #fff;
-  border-radius: 40px;
-  font-size: clamp(11px, 1.2vw, 13px);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  cursor: pointer;
-  backdrop-filter: blur(15px);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-  white-space: nowrap;
-  touch-action: manipulation;
-  min-height: 44px;
-  animation: btnPulseGlow 2.5s infinite;
+.sea-status {
+  text-align: center;
+  color: #a3d9e8;
+  opacity: 0.7;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  margin-top: 100px;
 }
 
-@keyframes btnPulseGlow {
-  0%, 100% {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 rgba(255, 255, 255, 0);
-    border-color: rgba(255, 255, 255, 0.2);
-    background: rgba(255, 255, 255, 0.05);
-  }
-  50% {
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 25px rgba(255, 255, 255, 0.3);
-    border-color: rgba(255, 255, 255, 0.6);
-    background: rgba(255, 255, 255, 0.15);
-  }
-}
-
-.write-message-btn:hover {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
-}
-
-.write-message-btn svg {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-}
-
-/* ── Tablet ── */
-@media (max-width: 900px) {
-  .bottle-ui-layer {
-    padding: 8rem 5% 10rem 5%;
-  }
-
-  .write-message-btn {
-    top: 4.5rem;
-    right: 1.2rem;
-  }
-}
-
-/* ── Mobile ── */
-@media (max-width: 600px) {
-  .write-message-btn {
-    top: auto;
-    bottom: 6rem;
-    right: 50%;
-    transform: translateX(50%);
-    padding: 12px 22px;
-    font-size: 11px;
-  }
-
-  .write-message-btn:hover {
-    transform: translateX(50%) translateY(-2px);
-  }
-
-  .bottle-ui-layer {
-    padding: 6rem 4% 10rem 4%;
-  }
-}
-
-@media (max-width: 380px) {
-  .bottle-ui-layer {
-    padding: 5rem 3% 9rem 3%;
-  }
-
-  .write-message-btn {
-    bottom: 5.5rem;
-    padding: 10px 18px;
-    font-size: 10px;
-  }
+.sea-status.error {
+  color: #ff6b6b;
 }
 
