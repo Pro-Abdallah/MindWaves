@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import StoryInlinePopup from './StoryInlinePopup'
 import './StorySection.css'
@@ -9,26 +9,6 @@ export default function StorySection({ story, index }) {
   // Fade in text as it comes into view
   const inView = useInView(sectionRef, { margin: '-20%' })
 
-  // On mobile, use a much tighter trigger zone so two stories
-  // don't open at the same time when scrolling.
-  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 768
-  const isCentered = useInView(sectionRef, {
-    margin: isMobile ? '-35% 0px -35% 0px' : '-40% 0px -40% 0px'
-  })
-  const [isOpened, setIsOpened] = useState(false)
-
-  // Wait 2 seconds before triggering the opening animation so the user can read the text
-  useEffect(() => {
-    let timer;
-    if (isCentered) {
-      timer = setTimeout(() => {
-        setIsOpened(true)
-      }, 500) // 0.5 seconds delay
-    } else {
-      setIsOpened(false)
-    }
-    return () => clearTimeout(timer)
-  }, [isCentered])
   // Parallax effect for the bottle based on scroll position
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -46,17 +26,15 @@ export default function StorySection({ story, index }) {
     >
       <div className="story-section-inner">
         
-        {/* TEXT CONTENT PANE - Fades out when opened */}
+        {/* TEXT CONTENT PANE */}
         <motion.div 
           className="story-section-content"
           initial={{ opacity: 0, x: isReversed ? 40 : -40 }}
           animate={{ 
-            opacity: isOpened ? 0 : (inView ? 1 : 0), 
-            x: isOpened ? (isReversed ? 20 : -20) : (inView ? 0 : (isReversed ? 40 : -40)),
-            filter: isOpened ? 'blur(10px)' : 'blur(0px)'
+            opacity: inView ? 1 : 0, 
+            x: inView ? 0 : (isReversed ? 40 : -40)
           }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          style={{ pointerEvents: isOpened ? 'none' : 'auto' }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <span 
@@ -88,33 +66,14 @@ export default function StorySection({ story, index }) {
               >
                 {story.label}
               </h2>
-              <motion.span 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: isCentered ? 1 : 0 }}
-                transition={{ duration: 0.5 }}
-                style={{ 
-                  fontSize: '14px', 
-                  color: 'rgba(145, 191, 246, 0.8)', 
-                  fontStyle: 'italic', 
-                  letterSpacing: '0.05em',
-                  textShadow: `0 0 10px rgba(145,191,246,0.4)`
-                }}
-              >
-                Pause here for a second to open...
-              </motion.span>
+              {/* Removed the 'Pause here for a second to open...' text */}
             </div>
           </div>
         </motion.div>
 
-        {/* BOTTLE IMAGE PANE - Fades/Transforms when opened */}
+        {/* BOTTLE IMAGE PANE */}
         <motion.div 
           className="story-section-visual"
-          animate={{ 
-            opacity: isOpened ? 0 : 1,
-            scale: isOpened ? 1.5 : 1,
-            filter: isOpened ? 'blur(20px)' : 'blur(0px)'
-          }}
-          transition={{ duration: 0.8 }}
         >
           <motion.div className="story-bottle-wrapper" style={{ y: yParallax, position: 'relative', display: 'flex', justifyContent: 'center' }}>
             
@@ -212,10 +171,11 @@ export default function StorySection({ story, index }) {
           </motion.div>
         </motion.div>
 
-        {/* INLINE STORY POPUP */}
-        <StoryInlinePopup story={story} isOpened={isOpened} />
-
       </div>
+
+      {/* INLINE STORY CONTENT (NOW STATICALLY RENDERED BELOW) */}
+      <StoryInlinePopup story={story} index={index} />
+
     </section>
   )
 }

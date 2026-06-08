@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import AudioStory from './AudioStory'
 import VideoStory from './VideoStory'
 import ComicStory from './ComicStory'
@@ -12,34 +12,56 @@ const STORY_COMPONENTS = {
   text: TextStory,
 }
 
-export default function StoryInlinePopup({ story, isOpened }) {
+export default function StoryInlinePopup({ story, index }) {
   const StoryComponent = story ? STORY_COMPONENTS[story.type] : null
 
+  if (!StoryComponent) return null;
+
   return (
-    <AnimatePresence>
-      {isOpened && (
-        <motion.div
-          className="inline-story-content"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -30 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          style={{ 
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 20,
-            pointerEvents: 'auto',
-            width: '100%',
-            height: '100%',
-            padding: '2rem'
-          }}
-        >
-          {StoryComponent && <StoryComponent story={story} />}
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <motion.div
+      className="inline-story-content"
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-10%' }}
+      transition={{ duration: 0.8 }}
+      style={{ 
+        width: '100%',
+        maxWidth: '1000px',
+        margin: '4rem auto 0 auto',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        position: 'relative',
+        zIndex: 10,
+        pointerEvents: 'auto'
+      }}
+    >
+      <div style={{ 
+        marginBottom: '2rem', 
+        textAlign: 'center', 
+        borderBottom: `1px solid ${story.color}50`, 
+        paddingBottom: '1rem', 
+        width: '100%' 
+      }}>
+        <span style={{ 
+          color: story.color, 
+          textTransform: 'uppercase', 
+          letterSpacing: '0.1em', 
+          fontSize: '14px', 
+          fontWeight: 'bold' 
+        }}>
+          Story {index + 1} Content
+        </span>
+        <h3 style={{ 
+          margin: '8px 0 0 0', 
+          fontSize: '24px', 
+          color: '#fff', 
+          textShadow: `0 0 10px ${story.glowColor}` 
+        }}>
+          {story.label}
+        </h3>
+      </div>
+      <StoryComponent story={story} />
+    </motion.div>
   )
 }
