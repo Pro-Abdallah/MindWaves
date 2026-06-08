@@ -8,7 +8,7 @@ function getRoleLabel(title = '') {
   return title.replace(/^the\s+/i, '').toUpperCase();
 }
 
-export default function SceneCard({ scene, onChoice, selectedChoice, showFeedback, onContinue }) {
+export default function SceneCard({ scene, onChoice, selectedChoice, showFeedback, onContinue, score, totalScenes }) {
   const videoRef = useRef(null);
   const [videoWatched, setVideoWatched] = useState(false);
   const [isPlaying, setIsPlaying]       = useState(false);
@@ -185,7 +185,12 @@ export default function SceneCard({ scene, onChoice, selectedChoice, showFeedbac
 
       <AnimatePresence>
         {showFeedback && (
-          <ResultOverlay choice={selectedChoice} onContinue={onContinue} />
+          <ResultOverlay 
+            choice={selectedChoice} 
+            onContinue={onContinue}
+            score={score}
+            totalScenes={totalScenes}
+          />
         )}
       </AnimatePresence>
     </>

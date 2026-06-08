@@ -46,6 +46,8 @@ export default function RideTheWaves() {
             selectedChoice={selectedChoice}
             showFeedback={gameState === 'feedback'}
             onContinue={handleContinue}
+            score={score}
+            totalScenes={totalScenes}
           />
         )}
 
@@ -60,8 +62,8 @@ export default function RideTheWaves() {
         )}
       </AnimatePresence>
 
-      {/* Live Supportiveness Meter — visible during all active scenes */}
-      {isInGame && (
+      {/* Live Supportiveness Meter — visible during all active scenes EXCEPT feedback */}
+      {isInGame && gameState !== 'feedback' && (
         <SupportMeter
           score={score}
           totalScenes={totalScenes}

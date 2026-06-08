@@ -1,7 +1,19 @@
 import { motion } from 'framer-motion';
 
-export default function ResultOverlay({ choice, onContinue }) {
+export default function ResultOverlay({ choice, onContinue, score, totalScenes }) {
   if (!choice) return null;
+
+  // Calculate percentage for the bar (mapping -totalScenes..totalScenes to 0..100)
+  const normalizedScore = score + totalScenes; 
+  const maxScore = totalScenes * 2;
+  const percentage = maxScore > 0 ? Math.max(0, Math.min(100, (normalizedScore / maxScore) * 100)) : 0;
+
+  let scoreClass = 'score-mixed';
+  if (score >= 2) {
+    scoreClass = 'score-green';
+  } else if (score <= -2) {
+    scoreClass = 'score-red';
+  }
 
   return (
     <motion.div 
@@ -25,6 +37,23 @@ export default function ResultOverlay({ choice, onContinue }) {
           {choice.feedback}
         </motion.p>
         
+        {score !== undefined && totalScenes !== undefined && (
+          <motion.div 
+            className="score-bar-container"
+            style={{ maxWidth: '400px', margin: '0 auto 2.5rem' }}
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: '100%', opacity: 1 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+          >
+            <motion.div 
+              className={`score-bar-fill ${scoreClass}`}
+              initial={{ width: '0%' }}
+              animate={{ width: `${percentage}%` }}
+              transition={{ delay: 1, duration: 1, ease: 'easeOut' }}
+            />
+          </motion.div>
+        )}
+
         <motion.button 
           className="ride-btn"
           onClick={onContinue}

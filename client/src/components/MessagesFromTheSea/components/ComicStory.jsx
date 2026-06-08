@@ -19,10 +19,6 @@ export default function ComicStory({ story }) {
 
   // ── Compute responsive book dimensions ──────────────────────────────────
   useEffect(() => {
-    // Focus the container so arrow keys work immediately
-    if (containerRef.current) {
-      containerRef.current.focus()
-    }
     const calc = () => {
       const vw = window.innerWidth
       const vh = window.innerHeight
