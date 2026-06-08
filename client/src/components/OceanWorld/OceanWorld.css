@@ -7,7 +7,7 @@
   position: relative;
   width: 100%;
   height: 100vh;
-  margin-top: -70px;
+  margin-top: -48px;
   /* Pull up behind fixed navigation bar */
   background: #01050a;
   /* Deep ambient space fallback */
@@ -130,58 +130,32 @@
 /* ── Tooltips rendered via foreignObject (aligned in 1600x900 space) ── */
 
 .ow-hotspot-tooltip {
-  width: 260px;
+  width: 100%;
+  height: 100%;
   background: rgba(1, 6, 12, 0.92);
   border: 1px solid rgba(145, 191, 246, 0.28);
   border-radius: 8px;
-  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.8),
-    0 0 25px rgba(31, 229, 213, 0.15);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  text-align: left;
+    0 15px 35px rgba(0, 0, 0, 0.75),
+    0 0 15px rgba(31, 229, 213, 0.1);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  text-align: center;
   box-sizing: border-box;
-}
-
-.ow-tooltip-subtitle {
-  font-family: var(--font-primary);
-  font-size: 8.5px;
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  margin-bottom: 5px;
-  display: block;
 }
 
 .ow-tooltip-title {
   font-family: var(--font-serif);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 400;
   font-style: italic;
   color: #DFE1E6;
-  margin: 0 0 6px 0;
+  margin: 0;
   text-transform: uppercase;
-}
-
-.ow-tooltip-desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 11px;
-  color: rgba(223, 225, 230, 0.72);
-  line-height: 1.45;
-  margin: 0 0 12px 0;
-}
-
-.ow-tooltip-action {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-primary);
-  font-size: 9.5px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: #1fe5d5;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 /* ── Framed Footer ── */
@@ -340,11 +314,6 @@
     font-size: clamp(10px, 2.5vw, 12px);
   }
 
-  .ow-hotspot-tooltip {
-    width: 220px;
-    padding: 12px 16px;
-  }
-
   .ow-footer-framed {
     bottom: 80px;
     /* Clear bottom nav buttons */
@@ -371,19 +340,6 @@
 
   .ow-header-framed__subtitle {
     display: none;
-  }
-
-  .ow-hotspot-tooltip {
-    width: 190px;
-    padding: 10px 12px;
-  }
-
-  .ow-tooltip-title {
-    font-size: 13px;
-  }
-
-  .ow-tooltip-desc {
-    font-size: 10px;
   }
 
   .ow-footer-framed {
@@ -445,5 +401,262 @@
   100% {
     r: 5px;
     opacity: 0.95;
+  }
+}
+
+/* ================================================================
+   Island Modal — Cinematic popup overlay
+   ================================================================ */
+
+.ow-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(1, 6, 18, 0.45);
+  backdrop-filter: blur(6px) saturate(1.1);
+  -webkit-backdrop-filter: blur(6px) saturate(1.1);
+  padding: 20px;
+}
+
+.ow-modal-card {
+  position: relative;
+  width: min(680px, 100%);
+  max-height: min(88vh, 740px);
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  overflow: hidden;
+  background: rgba(2, 11, 28, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 40px 100px rgba(0, 0, 0, 0.75),
+    0 0 70px color-mix(in srgb, var(--island-accent, #1fe5d5) 12%, transparent);
+}
+
+/* ── Header: blurred image + gradient ── */
+
+.ow-modal-header {
+  position: relative;
+  height: 260px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.ow-modal-header-bg {
+  position: absolute;
+  inset: -5%;
+  background-size: cover;
+  background-position: center center;
+  filter: brightness(0.72) saturate(1.2);
+}
+
+.ow-modal-header-gradient {
+  position: absolute;
+  inset: 0;
+}
+
+.ow-modal-header-content {
+  position: absolute;
+  bottom: 26px;
+  left: 32px;
+  right: 64px;
+}
+
+.ow-modal-subtitle {
+  font-family: var(--font-primary, 'Inter', sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--island-accent, #1fe5d5);
+  display: block;
+  margin-bottom: 8px;
+  opacity: 0.95;
+}
+
+.ow-modal-title {
+  font-family: var(--font-serif, serif);
+  font-size: clamp(22px, 3.5vw, 32px);
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.03em;
+  margin: 0;
+  line-height: 1.15;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6);
+  font-style: italic;
+}
+
+/* ── Close button ── */
+
+.ow-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(2, 11, 28, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.65);
+  transition: all 0.25s ease;
+  z-index: 10;
+  padding: 0;
+}
+
+.ow-modal-close svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.25s ease;
+}
+
+.ow-modal-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.32);
+}
+
+.ow-modal-close:hover svg {
+  transform: rotate(90deg);
+}
+
+/* ── Scrollable body ── */
+
+.ow-modal-body {
+  padding: 28px 32px 36px;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--island-accent, #1fe5d5) 25%, transparent) transparent;
+}
+
+.ow-modal-body::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ow-modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ow-modal-body::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--island-accent, #1fe5d5) 30%, transparent);
+  border-radius: 4px;
+}
+
+/* ── Intro text ── */
+
+.ow-modal-intro {
+  font-family: var(--font-serif, serif);
+  font-size: clamp(15px, 2vw, 17px);
+  line-height: 1.75;
+  color: rgba(220, 228, 245, 0.92);
+  font-style: italic;
+  margin: 0 0 24px;
+}
+
+/* ── Glowing accent divider ── */
+
+.ow-modal-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--island-accent, #1fe5d5) 50%,
+    transparent 100%
+  );
+  opacity: 0.25;
+  margin-bottom: 26px;
+}
+
+/* ── Numbered fact blocks ── */
+
+.ow-modal-facts {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  margin-bottom: 30px;
+}
+
+.ow-modal-fact {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.ow-modal-fact-num {
+  font-family: var(--font-primary, 'Inter', sans-serif);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--island-accent, #1fe5d5);
+  opacity: 0.55;
+  flex-shrink: 0;
+  padding-top: 4px;
+  font-variant-numeric: tabular-nums;
+  min-width: 22px;
+}
+
+.ow-modal-fact-text {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(13px, 1.6vw, 15px);
+  line-height: 1.75;
+  color: rgba(195, 210, 235, 0.84);
+  margin: 0;
+}
+
+/* ── Ending quote ── */
+
+.ow-modal-ending {
+  border-left: 2px solid color-mix(in srgb, var(--island-accent, #1fe5d5) 60%, transparent);
+  padding: 14px 0 14px 22px;
+  font-family: var(--font-serif, serif);
+  font-size: clamp(13px, 1.5vw, 15px);
+  line-height: 1.7;
+  color: rgba(145, 191, 246, 0.6);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+
+@media (max-width: 600px) {
+  .ow-modal-backdrop {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .ow-modal-card {
+    max-height: 90vh;
+    border-radius: 18px 18px 12px 12px;
+  }
+
+  .ow-modal-header {
+    height: 170px;
+  }
+
+  .ow-modal-header-content {
+    bottom: 18px;
+    left: 20px;
+  }
+
+  .ow-modal-body {
+    padding: 20px 20px 28px;
+  }
+
+  .ow-modal-intro {
+    font-size: 14px;
+  }
+
+  .ow-modal-fact-text {
+    font-size: 13px;
   }
 }

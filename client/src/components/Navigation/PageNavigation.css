@@ -3,10 +3,10 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 24px 40px 40px;
+  padding: 16px 28px 24px;
   z-index: 90;
   background: linear-gradient(to top, rgba(2, 14, 24, 0.95) 0%, rgba(2, 14, 24, 0.5) 60%, transparent 100%);
-  pointer-events: none; /* Let clicks pass through empty areas */
+  pointer-events: none;
 }
 
 .nav-container {
@@ -36,11 +36,11 @@
 .nav-btn {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 10px;
   text-decoration: none;
   color: rgba(223, 225, 230, 0.6);
-  padding: 12px 24px;
-  border-radius: 12px;
+  padding: 7px 14px;
+  border-radius: 8px;
   background: rgba(5, 57, 94, 0.2);
   border: 1px solid rgba(81, 132, 192, 0.15);
   backdrop-filter: blur(8px);
@@ -58,7 +58,7 @@
 }
 
 .nav-arrow {
-  font-size: 24px;
+  font-size: 16px;
   color: var(--color-steel, #5184C0);
   transition: transform 0.3s ease;
 }
@@ -78,7 +78,7 @@
 }
 
 .nav-label {
-  font-size: 10px;
+  font-size: 8.5px;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   font-weight: 700;
@@ -86,7 +86,7 @@
 }
 
 .nav-title {
-  font-size: 14px;
+  font-size: 11px;
   font-weight: 500;
   color: #DFE1E6;
   letter-spacing: 0.02em;
@@ -94,27 +94,27 @@
 
 @media (max-width: 1024px) {
   .page-navigation {
-    padding: 20px 32px 32px;
+    padding: 12px 22px 20px;
   }
 
   .nav-btn {
-    padding: 10px 18px;
-    gap: 12px;
+    padding: 6px 12px;
+    gap: 8px;
   }
 }
 
 @media (max-width: 768px) {
   .page-navigation {
-    padding: 16px 20px 24px;
+    padding: 10px 16px 16px;
   }
   
   .nav-btn {
-    padding: 10px 16px;
-    gap: 12px;
+    padding: 6px 10px;
+    gap: 7px;
   }
 
   .nav-title {
-    display: none; /* Hide full title on mobile to save space */
+    display: none;
   }
 }
 

@@ -6,9 +6,9 @@
 .sh-root {
   position: relative;
   width: 100vw;
-  min-height: 100vh;
+  height: 100vh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   overflow: hidden;
   /* Ocean background */
@@ -18,7 +18,8 @@
   background-repeat: no-repeat;
   /* Dark overlay to deepen the mood */
   isolation: isolate;
-  margin-top: -70px;
+  margin-top: -48px;
+  box-sizing: border-box;
 }
 
 /* Subtle dark overlay on the ocean to help the board stand out */
@@ -35,8 +36,7 @@
 .sh-board-wrap {
   position: relative;
   z-index: 2;
-  width: min(960px, 92vw);
-  /* On smaller screens, allow a bit more height usage */
+  width: min(calc(100vh + 30px), 98vw, 1100px);
   min-width: 280px;
   /* force the board to keep its natural square-ish ratio */
   aspect-ratio: 1 / 1;
@@ -47,7 +47,7 @@
   filter:
     drop-shadow(0 8px 24px rgba(0,0,0,0.55))
     drop-shadow(0 30px 80px rgba(0,0,0,0.45));
-  margin: 80px 0 60px;
+  margin-top: 48px;
 }
 
 /* ── Bulletin Board Image — fills the wrapper naturally ── */
@@ -65,14 +65,13 @@
 /* ── Section label — floats above the board ── */
 .sh-board-label {
   position: absolute;
-  top: -56px;
+  top: 4.5%;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
   z-index: 10;
   pointer-events: none;
   white-space: nowrap;
-  margin-top: 100px;
 }
 
 .sh-board-label__tag {
@@ -82,7 +81,7 @@
   letter-spacing: 0.35em;
   color: rgba(255, 248, 220, 0.8);
   text-transform: uppercase;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.9);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
   display: block;
 }
 
@@ -94,78 +93,100 @@
   color: #fff8dc;
   letter-spacing: 0.04em;
   text-shadow:
-    0 2px 14px rgba(0,0,0,0.8),
+    0 2px 14px rgba(0, 0, 0, 0.8),
     0 0 40px rgba(255, 220, 120, 0.2);
   margin-top: 6px;
-}
-
-/* ── Hint text — sits below the board ── */
-.sh-board-hint {
-  position: absolute;
-  bottom: -44px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  letter-spacing: 0.16em;
-  color: rgba(255, 248, 220, 0.65);
-  text-shadow: 0 1px 8px rgba(0,0,0,0.9);
-  text-transform: uppercase;
-  z-index: 10;
-  pointer-events: none;
-  white-space: nowrap;
-  animation: shHintPulse 2.8s ease-in-out infinite;
-}
-
-@keyframes shHintPulse {
-  0%, 100% { opacity: 0.45; }
-  50%       { opacity: 1; }
 }
 
 /* ── Clickable Note Hotspots ── */
 .sh-note-hotspot {
   position: absolute;
-  background: transparent;
-  border: none;
   cursor: pointer;
   border-radius: 8px;
   z-index: 20;
   padding: 0;
   outline: none;
+  overflow: visible; /* Allow the soft circular glow to overflow without square clipping */
   -webkit-tap-highlight-color: transparent;
   transform: rotate(var(--note-rotate, 0deg));
-  transition: transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: transparent;
+  border: 1px solid transparent;
+}
+
+/* Shimmer wrapper container to clip the glint while button has overflow: visible */
+.sh-note-shimmer-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Sun-glint Shimmer effect inside the wrapper */
+.sh-note-shimmer-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 150%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.0) 25%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.0) 75%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+  z-index: 2;
+  animation: shShimmer 6s infinite ease-in-out;
+}
+
+/* Stagger the shimmers across the three notes */
+.sh-note-hotspot:nth-of-type(1) .sh-note-shimmer-wrap::before { animation-delay: 0s; }
+.sh-note-hotspot:nth-of-type(2) .sh-note-shimmer-wrap::before { animation-delay: 2s; }
+.sh-note-hotspot:nth-of-type(3) .sh-note-shimmer-wrap::before { animation-delay: 4s; }
+
+@keyframes shShimmer {
+  0% {
+    left: -150%;
+  }
+  20%, 100% {
+    left: 150%;
+  }
 }
 
 /* Pseudo-element for soft, organic (non-square) golden glow */
 .sh-note-hotspot::after {
   content: '';
   position: absolute;
-  inset: -12px;
-  border-radius: 50%; /* perfect ellipse/circle */
-  background: radial-gradient(
-    circle at center,
-    rgba(255, 248, 220, 0.6) 0%,
-    rgba(255, 220, 120, 0.2) 40%,
-    rgba(145, 191, 246, 0.05) 70%,
-    transparent 100%
-  );
-  filter: blur(15px); /* extremely soft and mist-like */
+  inset: -20px; /* Expanded for a larger, softer glow */
+  border-radius: 50%;
+  background: radial-gradient(circle at center,
+      rgba(255, 248, 220, 0.5) 0%,
+      rgba(255, 220, 120, 0.18) 40%,
+      transparent 70%);
+  filter: blur(18px);
   opacity: 0;
   pointer-events: none;
   z-index: -1;
   transform: scale(0.85);
-  transition: opacity 0.35s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: opacity 0.45s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-/* Hover effects */
+/* Hover effects: ONLY the organic circular background glow, no borders/square highlights */
 .sh-note-hotspot:hover {
-  transform: rotate(var(--note-rotate, 0deg)) scale(1.025);
+  transform: rotate(var(--note-rotate, 0deg)) scale(1.02);
+  background: transparent;
+  border-color: transparent;
 }
 
 .sh-note-hotspot:hover::after {
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 /* Slight scale-down on press to give tactile feedback */
@@ -243,17 +264,15 @@
   background: #f7f2d8;
   position: relative;
   z-index: 5;
-  clip-path: polygon(
-    0% 100%, 2% 40%, 4% 80%, 6% 20%, 8% 60%, 10% 10%, 12% 55%,
-    14% 25%, 16% 70%, 18% 30%, 20% 65%, 22% 15%, 24% 50%,
-    26% 80%, 28% 35%, 30% 70%, 32% 20%, 34% 55%, 36% 85%,
-    38% 40%, 40% 75%, 42% 10%, 44% 60%, 46% 30%, 48% 65%,
-    50% 20%, 52% 55%, 54% 80%, 56% 35%, 58% 70%, 60% 15%,
-    62% 50%, 64% 85%, 66% 40%, 68% 70%, 70% 25%, 72% 60%,
-    74% 10%, 76% 55%, 78% 80%, 80% 30%, 82% 65%, 84% 20%,
-    86% 50%, 88% 75%, 90% 35%, 92% 65%, 94% 20%, 96% 55%,
-    98% 30%, 100% 60%, 100% 100%
-  );
+  clip-path: polygon(0% 100%, 2% 40%, 4% 80%, 6% 20%, 8% 60%, 10% 10%, 12% 55%,
+      14% 25%, 16% 70%, 18% 30%, 20% 65%, 22% 15%, 24% 50%,
+      26% 80%, 28% 35%, 30% 70%, 32% 20%, 34% 55%, 36% 85%,
+      38% 40%, 40% 75%, 42% 10%, 44% 60%, 46% 30%, 48% 65%,
+      50% 20%, 52% 55%, 54% 80%, 56% 35%, 58% 70%, 60% 15%,
+      62% 50%, 64% 85%, 66% 40%, 68% 70%, 70% 25%, 72% 60%,
+      74% 10%, 76% 55%, 78% 80%, 80% 30%, 82% 65%, 84% 20%,
+      86% 50%, 88% 75%, 90% 35%, 92% 65%, 94% 20%, 96% 55%,
+      98% 30%, 100% 60%, 100% 100%);
   filter: drop-shadow(0 -2px 4px rgba(120, 90, 30, 0.15));
 }
 
@@ -268,9 +287,9 @@
   border-radius: 50%;
   z-index: 20;
   box-shadow:
-    0 2px 6px rgba(0,0,0,0.5),
-    inset 0 1px 2px rgba(255,255,255,0.4),
-    inset 0 -1px 2px rgba(0,0,0,0.3);
+    0 2px 6px rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.4),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Pin needle */
@@ -282,7 +301,7 @@
   transform: translateX(-50%);
   width: 3px;
   height: 10px;
-  background: linear-gradient(to bottom, rgba(100,80,40,0.7), rgba(100,80,40,0.2));
+  background: linear-gradient(to bottom, rgba(100, 80, 40, 0.7), rgba(100, 80, 40, 0.2));
   border-radius: 0 0 2px 2px;
 }
 
@@ -393,10 +412,12 @@
 .sh-paper__scroll::-webkit-scrollbar {
   width: 4px;
 }
+
 .sh-paper__scroll::-webkit-scrollbar-track {
   background: rgba(120, 90, 30, 0.08);
   border-radius: 2px;
 }
+
 .sh-paper__scroll::-webkit-scrollbar-thumb {
   background: rgba(120, 90, 30, 0.3);
   border-radius: 2px;
@@ -410,17 +431,15 @@
   background: #f7f2d8;
   position: relative;
   z-index: 5;
-  clip-path: polygon(
-    0% 0%, 2% 60%, 4% 20%, 6% 80%, 8% 40%, 10% 90%, 12% 45%,
-    14% 75%, 16% 30%, 18% 70%, 20% 35%, 22% 85%, 24% 50%,
-    26% 20%, 28% 65%, 30% 30%, 32% 80%, 34% 45%, 36% 15%,
-    38% 60%, 40% 25%, 42% 90%, 44% 40%, 46% 70%, 48% 35%,
-    50% 80%, 52% 45%, 54% 20%, 56% 65%, 58% 30%, 60% 85%,
-    62% 50%, 64% 15%, 66% 60%, 68% 30%, 70% 75%, 72% 40%,
-    74% 90%, 76% 45%, 78% 20%, 80% 70%, 82% 35%, 84% 80%,
-    86% 50%, 88% 25%, 90% 65%, 92% 35%, 94% 80%, 96% 45%,
-    98% 70%, 100% 40%, 100% 0%
-  );
+  clip-path: polygon(0% 0%, 2% 60%, 4% 20%, 6% 80%, 8% 40%, 10% 90%, 12% 45%,
+      14% 75%, 16% 30%, 18% 70%, 20% 35%, 22% 85%, 24% 50%,
+      26% 20%, 28% 65%, 30% 30%, 32% 80%, 34% 45%, 36% 15%,
+      38% 60%, 40% 25%, 42% 90%, 44% 40%, 46% 70%, 48% 35%,
+      50% 80%, 52% 45%, 54% 20%, 56% 65%, 58% 30%, 60% 85%,
+      62% 50%, 64% 15%, 66% 60%, 68% 30%, 70% 75%, 72% 40%,
+      74% 90%, 76% 45%, 78% 20%, 80% 70%, 82% 35%, 84% 80%,
+      86% 50%, 88% 25%, 90% 65%, 92% 35%, 94% 80%, 96% 45%,
+      98% 70%, 100% 40%, 100% 0%);
   filter: drop-shadow(0 2px 4px rgba(120, 90, 30, 0.15));
   margin-top: 16px;
 }
@@ -596,30 +615,22 @@
 }
 
 @keyframes hotlinePulse {
-  0%, 100% { box-shadow: 0 0 0 rgba(192, 64, 64, 0.2); }
-  50%       { box-shadow: 0 0 10px rgba(192, 64, 64, 0.45); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(192, 64, 64, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 10px rgba(192, 64, 64, 0.45);
+  }
 }
 
 /* ================================================================
    Responsiveness
    ================================================================ */
 
-@media (max-width: 1100px) {
-  .sh-board-wrap {
-    width: min(820px, 94vw);
-  }
-}
-
 @media (max-width: 900px) {
-  .sh-board-wrap {
-    width: min(700px, 96vw);
-    margin: 60px 0 50px;
-  }
-
-  .sh-board-label {
-    top: -48px;
-  }
-
   .sh-board-label__title {
     font-size: clamp(20px, 3vw, 32px);
   }
@@ -644,32 +655,10 @@
     justify-content: center;
   }
 
-  .sh-board-wrap {
-    width: min(600px, 96vw);
-    margin: 50px 0 40px;
-  }
 
-  .sh-board-label {
-    top: -44px;
-  }
-
-  .sh-board-hint {
-    bottom: -38px;
-    font-size: 10px;
-  }
 }
 
 @media (max-width: 540px) {
-  .sh-board-wrap {
-    width: 98vw;
-    aspect-ratio: 1 / 1;
-    margin: 44px 0 36px;
-  }
-
-  .sh-board-label {
-    top: -40px;
-  }
-
   .sh-board-label__title {
     font-size: clamp(18px, 5vw, 26px);
   }
@@ -678,11 +667,7 @@
     font-size: 9px;
   }
 
-  .sh-board-hint {
-    bottom: -32px;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-  }
+
 
   .sh-paper {
     max-width: 100%;
@@ -694,11 +679,6 @@
 }
 
 @media (max-width: 380px) {
-  .sh-board-wrap {
-    width: 100vw;
-    margin: 36px 0 28px;
-  }
-
   .sh-overlay {
     padding: 16px 12px;
   }
@@ -707,4 +687,3 @@
     padding: 20px 14px 16px;
   }
 }
-

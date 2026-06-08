@@ -21,7 +21,7 @@ export default function OceanBackground({ opacity = 1 }) {
         style={{
           width: '105%',
           height: '105%',
-          backgroundImage: 'url("/5.png")',
+          backgroundImage: 'url("/sea_background.png")',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

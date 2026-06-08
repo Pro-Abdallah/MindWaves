@@ -17,8 +17,8 @@ export default function PageLayout({ children }) {
 
   return (
     <div className="page-layout">
-      {/* Show Navbar on all pages — including landing/intro */}
-      <Navbar />
+      {/* Show Navbar on all pages except the landing/intro page */}
+      {!isLandingPage && <Navbar />}
 
       <AnimatePresence mode="wait">
         <motion.main
