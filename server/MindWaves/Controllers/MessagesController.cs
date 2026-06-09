@@ -22,7 +22,7 @@ namespace MindWaves.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllMessages()
         {
-            var messages = await _context.Messages.ToListAsync();
+            var messages = await _context.Messages.Take(6).ToListAsync();
 
             if (messages.Count <= 0)
                 return NotFound("There aren't any Messages Right Now");
