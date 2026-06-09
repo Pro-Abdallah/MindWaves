@@ -147,40 +147,25 @@ export default function SceneCard({ scene, onChoice, selectedChoice, showFeedbac
           )}
         </motion.div>
 
-        {/* ── CHOICES (only after video watched) ── */}
-        <AnimatePresence>
-          {videoWatched ? (
-            <motion.div
-              className="choices-grid"
-              key="choices"
-              initial="hidden"
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } }
-              }}
-            >
-              {scene.choices.map((choice, index) => (
-                <ChoiceCard
-                  key={index}
-                  choice={choice}
-                  onSelect={onChoice}
-                  disabled={showFeedback}
-                />
-              ))}
-            </motion.div>
-          ) : (
-            <motion.p
-              key="hint"
-              className="scene-watch-hint"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-            >
-              ↑ Watch the video above to unlock your choices
-            </motion.p>
-          )}
-        </AnimatePresence>
+        {/* ── CHOICES (always visible) ── */}
+        <motion.div
+          className="choices-grid"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.2 } }
+          }}
+        >
+          {scene.choices.map((choice, index) => (
+            <ChoiceCard
+              key={index}
+              choice={choice}
+              onSelect={onChoice}
+              disabled={showFeedback}
+            />
+          ))}
+        </motion.div>
       </motion.div>
 
       <AnimatePresence>
