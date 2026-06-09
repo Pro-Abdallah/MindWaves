@@ -54,11 +54,11 @@ export default function StoryInlinePopup({ story, index }) {
         </span>
         <h3 style={{ 
           margin: '8px 0 0 0', 
-          fontSize: '24px', 
+          fontSize: '20px', 
           color: '#fff', 
           textShadow: `0 0 10px ${story.glowColor}` 
         }}>
-          {story.label}
+          {story.lead}
         </h3>
       </div>
       <StoryComponent story={story} />

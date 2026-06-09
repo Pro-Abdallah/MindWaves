@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion'
-import { projectTeam, supervisors, medicalConsultants } from './team.data'
-import OceanBackground from '../ABottleReturned/components/OceanBackground'
-import './WhyWeSail.css'
+import { motion } from "framer-motion";
+import { projectTeam, supervisors, medicalConsultants } from "./team.data";
+import OceanBackground from "../ABottleReturned/components/OceanBackground";
+import "./WhyWeSail.css";
 
 export default function WhyWeSail() {
   // Stagger animations variants
@@ -11,50 +11,53 @@ export default function WhyWeSail() {
       opacity: 1,
       transition: {
         staggerChildren: 0.15,
-        delayChildren: 0.1
-      }
-    }
-  }
+        delayChildren: 0.1,
+      },
+    },
+  };
 
   const cardVariants = {
     hidden: { opacity: 0, y: 35 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.8, ease: [0.215, 0.610, 0.355, 1.000] }
-    }
-  }
+      transition: { duration: 0.8, ease: [0.215, 0.61, 0.355, 1.0] },
+    },
+  };
 
   const listItemVariants = {
     hidden: { opacity: 0, x: -20 },
     visible: {
       opacity: 1,
       x: 0,
-      transition: { duration: 0.5, ease: 'easeOut' }
-    }
-  }
+      transition: { duration: 0.5, ease: "easeOut" },
+    },
+  };
 
   const missionPoints = [
     "To raise awareness about bipolar disorder using simple, clear, and scientifically accurate information.",
     "To correct common misconceptions surrounding the disorder, especially confusion with other mental health conditions.",
-    "To build empathy by allowing audiences to experience emotional and social challenges through interactive decision-making."
-  ]
+    "To build empathy by allowing audiences to experience emotional and social challenges through interactive decision-making.",
+  ];
 
   const visionPoints = [
     "A society that understands bipolar disorder beyond stereotypes and fear.",
     "Open, informed, and stigma-free conversations about mental health.",
     "Media that represents psychological conditions ethically, accurately, and with dignity.",
     "Interactive storytelling as a powerful tool for awareness, education, and emotional connection.",
-    "A generation that responds to mental health challenges with empathy, support, and knowledge rather than judgment."
-  ]
+    "A generation that responds to mental health challenges with empathy, support, and knowledge rather than judgment.",
+  ];
 
   return (
-    <section className="wws-container" id="why-we-sail" aria-label="Why We Sail Section">
+    <section
+      className="wws-container"
+      id="why-we-sail"
+      aria-label="Why We Sail Section"
+    >
       <OceanBackground isBlurred={false} />
 
       {/* ── Section Content Wrapper ── */}
       <div className="wws-content">
-        
         {/* ── Section Header ── */}
         <div className="wws-header">
           <span className="wws-header__tag">THE FINAL CHAPTER</span>
@@ -72,25 +75,32 @@ export default function WhyWeSail() {
           viewport={{ once: true, margin: "-100px" }}
           className="wws-panels-grid"
         >
-          {/* WHY WE SAIL */}
+          {/* WHO WE ARE */}
           <motion.div variants={cardVariants} className="wws-panel">
             <span className="wws-panel__tag">ORIGIN</span>
-            <h3 className="wws-panel__title">Why We Sail</h3>
+            <h3 className="wws-panel__title">Who We Are</h3>
             <div className="wws-panel__body">
               <p>
-                Mind Waves is an integrated mental health awareness project built around three main 
-                elements: a documentary film, a social media campaign, and an interactive story experience. 
-                The project focuses on raising awareness about Bipolar Disorder, correcting common 
-                misconceptions surrounding the disorder, and encouraging more empathetic and informed 
-                conversations about mental health in Arab media.
+                Mind Waves is an integrated mental health awareness project that
+                combines three interconnected elements: a docudrama, social
+                media content, and an interactive story. Together, these
+                elements aim to create a deeper understanding of Bipolar
+                Disorder through storytelling, education, and audience
+                engagement.
               </p>
               <p>
-                At the heart of Mind Waves is the Interactive Story, one of the project’s most important 
-                elements. Instead of making the audience passive viewers, the experience places users 
-                inside emotional and social situations inspired by real experiences related to Bipolar 
-                Disorder. Through interactive storytelling, users are encouraged to better understand the 
-                disorder, empathize with those experiencing it, and reflect on emotional and psychological 
-                challenges from a closer perspective.
+                Our project is dedicated to raising awareness about Bipolar
+                Disorder, addressing common misconceptions surrounding the
+                condition, and promoting more informed and empathetic
+                conversations about mental health. By combining real
+                experiences, research-based information, and interactive media,
+                Mind Waves seeks to make mental health topics more accessible,
+                relatable, and impactful for young audiences.
+              </p>
+              <p>
+                We believe that awareness is the first step toward
+                understanding, and understanding is the first step toward
+                meaningful social change.
               </p>
             </div>
           </motion.div>
@@ -116,7 +126,10 @@ export default function WhyWeSail() {
           </motion.div>
 
           {/* OUR VISION */}
-          <motion.div variants={cardVariants} className="wws-panel wws-panel--vision">
+          <motion.div
+            variants={cardVariants}
+            className="wws-panel wws-panel--vision"
+          >
             <span className="wws-panel__tag">HORIZON</span>
             <h3 className="wws-panel__title">Our Vision</h3>
             <div className="wws-panel__body">
@@ -127,7 +140,13 @@ export default function WhyWeSail() {
                     variants={listItemVariants}
                     className="wws-vision-item"
                   >
-                    <svg className="wws-vision-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <svg
+                      className="wws-vision-icon"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                    >
                       <polyline points="20 6 9 17 4 12" />
                     </svg>
                     <span>{point}</span>
@@ -139,7 +158,8 @@ export default function WhyWeSail() {
               <div className="wws-vision-highlight">
                 <div className="wws-vision-highlight__glow" />
                 <h4 className="wws-vision-highlight__text">
-                  "Our vision is to transform awareness into understanding, and understanding into lasting social change."
+                  "Our vision is to transform awareness into understanding, and
+                  understanding into lasting social change."
                 </h4>
               </div>
             </div>
@@ -151,7 +171,9 @@ export default function WhyWeSail() {
           <div className="wws-crew-header">
             <span className="wws-crew-header__tag">GUIDANCE & EXPERTISE</span>
             <h3 className="wws-crew-header__title">Supervision & Advisory</h3>
-            <p className="wws-crew-header__sub">The academic and medical guides of our journey.</p>
+            <p className="wws-crew-header__sub">
+              The academic and medical guides of our journey.
+            </p>
           </div>
 
           <motion.div
@@ -161,7 +183,7 @@ export default function WhyWeSail() {
             viewport={{ once: true, margin: "-50px" }}
             className="wws-crew-grid"
           >
-            {supervisors.map(item => (
+            {supervisors.map((item) => (
               <motion.div
                 key={item.id}
                 variants={cardVariants}
@@ -177,7 +199,7 @@ export default function WhyWeSail() {
                 </div>
               </motion.div>
             ))}
-            {medicalConsultants.map(item => (
+            {medicalConsultants.map((item) => (
               <motion.div
                 key={item.id}
                 variants={cardVariants}
@@ -197,11 +219,13 @@ export default function WhyWeSail() {
         </div>
 
         {/* ── PROJECT TEAM ── */}
-        <div className="wws-crew-section" style={{ marginTop: '80px' }}>
+        <div className="wws-crew-section" style={{ marginTop: "80px" }}>
           <div className="wws-crew-header">
             <span className="wws-crew-header__tag">THE CREATORS</span>
             <h3 className="wws-crew-header__title">Project Team</h3>
-            <p className="wws-crew-header__sub">The minds shaping the creative vision.</p>
+            <p className="wws-crew-header__sub">
+              The minds shaping the creative vision.
+            </p>
           </div>
 
           <motion.div
@@ -211,7 +235,7 @@ export default function WhyWeSail() {
             viewport={{ once: true, margin: "-50px" }}
             className="wws-crew-grid"
           >
-            {projectTeam.map(item => (
+            {projectTeam.map((item) => (
               <motion.div
                 key={item.id}
                 variants={cardVariants}
@@ -229,8 +253,7 @@ export default function WhyWeSail() {
             ))}
           </motion.div>
         </div>
-
       </div>
     </section>
-  )
+  );
 }
