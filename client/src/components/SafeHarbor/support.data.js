@@ -7,24 +7,32 @@
 
 export const infoResources = [
   {
-    id: "info-1",
-    title: "Understanding Bipolar Disorder",
-    desc: "Bipolar disorder affects mood, energy, and activity levels through episodes that go beyond everyday emotional changes."
+    id: "info-who",
+    title: "World Health Organization (WHO)",
+    desc: "A comprehensive global fact sheet outlining key facts, symptoms, treatment options, and the global health response for Bipolar Disorder.",
+    url: "https://www.who.int/news-room/fact-sheets/detail/bipolar-disorder",
+    cta: "Read Fact Sheet"
   },
   {
-    id: "info-2",
-    title: "Types of Bipolar Disorder",
-    desc: "There are different types of bipolar disorder that vary in intensity and pattern of mood episodes."
+    id: "info-nimh",
+    title: "National Institute of Mental Health (NIMH)",
+    desc: "An in-depth guide covering the types of bipolar disorder, symptoms, causes, treatment options, and clinical trials.",
+    url: "https://www.nimh.nih.gov/health/publications/bipolar-disorder#part_6167",
+    cta: "View Guide"
   },
   {
-    id: "info-3",
-    title: "Causes & Contributing Factors",
-    desc: "Research suggests bipolar disorder develops from a combination of biological and life factors."
+    id: "info-mayo",
+    title: "Mayo Clinic",
+    desc: "A detailed medical overview of symptoms, causes, risk factors, complications, and diagnostic strategies for Bipolar Disorder.",
+    url: "https://www.mayoclinic.org/diseases-conditions/bipolar-disorder/symptoms-causes/syc-20355955",
+    cta: "Explore Symptoms"
   },
   {
-    id: "info-4",
-    title: "Treatment & Support",
-    desc: "Many people manage bipolar disorder through professional care and ongoing support."
+    id: "info-bipolaruk",
+    title: "Bipolar UK",
+    desc: "A dedicated resource focused on supporting someone with bipolar disorder, including advice, peer support groups, and practical tips.",
+    url: "https://www.bipolaruk.org/about-bipolar/supporting-someone/",
+    cta: "Get Support Advice"
   }
 ];
 

@@ -45,16 +45,36 @@ export const projectTeam = [
 export const supervisors = [
   {
     id: "sup-1",
-    role: "Under the Supervision of",
-    members: ["Dr. Fatma El Zahraa", "Dr. Hoda Elshazely", "T.A. Rawan Hany"]
+    role: "Associate Professor",
+    members: ["Dr. Fatma Alzahraa"]
+  },
+  {
+    id: "sup-2",
+    role: "Assistant Professor",
+    members: ["Dr. Hoda Elshazely"]
+  },
+  {
+    id: "sup-3",
+    role: "Teaching Assistant",
+    members: ["Rawan Hany"]
   }
 ];
 
 export const medicalConsultants = [
   {
     id: "med-1",
-    role: "Medical Consultants",
-    members: ["Amr Yosry", "Nagwa Nagy", "Ghada Elkady"]
+    role: "Psychiatrist",
+    members: ["Dr. Amr Yosry"]
+  },
+  {
+    id: "med-2",
+    role: "Psychiatrist",
+    members: ["Dr. Nagwa Nagy"]
+  },
+  {
+    id: "med-3",
+    role: "Psychiatrist",
+    members: ["Dr. Ghada Elkady"]
   }
 ];
 

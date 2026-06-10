@@ -2,8 +2,28 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import Navbar from '../Navigation/Navbar'
 import './CinematicIntro.css'
 
-const firstHalfSrc = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/Intro_2_pef8yr.mp4'
+const firstHalfSrc  = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/Intro_2_pef8yr.mp4'
 const secondHalfSrc = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/v1780273682/2nd_Half_Intro_-_New_diemensions_assuge.mp4'
+const rotateSrc     = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/v1781091537/Rotate_Your_Phone_Video_bieqo3.mp4'
+
+/**
+ * Returns true when the visitor is on a touch/mobile device.
+ * Combines user-agent sniffing with coarse pointer media query as fallback.
+ */
+const isTouchDevice = () =>
+  typeof window !== 'undefined' &&
+  (
+    navigator.maxTouchPoints > 0 ||
+    /Android|iPhone|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+  )
+
+/**
+ * Returns true when the screen is currently in portrait orientation.
+ * Uses matchMedia so it's consistent with CSS @media (orientation: portrait).
+ */
+const isPortraitMode = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(orientation: portrait)').matches
 
 function IconVolumeOn() {
   return (
@@ -113,28 +133,59 @@ function SkipButton({ onClick }) {
 
 
 export default function CinematicIntro({ onComplete }) {
-  const [phase, setPhase] = useState('loading')
+  // Detect once: is this a touch device currently in portrait mode?
+  const shouldShowRotate = useRef(isTouchDevice() && isPortraitMode())
+
+  // phases: 'rotatePhone' | 'loading' | 'firstVideo' | 'awaitingStart' | 'secondVideo' | 'exiting' | 'done'
+  const [phase, setPhase] = useState(() => shouldShowRotate.current ? 'rotatePhone' : 'loading')
   const [autoplayFailed, setAutoplayFailed] = useState(false)
 
   // Single sound state that controls audio for the active video
   const [isMuted, setIsMuted] = useState(false)
   const userMutePrefRef = useRef(null) // null = no pref, true = user muted, false = user unmuted
 
-  const firstVideoRef = useRef(null)
+  const rotateVideoRef = useRef(null)
+  const firstVideoRef  = useRef(null)
   const secondVideoRef = useRef(null)
 
   // Lock body scroll for duration of intro
   useEffect(() => {
-    const prevOverflow = document.body.style.overflow
+    const prevOverflow   = document.body.style.overflow
     const prevUserSelect = document.body.style.userSelect
 
-    document.body.style.overflow = 'hidden'
+    document.body.style.overflow   = 'hidden'
     document.body.style.userSelect = 'none'
 
     return () => {
-      document.body.style.overflow = prevOverflow
+      document.body.style.overflow   = prevOverflow
       document.body.style.userSelect = prevUserSelect
     }
+  }, [])
+
+  // Autoplay the rotate-phone video when that phase is active
+  useEffect(() => {
+    if (phase !== 'rotatePhone') return
+    const video = rotateVideoRef.current
+    if (!video) return
+    const play = () => {
+      video.muted = true
+      video.play().catch(() => {
+        // If autoplay fails on mobile just skip straight to intro
+        setPhase('loading')
+      })
+    }
+    if (video.readyState >= 2) {
+      play()
+    } else {
+      video.addEventListener('canplay', play, { once: true })
+      return () => video.removeEventListener('canplay', play)
+    }
+  }, [phase])
+
+
+  // When rotate video ends naturally, move on to the normal intro
+  const handleRotateEnd = useCallback(() => {
+    setPhase('loading')
   }, [])
 
   // Sync muted state to first video DOM element
@@ -176,6 +227,8 @@ export default function CinematicIntro({ onComplete }) {
   // Attempt autoplay of first video
   // Tries unmuted autoplay first, falling back to muted autoplay if blocked by browser policies.
   useEffect(() => {
+    if (phase !== 'loading') return
+
     const video = firstVideoRef.current
     if (!video) return
 
@@ -205,7 +258,7 @@ export default function CinematicIntro({ onComplete }) {
       video.addEventListener('canplay', tryPlay, { once: true })
       return () => video.removeEventListener('canplay', tryPlay)
     }
-  }, [])
+  }, [phase])
 
   // Unified audio toggling handler
   const handleSoundToggle = useCallback(() => {
@@ -269,9 +322,10 @@ export default function CinematicIntro({ onComplete }) {
 
   if (phase === 'done') return null
 
-  const showFirstVideo = phase === 'firstVideo' || phase === 'awaitingStart'
-  const showSecondVideo = phase === 'secondVideo'
-  const isExiting = phase === 'exiting'
+  const showRotateVideo  = phase === 'rotatePhone'
+  const showFirstVideo   = phase === 'firstVideo' || phase === 'awaitingStart'
+  const showSecondVideo  = phase === 'secondVideo'
+  const isExiting        = phase === 'exiting'
 
   // Determine if we show sound control
   // Spec: "mute and unmute toggle buttons before start and after start"
@@ -287,13 +341,36 @@ export default function CinematicIntro({ onComplete }) {
       <div className="ci-scanline" aria-hidden="true" />
       <div className="ci-vignette" aria-hidden="true" />
 
+      {/* ── Rotate-Your-Phone screen (mobile portrait only) ── */}
+      {showRotateVideo && (
+        <div
+          className="ci-rotate-wrap"
+          onClick={handleRotateEnd}
+          role="button"
+          tabIndex={0}
+          aria-label="Skip rotate prompt"
+          onKeyDown={e => e.key === 'Enter' && handleRotateEnd()}
+        >
+          <video
+            ref={rotateVideoRef}
+            className="ci-rotate-video"
+            src={rotateSrc}
+            muted
+            playsInline
+            preload="auto"
+            onEnded={handleRotateEnd}
+            aria-hidden="true"
+          />
+          <span className="ci-rotate-skip">Tap to skip</span>
+        </div>
+      )}
+
       {phase === 'loading' && <Loader />}
 
       <video
         ref={firstVideoRef}
         className={`ci-video${showFirstVideo ? ' ci-video--active' : ''}`}
         src={firstHalfSrc}
-        autoPlay
         muted={isMuted}
         playsInline
         preload="auto"

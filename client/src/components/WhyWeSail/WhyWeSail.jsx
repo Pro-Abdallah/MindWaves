@@ -81,26 +81,27 @@ export default function WhyWeSail() {
             <h3 className="wws-panel__title">Who We Are</h3>
             <div className="wws-panel__body">
               <p>
-                Mind Waves is an integrated mental health awareness project that
-                combines three interconnected elements: a docudrama, social
-                media content, and an interactive story. Together, these
-                elements aim to create a deeper understanding of Bipolar
-                Disorder through storytelling, education, and audience
-                engagement.
+                Mind Waves is an integrated media project for mental health awareness,
+                exploring the deeper tides of bipolar disorder through storytelling,
+                interaction and media content.
               </p>
               <p>
-                Our project is dedicated to raising awareness about Bipolar
-                Disorder, addressing common misconceptions surrounding the
-                condition, and promoting more informed and empathetic
-                conversations about mental health. By combining real
-                experiences, research-based information, and interactive media,
-                Mind Waves seeks to make mental health topics more accessible,
-                relatable, and impactful for young audiences.
+                The project combines three interconnected elements: a docudrama, social
+                media content, and an interactive story. Together, these elements aim
+                to create a deeper understanding of Bipolar Disorder through storytelling,
+                education, and audience engagement.
               </p>
               <p>
-                We believe that awareness is the first step toward
-                understanding, and understanding is the first step toward
-                meaningful social change.
+                Our project is dedicated to raise awareness about Bipolar Disorder,
+                addressing common misconceptions surrounding the condition, and promoting
+                more informed and empathetic conversations about mental health. By combining
+                real experiences, research-based information, and interactive media,
+                Mind Waves seeks to make mental health topics more accessible, relatable,
+                and impactful for young audiences.
+              </p>
+              <p>
+                We believe that awareness is the first step toward understanding, and
+                understanding is the first step toward meaningful social change.
               </p>
             </div>
           </motion.div>
@@ -166,13 +167,49 @@ export default function WhyWeSail() {
           </motion.div>
         </motion.div>
 
-        {/* ── SUPERVISION & ADVISORY ── */}
+        {/* ── PROJECT TEAM ── */}
         <div className="wws-crew-section">
           <div className="wws-crew-header">
-            <span className="wws-crew-header__tag">GUIDANCE & EXPERTISE</span>
-            <h3 className="wws-crew-header__title">Supervision & Advisory</h3>
+            <span className="wws-crew-header__tag">THE CREATORS</span>
+            <h3 className="wws-crew-header__title">Project Team</h3>
             <p className="wws-crew-header__sub">
-              The academic and medical guides of our journey.
+              The minds shaping the creative vision.
+            </p>
+          </div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="wws-crew-grid"
+          >
+            {projectTeam.map((item) => (
+              <motion.div
+                key={item.id}
+                variants={cardVariants}
+                className="wws-crew-card"
+              >
+                <span className="wws-crew-card__role">{item.role}</span>
+                <div className="wws-crew-card__members">
+                  {item.members.map((name, idx) => (
+                    <div key={idx} className="wws-crew-card__member-name">
+                      {name}
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* ── SUPERVISION ── */}
+        <div className="wws-crew-section" style={{ marginTop: "80px" }}>
+          <div className="wws-crew-header">
+            <span className="wws-crew-header__tag">ACADEMIC GUIDANCE</span>
+            <h3 className="wws-crew-header__title">Supervision</h3>
+            <p className="wws-crew-header__sub">
+              The academic guides of our journey.
             </p>
           </div>
 
@@ -199,32 +236,16 @@ export default function WhyWeSail() {
                 </div>
               </motion.div>
             ))}
-            {medicalConsultants.map((item) => (
-              <motion.div
-                key={item.id}
-                variants={cardVariants}
-                className="wws-crew-card wws-crew-card--highlighted"
-              >
-                <span className="wws-crew-card__role">{item.role}</span>
-                <div className="wws-crew-card__members">
-                  {item.members.map((name, idx) => (
-                    <div key={idx} className="wws-crew-card__member-name">
-                      {name}
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
-            ))}
           </motion.div>
         </div>
 
-        {/* ── PROJECT TEAM ── */}
+        {/* ── MEDICAL ADVISOR ── */}
         <div className="wws-crew-section" style={{ marginTop: "80px" }}>
           <div className="wws-crew-header">
-            <span className="wws-crew-header__tag">THE CREATORS</span>
-            <h3 className="wws-crew-header__title">Project Team</h3>
+            <span className="wws-crew-header__tag">MEDICAL EXPERTISE</span>
+            <h3 className="wws-crew-header__title">Medical Advisor</h3>
             <p className="wws-crew-header__sub">
-              The minds shaping the creative vision.
+              The medical consultants of our journey.
             </p>
           </div>
 
@@ -235,11 +256,11 @@ export default function WhyWeSail() {
             viewport={{ once: true, margin: "-50px" }}
             className="wws-crew-grid"
           >
-            {projectTeam.map((item) => (
+            {medicalConsultants.map((item) => (
               <motion.div
                 key={item.id}
                 variants={cardVariants}
-                className="wws-crew-card"
+                className="wws-crew-card wws-crew-card--highlighted"
               >
                 <span className="wws-crew-card__role">{item.role}</span>
                 <div className="wws-crew-card__members">
