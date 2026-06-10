@@ -8,22 +8,22 @@ const VIEWBOX = { x: 0, y: 0, w: 1600, h: 900 }
 // Absolute coordinates matching the visual centers of each island in the new island map image
 // Derived from: New Islands Image.jpg (2752x1536), scaled to 1600x900 SVG space
 const TOOLTIP_CENTERS = {
-  1: { x: 334, y: 492 },   // Still Island (green grassy island, bottom-left)
-  2: { x: 401, y: 219 },   // Burning Island (volcano, top-left)
-  3: { x: 752, y: 360 },   // Sunken Island (misty/foggy island, center)
-  4: { x: 1017, y: 193 },  // Twin Islands (twin rocky peaks, top-right)
-  5: { x: 1139, y: 389 },  // Root Island (green tree-covered island, right)
-  6: { x: 1133, y: 632 },  // Lighthouse Island (rocky island with lighthouse, bottom-right)
+  1: { x: 470, y: 560 },   // Still Island (green grassy island, bottom-left)
+  2: { x: 450, y: 280 },   // Burning Island (volcano, top-left)
+  3: { x: 770, y: 410 },   // Sunken Island (misty/foggy island, center)
+  4: { x: 985, y: 265 },   // Twin Islands (twin rocky peaks, top-right)
+  5: { x: 1100, y: 500 },  // Root Island (green tree-covered island, right)
+  6: { x: 1035, y: 705 },  // Lighthouse Island (rocky island with lighthouse, bottom-right)
 }
 
 // Custom coordinate paths outlining the actual visual boundaries of each island in the 1600x900 SVG grid space
 const HITBOX_PATHS = {
-  1: "M 185 480 L 400 450 L 475 535 L 465 650 L 355 695 L 190 685 L 100 615 L 115 520 Z",         // Still Island
-  2: "M 245 120 L 440 110 L 510 195 L 490 300 L 360 340 L 215 310 L 155 210 Z",                    // Burning Island
-  3: "M 490 275 L 740 260 L 820 345 L 800 445 L 650 475 L 460 425 L 400 340 Z",                    // Sunken Island
-  4: "M 855 110 L 1075 80 L 1195 155 L 1175 275 L 1070 315 L 880 295 L 800 215 Z",                 // Twin Islands
-  5: "M 970 280 L 1200 245 L 1345 325 L 1360 455 L 1240 500 L 1000 490 L 905 395 L 920 295 Z",     // Root Island
-  6: "M 975 515 L 1145 480 L 1310 545 L 1335 665 L 1245 745 L 1035 735 L 885 660 L 895 565 Z",     // Lighthouse Island
+  1: "M 321 548 L 536 518 L 611 603 L 601 718 L 491 763 L 326 753 L 236 683 L 251 588 Z",         // Still Island
+  2: "M 294 181 L 489 171 L 559 256 L 539 361 L 409 401 L 264 371 L 204 271 Z",                    // Burning Island
+  3: "M 586 350 L 761 340 L 817 399 L 803 469 L 698 490 L 565 455 L 523 396 Z",                    // Sunken Island
+  4: "M 823 182 L 1043 152 L 1163 227 L 1143 347 L 1038 387 L 848 367 L 768 287 Z",                 // Twin Islands
+  5: "M 931 391 L 1161 356 L 1306 436 L 1321 566 L 1201 611 L 961 601 L 866 506 L 881 406 Z",     // Root Island
+  6: "M 877 588 L 1047 553 L 1212 618 L 1237 738 L 1147 818 L 937 808 L 787 733 L 797 638 Z",     // Lighthouse Island
 }
 
 /* ─────────────────────────────────────────────
@@ -150,7 +150,7 @@ export default function OceanWorld() {
         >
           {/* Background image */}
           <image
-            href="/New Islands Image.jpg"
+            href="/Island New Expand.png"
             x="0" y="0" width="1600" height="900"
             style={{
               filter: (hoveredIdx !== null || selectedIsland) ? 'brightness(0.35) saturate(0.8)' : 'none',

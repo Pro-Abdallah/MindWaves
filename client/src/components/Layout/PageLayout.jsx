@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '../Navigation/Navbar';
 import PageNavigation from '../Navigation/PageNavigation';
 import SocialSidebar from './SocialSidebar';
-import ChatbotWidget from './ChatbotWidget';
 import './PageLayout.css';
 
 /**
@@ -35,7 +34,6 @@ export default function PageLayout({ children }) {
 
       {!isLandingPage && <PageNavigation />}
       {!isLandingPage && <SocialSidebar />}
-      {!isLandingPage && <ChatbotWidget />}
     </div>
   );
 }

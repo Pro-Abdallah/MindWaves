@@ -11,7 +11,7 @@
   min-height: 100vh;
   background: #020E18;
   overflow-x: hidden;
-  margin-top: -48px;
+  margin-top: calc(-1 * var(--navbar-height));
 }
 
 /* ================================================================

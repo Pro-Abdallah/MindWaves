@@ -63,7 +63,7 @@ export default function Trailer() {
         <motion.div className="trailer-credits" variants={itemVariants}>
           <span className="trailer-credit-item">MindWaves</span>
           <span className="trailer-credit-dot" />
-          <span className="trailer-credit-item">2025</span>
+          <span className="trailer-credit-item">2026</span>
           <span className="trailer-credit-dot" />
           <span className="trailer-credit-item">Graduation Project</span>
           <span className="trailer-credit-dot" />

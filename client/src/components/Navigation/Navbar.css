@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 48px;
+  height: var(--navbar-height);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -29,29 +29,35 @@
 }
 
 .logo-image {
-  height: 22px;
+  height: 28px;
   width: auto;
 }
 
 .logo-text {
-  height: 42px;
-  width: 70px;
+  height: 48px;
+  width: 80px;
   margin-right: 12px;
 }
 
 @media (max-width: 960px) {
   .logo-text {
-    width: 60px;
-    height: 36px;
+    width: 68px;
+    height: 40px;
     margin-right: 8px;
+  }
+  .logo-image {
+    height: 24px;
   }
 }
 
 @media (max-width: 680px) {
   .logo-text {
-    width: 52px;
-    height: 30px;
+    width: 58px;
+    height: 34px;
     margin-right: 6px;
+  }
+  .logo-image {
+    height: 20px;
   }
 }
 
@@ -142,7 +148,7 @@
 /* ── Mobile drawer ── */
 .navbar-mobile-drawer {
   position: fixed;
-  top: 48px;
+  top: var(--navbar-height);
   left: 0;
   right: 0;
   background: rgba(2, 8, 19, 0.97);

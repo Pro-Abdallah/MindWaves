@@ -13,7 +13,7 @@
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  margin-top: -48px;
+  margin-top: calc(-1 * var(--navbar-height));
 }
 
 /* ── Removed horizon fog ── */
