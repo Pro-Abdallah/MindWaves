@@ -1,5 +1,5 @@
 .bottle-returned-container {
-  margin-top: -48px;
+  margin-top: calc(-1 * var(--navbar-height));
   width: 100%;
   height: 100vh;
   position: relative;

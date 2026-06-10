@@ -3,7 +3,7 @@
    ═══════════════════════════════════════════════ */
 
 .ride-the-waves {
-  margin-top: -48px;
+  margin-top: calc(-1 * var(--navbar-height));
   width: 100%;
   min-height: 100vh;
   position: relative;

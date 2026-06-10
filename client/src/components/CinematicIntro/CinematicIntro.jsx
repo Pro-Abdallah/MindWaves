@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
+import Navbar from '../Navigation/Navbar'
 import './CinematicIntro.css'
 
 const firstHalfSrc = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/Intro_2_pef8yr.mp4'
@@ -110,14 +111,6 @@ function SkipButton({ onClick }) {
   )
 }
 
-function IntroNavbar() {
-  return (
-    <div className="ci-navbar-strip" aria-label="MindWaves navigation">
-      <img src="/logo 1.png" alt="MindWaves Logo" className="ci-navbar-logo-img" />
-      <img src="/mind waves png.png" alt="MindWaves" className="ci-navbar-logo-text" />
-    </div>
-  )
-}
 
 export default function CinematicIntro({ onComplete }) {
   const [phase, setPhase] = useState('loading')
@@ -337,7 +330,7 @@ export default function CinematicIntro({ onComplete }) {
 
       {/* ── Navbar strip — visible during second video ── */}
       {phase === 'secondVideo' && (
-        <IntroNavbar />
+        <Navbar />
       )}
     </div>
   )

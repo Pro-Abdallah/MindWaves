@@ -110,6 +110,12 @@ export default function SafeHarbor() {
         {/* ── Section label at the top ── */}
         <div className="sh-board-label">
           <h2 className="sh-board-label__title">Safe Harbor</h2>
+          <p className="sh-board-label__desc">
+            You don't have to navigate the waves alone
+          </p>
+          <p className="sh-board-label__sub">
+            Click each note to discover support services, helpful resources, and professional guidance.
+          </p>
         </div>
       </div>
 

@@ -17,7 +17,7 @@
   padding: clamp(60px, 8vw, 100px) clamp(16px, 4vw, 24px);
   overflow: hidden;
   font-family: var(--font-primary);
-  margin-top: -48px;
+  margin-top: calc(-1 * var(--navbar-height));
 }
 
 /* ── Immersive Ambient Backdrop Glows ── */
