@@ -29,6 +29,13 @@
   z-index: 1;
 }
 
+/* ── Section label — sits below the navbar ── */
+
+.ow-container .sh-board-label {
+  top: calc(var(--navbar-height) + 16px);
+  z-index: 10;
+}
+
 /* ── Full Screen Interactive Chart Wrapper ── */
 
 .ow-fullscreen-wrapper {

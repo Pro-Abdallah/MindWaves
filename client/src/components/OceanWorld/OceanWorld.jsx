@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { islandsData } from './islands.data'
+import '../../styles/SectionLabel.css'
 import './OceanWorld.css'
 
 const VIEWBOX = { x: 0, y: 0, w: 1600, h: 900 }
@@ -140,6 +141,17 @@ export default function OceanWorld() {
 
   return (
     <div className="ow-container" role="region" aria-label="Understanding The Waves ocean world">
+
+      {/* ── Section label at the top ── */}
+      <div className="sh-board-label">
+        <h2 className="sh-board-label__title">Understanding The Waves</h2>
+        <p className="sh-board-label__desc">
+          Every journey begins with understanding
+        </p>
+        <p className="sh-board-label__sub">
+          Each island reveals a different side of bipolar disorder. Click to explore.
+        </p>
+      </div>
 
       {/* ── Full Screen Interactive SVG Chart ── */}
       <div className="ow-fullscreen-wrapper">
