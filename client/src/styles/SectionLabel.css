@@ -15,7 +15,7 @@
   font-family: var(--font-primary);
   font-size: clamp(10px, 1.4vw, 13px);
   font-weight: 500;
-  color: #DFE1E6;
+  color: #dfe1e6;
   margin-top: 6px;
   line-height: 1.4;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
@@ -27,7 +27,7 @@
   font-family: var(--font-primary);
   font-size: clamp(9px, 1.2vw, 11px);
   font-weight: 400;
-  color: rgba(223, 225, 230, 0.65);
+  color: rgba(223, 225, 230, 0.7);
   margin-top: 4px;
   line-height: 1.4;
   text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
@@ -49,7 +49,7 @@
   font-size: clamp(22px, 3.5vw, 36px);
   font-weight: 400;
   font-style: italic;
-  color: #91BFF6;
+  color: #91bff6;
   letter-spacing: 0.04em;
   text-shadow:
     0 2px 14px rgba(0, 0, 0, 0.8),

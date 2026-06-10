@@ -144,10 +144,10 @@ export default function OceanWorld() {
 
       {/* ── Section label at the top ── */}
       <div className="sh-board-label">
-        <h2 className="sh-board-label__title">Understanding The Waves</h2>
-        <p className="sh-board-label__desc">
-          Every journey begins with understanding
-        </p>
+        <h2 className="sh-board-label__title">Every journey begins with understanding</h2>
+        {/* <p className="sh-board-label__desc">
+          Each island reveals a different side of bipolar disorder. Click to explore.
+        </p> */}
         <p className="sh-board-label__sub">
           Each island reveals a different side of bipolar disorder. Click to explore.
         </p>
