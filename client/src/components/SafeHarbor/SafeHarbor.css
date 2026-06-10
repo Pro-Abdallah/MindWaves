@@ -62,65 +62,6 @@
   filter: brightness(0.96) saturate(0.98) contrast(1.03);
 }
 
-/* ── Section label — floats above the board ── */
-.sh-board-label {
-  position: absolute;
-  top: 3.5%;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  z-index: 10;
-  pointer-events: none;
-  width: 90%;
-  max-width: 600px;
-}
-
-.sh-board-label__desc {
-  font-family: var(--font-primary);
-  font-size: clamp(10px, 1.4vw, 13px);
-  font-weight: 500;
-  color: #DFE1E6;
-  margin-top: 6px;
-  line-height: 1.4;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.sh-board-label__sub {
-  font-family: var(--font-primary);
-  font-size: clamp(9px, 1.2vw, 11px);
-  font-weight: 400;
-  color: rgba(223, 225, 230, 0.65);
-  margin-top: 4px;
-  line-height: 1.4;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.95);
-}
-
-.sh-board-label__tag {
-  font-family: var(--font-primary);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.35em;
-  color: rgba(255, 248, 220, 0.8);
-  text-transform: uppercase;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.9);
-  display: block;
-}
-
-.sh-board-label__title {
-  font-family: var(--font-serif);
-  font-size: clamp(24px, 3.5vw, 40px);
-  font-weight: 400;
-  font-style: italic;
-  color: #fff8dc;
-  letter-spacing: 0.04em;
-  text-shadow:
-    0 2px 14px rgba(0, 0, 0, 0.8),
-    0 0 40px rgba(255, 220, 120, 0.2);
-  margin-top: 6px;
-}
-
 /* ── Clickable Note Hotspots ── */
 .sh-note-hotspot {
   position: absolute;
@@ -653,12 +594,6 @@
    Responsiveness
    ================================================================ */
 
-@media (max-width: 900px) {
-  .sh-board-label__title {
-    font-size: clamp(20px, 3vw, 32px);
-  }
-}
-
 @media (max-width: 760px) {
   .sh-therapy-grid {
     grid-template-columns: 1fr;
@@ -682,16 +617,6 @@
 }
 
 @media (max-width: 540px) {
-  .sh-board-label__title {
-    font-size: clamp(18px, 5vw, 26px);
-  }
-
-  .sh-board-label__tag {
-    font-size: 9px;
-  }
-
-
-
   .sh-paper {
     max-width: 100%;
   }
