@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { infoResources, therapyPlatforms, emergencyHotlines } from './support.data'
+import '../../styles/SectionLabel.css'
 import './SafeHarbor.css'
 
 const bulletinBoard = '/safe-harbor-bulletin-board.png'
