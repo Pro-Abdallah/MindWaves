@@ -43,15 +43,7 @@ export default function StoryInlinePopup({ story, index }) {
         paddingBottom: '1rem', 
         width: '100%' 
       }}>
-        <span style={{ 
-          color: story.color, 
-          textTransform: 'uppercase', 
-          letterSpacing: '0.1em', 
-          fontSize: '14px', 
-          fontWeight: 'bold' 
-        }}>
-          Story {index + 1} Content
-        </span>
+
         <h3 style={{ 
           margin: '8px 0 0 0', 
           fontSize: '20px', 

@@ -1,5 +1,5 @@
 export const APP_ROUTES = [
-  { path: '/', title: 'Landing' },
+  { path: '/', title: 'Home' },
   { path: '/understanding-the-waves', title: 'Understanding The Waves' },
   { path: '/messages-from-the-sea', title: 'Messages From the Sea' },
   { path: '/ride-the-waves', title: 'Ride the Waves' },

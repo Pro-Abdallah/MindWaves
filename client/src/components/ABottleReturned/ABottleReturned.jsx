@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import OceanBackground from './components/OceanBackground';
 import PaperMessageCard from './components/PaperMessageCard';
+import WriteMessageCard from './components/WriteMessageCard';
 import { useBottleMessages } from './hooks/useBottleMessages';
 import './ABottleReturned.css';
 
@@ -24,10 +25,18 @@ export default function ABottleReturned() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
         >
+          <div className="bottle-eyebrow">
+            <span className="bottle-wave-icon">〰</span>
+            A Bottle Returned
+            <span className="bottle-wave-icon">〰</span>
+          </div>
           <h2 className="voices-title">VOICES CARRIED BY THE CURRENT</h2>
         </motion.div>
 
+        <WriteMessageCard />
+
         <div className="messages-list-container">
+
           {isLoading && messages.length === 0 ? (
             <div className="sea-status">
               <p>Searching the sea...</p>

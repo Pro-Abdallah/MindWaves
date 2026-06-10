@@ -1,0 +1,71 @@
+.write-message-btn {
+  background-color: transparent;
+  border: 1px solid rgba(163, 217, 232, 0.4);
+  color: #a3d9e8;
+  padding: 12px 30px;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  letter-spacing: 0.1em;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.write-message-btn:hover {
+  background-color: rgba(163, 217, 232, 0.1);
+  border-color: rgba(163, 217, 232, 0.8);
+  box-shadow: 0 0 15px rgba(163, 217, 232, 0.2);
+}
+
+.write-textarea {
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  width: 100%;
+  color: #3b331f;
+  line-height: 1.8;
+  font-size: 1.15rem;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  padding: 0;
+  margin: 0;
+}
+
+.write-textarea::placeholder {
+  color: rgba(59, 51, 31, 0.4);
+}
+
+.write-action-btn {
+  background: transparent;
+  border: none;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.cancel-btn {
+  color: #8c7e5a;
+}
+.cancel-btn:hover {
+  color: #5a4f36;
+}
+
+.submit-btn {
+  background-color: rgba(140, 126, 90, 0.1);
+  color: #3b331f;
+  border: 1px solid rgba(140, 126, 90, 0.3);
+}
+.submit-btn:hover:not(:disabled) {
+  background-color: rgba(140, 126, 90, 0.2);
+}
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
