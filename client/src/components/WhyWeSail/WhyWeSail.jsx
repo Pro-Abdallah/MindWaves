@@ -203,13 +203,13 @@ export default function WhyWeSail() {
           </motion.div>
         </div>
 
-        {/* ── SUPERVISION & ADVISORY ── */}
+        {/* ── SUPERVISION ── */}
         <div className="wws-crew-section" style={{ marginTop: "80px" }}>
           <div className="wws-crew-header">
-            <span className="wws-crew-header__tag">GUIDANCE & EXPERTISE</span>
-            <h3 className="wws-crew-header__title">Supervision & Advisory</h3>
+            <span className="wws-crew-header__tag">ACADEMIC GUIDANCE</span>
+            <h3 className="wws-crew-header__title">Supervision</h3>
             <p className="wws-crew-header__sub">
-              The academic and medical guides of our journey.
+              The academic guides of our journey.
             </p>
           </div>
 
@@ -236,6 +236,26 @@ export default function WhyWeSail() {
                 </div>
               </motion.div>
             ))}
+          </motion.div>
+        </div>
+
+        {/* ── MEDICAL ADVISOR ── */}
+        <div className="wws-crew-section" style={{ marginTop: "80px" }}>
+          <div className="wws-crew-header">
+            <span className="wws-crew-header__tag">MEDICAL EXPERTISE</span>
+            <h3 className="wws-crew-header__title">Medical Advisor</h3>
+            <p className="wws-crew-header__sub">
+              The medical consultants of our journey.
+            </p>
+          </div>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            className="wws-crew-grid"
+          >
             {medicalConsultants.map((item) => (
               <motion.div
                 key={item.id}
