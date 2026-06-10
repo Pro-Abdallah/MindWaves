@@ -37,30 +37,30 @@ const NOTES = [
   {
     id: 'therapy',
     label: 'Seek Therapy',
-    top:    '34.5%',
-    left:   '19.0%',
-    width:  '22.5%',
-    height: '28.0%',
+    top:    '35.8%',
+    left:   '19.6%',
+    width:  '21.2%',
+    height: '26.0%',
     rotate: '-2deg',
     thumbtack: '#e04040',
   },
   {
     id: 'info',
     label: 'Get More Information',
-    top:    '34.0%',
-    left:   '41.0%',
-    width:  '20.5%',
-    height: '28.0%',
+    top:    '35.4%',
+    left:   '41.8%',
+    width:  '19.0%',
+    height: '25.4%',
     rotate: '0deg',
     thumbtack: '#e07830',
   },
   {
     id: 'help',
     label: 'Call for Help',
-    top:    '36.0%',
-    left:   '60.5%',
-    width:  '22.5%',
-    height: '29.0%',
+    top:    '37.6%',
+    left:   '61.4%',
+    width:  '21.0%',
+    height: '27.0%',
     rotate: '2deg',
     thumbtack: '#3a7bc8',
   },
@@ -76,7 +76,7 @@ export default function SafeHarbor() {
   return (
     <section className="sh-root" id="safe-harbor" aria-label="Safe Harbor Section">
 
-      {/* ── Full-page bulletin board ── */}
+      {/* ── Full-page bulletin board (Desktop Only) ── */}
       <div className="sh-board-wrap" ref={boardRef}>
         <img
           src={bulletinBoard}
@@ -118,6 +118,7 @@ export default function SafeHarbor() {
           </p>
         </div>
       </div>
+
 
       {/* ── Paper scroll overlay (modal) ── */}
       <AnimatePresence>
@@ -198,8 +199,22 @@ export default function SafeHarbor() {
                       <div className="sh-info-list">
                         {infoResources.map(info => (
                           <div key={info.id} className="sh-info-item">
-                            <h4 className="sh-info-item__title">{info.title}</h4>
-                            <p className="sh-info-item__desc">"{info.desc}"</p>
+                            <div className="sh-info-item__content">
+                              <h4 className="sh-info-item__title">{info.title}</h4>
+                              <p className="sh-info-item__desc">{info.desc}</p>
+                            </div>
+                            {info.url && (
+                              <a
+                                href={info.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="sh-info-item__link"
+                                aria-label={`Read ${info.title}`}
+                              >
+                                <span>{info.cta || 'Read Resource'}</span>
+                                <IconExternalLink />
+                              </a>
+                            )}
                           </div>
                         ))}
                       </div>
