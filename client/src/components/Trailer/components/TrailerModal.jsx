@@ -1,9 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// YouTube embed ID
-const VIDEO_ID = 'RrWBhVlD1H8';
-
 export default function TrailerModal({ isOpen, onClose }) {
   return (
     <AnimatePresence>
@@ -35,12 +32,13 @@ export default function TrailerModal({ isOpen, onClose }) {
 
             {/* 16:9 ratio container */}
             <div className="trailer-modal-ratio">
-              <iframe
+              <video
                 className="trailer-modal-iframe"
-                src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&color=white`}
-                title="MindWaves Trailer"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
+                src="https://res.cloudinary.com/dwgbbvjbz/video/upload/v1781279194/Trailer_-_Optimized_hmuy9x.mp4"
+                title="Marfa'. Harbor Trailer"
+                controls
+                autoPlay
+                playsInline
               />
             </div>
           </motion.div>

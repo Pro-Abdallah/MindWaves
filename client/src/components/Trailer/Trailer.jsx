@@ -2,8 +2,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import OceanBackground from './components/OceanBackground';
 import TrailerHero from './components/TrailerHero';
-import TrailerModal from './components/TrailerModal';
-import { useTrailerPlayer } from './hooks/useTrailerPlayer';
 import './styles/trailer.css';
 
 // Stagger parent for entering elements
@@ -20,8 +18,6 @@ const itemVariants = {
 };
 
 export default function Trailer() {
-  const { isModalOpen, openModal, closeModal } = useTrailerPlayer();
-
   return (
     <section className="trailer-section">
       {/* ── Atmospheric Background ── */}
@@ -42,8 +38,8 @@ export default function Trailer() {
 
         {/* Headline */}
         <motion.h1 className="trailer-headline" variants={itemVariants}>
-          Riding the Waves <br />
-          <span>of the Mind</span>
+          Marfa'. <br />
+          <span>Harbor</span>
         </motion.h1>
 
         {/* Tagline */}
@@ -56,7 +52,7 @@ export default function Trailer() {
           variants={itemVariants}
           style={{ width: '100%' }}
         >
-          <TrailerHero onPlay={openModal} />
+          <TrailerHero />
         </motion.div>
 
         {/* Bottom credits */}
@@ -70,9 +66,6 @@ export default function Trailer() {
           <span className="trailer-credit-item">Bipolar Disorder Awareness</span>
         </motion.div>
       </motion.div>
-
-      {/* ── Fullscreen Cinematic Modal ── */}
-      <TrailerModal isOpen={isModalOpen} onClose={closeModal} />
     </section>
   );
 }
