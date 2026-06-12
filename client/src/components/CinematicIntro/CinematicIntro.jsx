@@ -177,7 +177,8 @@ export default function CinematicIntro({ onComplete }) {
   const [autoplayFailed, setAutoplayFailed] = useState(false)
 
   // Single sound state that controls audio for the active video
-  const [isMuted, setIsMuted] = useState(false)
+  // Muted initially so iOS Safari allows the video to preload and trigger 'canplay'
+  const [isMuted, setIsMuted] = useState(true)
   const userMutePrefRef = useRef(null) // null = no pref, true = user muted, false = user unmuted
 
   const firstVideoRef  = useRef(null)
@@ -263,7 +264,18 @@ export default function CinematicIntro({ onComplete }) {
       handleReady()
     } else {
       video.addEventListener('canplay', handleReady, { once: true })
-      return () => video.removeEventListener('canplay', handleReady)
+      
+      // Fallback: If iOS Safari or low power mode completely blocks preload,
+      // force show the ENTER button after 3 seconds so the user isn't stuck.
+      const fallbackTimer = setTimeout(() => {
+        video.removeEventListener('canplay', handleReady)
+        handleReady()
+      }, 3000)
+
+      return () => {
+        video.removeEventListener('canplay', handleReady)
+        clearTimeout(fallbackTimer)
+      }
     }
   }, [phase])
 
