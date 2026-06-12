@@ -418,7 +418,7 @@
 .ow-modal-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 9000;
+  z-index: 10005;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -665,5 +665,38 @@
 
   .ow-modal-fact-text {
     font-size: 13px;
+  }
+}
+
+/* ── Landscape Mobile & Short Screens ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  .ow-modal-backdrop {
+    padding: 10px;
+    align-items: center;
+  }
+  .ow-modal-card {
+    max-height: 96vh;
+    border-radius: 12px;
+  }
+  .ow-modal-header {
+    height: 110px;
+  }
+  .ow-modal-header-content {
+    bottom: 12px;
+    left: 20px;
+  }
+  .ow-modal-title {
+    font-size: 22px;
+  }
+  .ow-modal-body {
+    padding: 16px 20px 24px;
+  }
+  .ow-modal-intro {
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+  .ow-modal-facts {
+    gap: 16px;
+    margin-bottom: 20px;
   }
 }

@@ -1,4 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { islandsData } from './islands.data'
 import '../../styles/SectionLabel.css'
@@ -249,11 +250,14 @@ export default function OceanWorld() {
       </div>
 
       {/* ── Island Modal popup ── */}
-      <AnimatePresence>
-        {selectedIsland && (
-          <IslandModal island={selectedIsland} onClose={handleCloseModal} />
-        )}
-      </AnimatePresence>
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {selectedIsland && (
+            <IslandModal island={selectedIsland} onClose={handleCloseModal} />
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </div>
   )
 }

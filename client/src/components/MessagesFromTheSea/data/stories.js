@@ -99,7 +99,7 @@ export const STORIES = [
     type: "text",
     category: "Written Story",
     label: "A Journey Through the Stigma",
-    lead: "1.	Behind every label is a person searching to be understood.",
+    lead: "Behind every label is a person searching to be understood.",
     bottleLabel: "A Letter",
     tagline: "Words washed ashore.",
     description: "A personal testimony from the depths.",
