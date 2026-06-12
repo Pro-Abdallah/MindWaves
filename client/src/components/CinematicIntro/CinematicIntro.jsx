@@ -107,6 +107,42 @@ function StartButton({ onClick, autoplayFailed }) {
   )
 }
 
+function EnterButton({ onClick }) {
+  return (
+    <div className="ci-enter-wrapper">
+      <div className="ci-enter-logo-container">
+        <img src="/logo 1.png" alt="MindWaves Logo" className="ci-enter-logo-img" />
+        <img src="/mind waves png.png" alt="MindWaves Text" className="ci-enter-logo-text" />
+      </div>
+      <div className="ci-enter-btn-container">
+        <button
+          className="ci-start-btn"
+          onClick={onClick}
+          aria-label="Enter cinematic intro"
+        >
+          <span className="ci-start-btn__border" aria-hidden="true" />
+          <span className="ci-start-btn__inner">
+            <span className="ci-start-btn__text">ENTER</span>
+            <svg
+              className="ci-start-btn__arrow"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+          </span>
+        </button>
+        <p className="ci-autoplay-hint">Click to begin with sound</p>
+      </div>
+    </div>
+  )
+}
+
 function SkipButton({ onClick }) {
   return (
     <button
@@ -212,41 +248,42 @@ export default function CinematicIntro({ onComplete }) {
     }
   }, [phase])
 
-  // Attempt autoplay of first video
-  // Tries unmuted autoplay first, falling back to muted autoplay if blocked by browser policies.
+  // Prepare first video
   useEffect(() => {
     if (phase !== 'loading') return
 
     const video = firstVideoRef.current
     if (!video) return
 
-    const tryPlay = async () => {
-      setPhase('firstVideo')
-      try {
-        video.muted = false
-        setIsMuted(false)
-        await video.play()
-      } catch (err) {
-        console.log("Unmuted autoplay blocked, trying muted autoplay...", err)
-        try {
-          video.muted = true
-          setIsMuted(true)
-          await video.play()
-        } catch (err2) {
-          console.error("Muted autoplay also blocked:", err2)
-          setAutoplayFailed(true)
-          setPhase('awaitingStart')
-        }
-      }
+    const handleReady = () => {
+      setPhase('userInit')
     }
 
     if (video.readyState >= 2) {
-      tryPlay()
+      handleReady()
     } else {
-      video.addEventListener('canplay', tryPlay, { once: true })
-      return () => video.removeEventListener('canplay', tryPlay)
+      video.addEventListener('canplay', handleReady, { once: true })
+      return () => video.removeEventListener('canplay', handleReady)
     }
   }, [phase])
+
+  const handleEnterExperience = useCallback(async () => {
+    setPhase('firstVideo')
+    const video = firstVideoRef.current
+    if (!video) return
+
+    // Since this is a user gesture, it will play unmuted
+    video.muted = false
+    setIsMuted(false)
+    try {
+      await video.play()
+    } catch (err) {
+      console.error("Playback failed even after user gesture:", err)
+      video.muted = true
+      setIsMuted(true)
+      video.play().catch(e => console.error(e))
+    }
+  }, [])
 
   // Unified audio toggling handler
   const handleSoundToggle = useCallback(() => {
@@ -377,6 +414,11 @@ export default function CinematicIntro({ onComplete }) {
       {/* ── Sound toggle button (visible before AND after start) ── */}
       {showSoundControl && (
         <SoundToggle muted={isMuted} onToggle={handleSoundToggle} />
+      )}
+
+      {/* ── ENTER button — appears before first video plays ── */}
+      {phase === 'userInit' && (
+        <EnterButton onClick={handleEnterExperience} />
       )}
 
       {/* ── START button — appears after first video ── */}
