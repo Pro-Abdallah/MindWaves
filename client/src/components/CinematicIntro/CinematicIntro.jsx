@@ -4,7 +4,7 @@ import './CinematicIntro.css'
 
 const firstHalfSrc  = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/Intro_2_pef8yr.mp4'
 const secondHalfSrc = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/v1780273682/2nd_Half_Intro_-_New_diemensions_assuge.mp4'
-const rotateSrc     = 'https://res.cloudinary.com/dwgbbvjbz/video/upload/v1781091537/Rotate_Your_Phone_Video_bieqo3.mp4'
+import rotateGif from '../../../Assets/Rotate Your Phone Video.gif'
 
 /**
  * Returns true when the visitor is on a touch/mobile device.
@@ -144,7 +144,6 @@ export default function CinematicIntro({ onComplete }) {
   const [isMuted, setIsMuted] = useState(false)
   const userMutePrefRef = useRef(null) // null = no pref, true = user muted, false = user unmuted
 
-  const rotateVideoRef = useRef(null)
   const firstVideoRef  = useRef(null)
   const secondVideoRef = useRef(null)
 
@@ -162,24 +161,13 @@ export default function CinematicIntro({ onComplete }) {
     }
   }, [])
 
-  // Autoplay the rotate-phone video when that phase is active
+  // Auto-dismiss the rotate-phone gif after 4 seconds
   useEffect(() => {
     if (phase !== 'rotatePhone') return
-    const video = rotateVideoRef.current
-    if (!video) return
-    const play = () => {
-      video.muted = true
-      video.play().catch(() => {
-        // If autoplay fails on mobile just skip straight to intro
-        setPhase('loading')
-      })
-    }
-    if (video.readyState >= 2) {
-      play()
-    } else {
-      video.addEventListener('canplay', play, { once: true })
-      return () => video.removeEventListener('canplay', play)
-    }
+    const timer = setTimeout(() => {
+      setPhase('loading')
+    }, 4000)
+    return () => clearTimeout(timer)
   }, [phase])
 
 
@@ -351,14 +339,10 @@ export default function CinematicIntro({ onComplete }) {
           aria-label="Skip rotate prompt"
           onKeyDown={e => e.key === 'Enter' && handleRotateEnd()}
         >
-          <video
-            ref={rotateVideoRef}
+          <img
             className="ci-rotate-video"
-            src={rotateSrc}
-            muted
-            playsInline
-            preload="auto"
-            onEnded={handleRotateEnd}
+            src={rotateGif}
+            alt="Rotate your phone"
             aria-hidden="true"
           />
           <span className="ci-rotate-skip">Tap to skip</span>

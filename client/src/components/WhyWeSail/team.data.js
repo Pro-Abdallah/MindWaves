@@ -23,7 +23,7 @@ export const projectTeam = [
   {
     id: "role-4",
     role: "AI Design",
-    members: ["Dina"]
+    members: ["Dina Salah"]
   },
   {
     id: "role-5",
