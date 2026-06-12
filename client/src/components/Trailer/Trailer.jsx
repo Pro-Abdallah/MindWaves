@@ -38,13 +38,13 @@ export default function Trailer() {
 
         {/* Headline */}
         <motion.h1 className="trailer-headline" variants={itemVariants}>
-          Marfa'. <br />
+          Marfa' <br />
           <span>Harbor</span>
         </motion.h1>
 
         {/* Tagline */}
         <motion.p className="trailer-tagline" variants={itemVariants}>
-          A journey through bipolar disorder
+          A docudrama exploring the emotional journey of Bipolar Disorder through real stories, expert insights, and cinematic storytelling.
         </motion.p>
 
         {/* Cinematic Video Frame */}
