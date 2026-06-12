@@ -62,7 +62,7 @@ export default function TrailerHero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6, type: 'spring', stiffness: 80 }}
                 >
-                  Marfa'. Harbor
+                  Marfa' Harbor
                 </motion.h2>
 
                 <motion.div

@@ -137,7 +137,7 @@ function EnterButton({ onClick }) {
             </svg>
           </span>
         </button>
-        <p className="ci-autoplay-hint">Click to begin with sound</p>
+        <p className="ci-autoplay-hint">Click to begin the journey</p>
       </div>
     </div>
   )
